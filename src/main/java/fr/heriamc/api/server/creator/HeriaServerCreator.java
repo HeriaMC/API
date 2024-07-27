@@ -63,8 +63,8 @@ public class HeriaServerCreator {
 
         Files.createDirectories(Paths.get(folder));
 
-        HeriaFileUtils.copyDirSafely(folder, template);
         HeriaFileUtils.copyDirSafely(folder, this.basicTemplatesFile.toString());
+        HeriaFileUtils.copyDirSafely(folder, template);
 
         HeriaFileUtils.copyFileRecursive(Paths.get(this.proxyFile + "/plugins/HeriaAPI-1.0.0.jar").toFile(),
                 Paths.get(folder + "/plugins/HeriaAPI-1.0.0.jar").toFile());

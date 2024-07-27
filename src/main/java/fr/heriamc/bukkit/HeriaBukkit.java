@@ -6,8 +6,8 @@ import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
+import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.proxy.packet.ServerRegisterPacket;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
@@ -23,6 +23,8 @@ public class HeriaBukkit extends JavaPlugin {
 
     private static HeriaBukkit instance;
     private HeriaAPI api;
+
+    private HeriaMenuManager menuManager;
 
     @Override
     public void onEnable() {
@@ -45,6 +47,8 @@ public class HeriaBukkit extends JavaPlugin {
         this.api.getServerManager().save(server);
 
         this.api.getMessaging().send(new ServerRegisterPacket(server.getName(), server.getPort()));
+
+        this.menuManager = new HeriaMenuManager(this);
     }
 
     @Override
@@ -52,9 +56,19 @@ public class HeriaBukkit extends JavaPlugin {
         if(this.api != null) this.api.onDisable();
     }
 
+    public static HeriaBukkit get(){
+        return instance;
+    }
+
     public String getInstanceName(){
         return this.getServer().getMotd();
     }
 
+    public HeriaAPI getApi() {
+        return api;
+    }
 
+    public HeriaMenuManager getMenuManager() {
+        return menuManager;
+    }
 }

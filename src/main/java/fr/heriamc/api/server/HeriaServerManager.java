@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HeriaServerManager extends CacheDataManager<String, HeriaServer> {
+
     public HeriaServerManager(RedisConnection redisConnection) {
         super(redisConnection, "servers");
     }

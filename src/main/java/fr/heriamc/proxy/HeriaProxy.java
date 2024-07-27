@@ -64,6 +64,7 @@ public class HeriaProxy {
         this.api.getMessaging().registerReceiver(HeriaPacketChannel.API, new ProxyPacketReceiver(this));
 
         this.server.getEventManager().register(this, new ProxyPlayerListener(this));
+
         this.api.getServerCreator().createServer(HeriaServerType.HUB, null);
     }
 
