@@ -1,4 +1,4 @@
-package fr.starblade.api.data.mongo;
+package fr.heriamc.api.data.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;

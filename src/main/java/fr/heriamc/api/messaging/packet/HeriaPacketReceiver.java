@@ -1,6 +1,6 @@
 package fr.heriamc.api.messaging.packet;
 
-public interface StarPacketReceiver {
+public interface HeriaPacketReceiver {
 
     void execute(String channel, HeriaPacket packet);
 

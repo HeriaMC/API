@@ -1,4 +1,4 @@
-package fr.starblade.api.data.redis;
+package fr.heriamc.api.data.redis;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

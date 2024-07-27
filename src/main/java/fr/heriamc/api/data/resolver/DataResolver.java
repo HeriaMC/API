@@ -1,4 +1,4 @@
-package fr.starblade.api.data.resolver;
+package fr.heriamc.api.data.resolver;
 
 import org.bson.Document;
 

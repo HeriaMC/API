@@ -1,7 +1,7 @@
-package fr.starblade.api.data;
+package fr.heriamc.api.data;
 
-import fr.starblade.api.data.redis.RedisConnection;
-import fr.starblade.api.utils.ClassProvider;
+import fr.heriamc.api.data.redis.RedisConnection;
+import fr.heriamc.api.utils.ClassProvider;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package fr.starblade.api.data;
+package fr.heriamc.api.data;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

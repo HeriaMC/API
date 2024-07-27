@@ -1,4 +1,4 @@
-package fr.starblade.api.utils;
+package fr.heriamc.api.utils;
 
 import java.lang.reflect.ParameterizedType;
 

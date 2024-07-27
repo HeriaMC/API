@@ -1,4 +1,4 @@
-package fr.starblade.api.data;
+package fr.heriamc.api.data;
 
 public @interface NonPersistantData {
 

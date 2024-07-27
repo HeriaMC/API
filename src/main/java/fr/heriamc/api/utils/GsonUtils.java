@@ -1,4 +1,4 @@
-package fr.starblade.api.utils;
+package fr.heriamc.api.utils;
 
 import com.google.gson.*;
 
@@ -55,12 +55,6 @@ public final class GsonUtils {
         if(option.pretty) gsonBuilder.setPrettyPrinting();
         if(option.customSettings != null) option.customSettings.accept(gsonBuilder);
 
-        Collection<ExclusionStrategy> exclusionStrategies = new HashSet<>(EXCLUSION_STRATEGIES);
-        exclusionStrategies.removeAll(option.removeStrategies);
-        exclusionStrategies.addAll(option.strategies);
-
-        gsonBuilder.setExclusionStrategies(new GlobalExclusionStrategy(exclusionStrategies));
-
         Collection<Map<Type, Object>> serializers = Arrays.asList(SERIALIZERS, option.serializers);
         for (Map<Type, Object> serializer : serializers) {
 
@@ -70,7 +64,8 @@ public final class GsonUtils {
                 if(option.serializers.containsKey(adapter.getKey())) continue;
 
                 gsonBuilder.registerTypeAdapter(adapter.getKey(), adapter.getValue());
-                if(adapter.getKey() instanceof Class<?> clazz){
+                if(adapter.getKey() instanceof Class<?>){
+                    Class<?> clazz = (Class<?>) adapter.getKey();
                     gsonBuilder.registerTypeHierarchyAdapter(clazz, adapter.getValue());
                 }
 
@@ -138,25 +133,5 @@ public final class GsonUtils {
         }
 
     }
-
-    private record GlobalExclusionStrategy(Collection<ExclusionStrategy> exclusionStrategies) implements ExclusionStrategy {
-
-        @Override
-            public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-                for (ExclusionStrategy exclusionStrategy : exclusionStrategies)
-                    if (exclusionStrategy.shouldSkipField(fieldAttributes))
-                        return true;
-                return false;
-            }
-
-            @Override
-            public boolean shouldSkipClass(Class<?> aClass) {
-                for (ExclusionStrategy exclusionStrategy : exclusionStrategies)
-                    if (exclusionStrategy.shouldSkipClass(aClass))
-                        return true;
-                return false;
-            }
-
-        }
 
 }

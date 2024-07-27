@@ -1,6 +1,6 @@
-package fr.starblade.api.data;
+package fr.heriamc.api.data;
 
-import fr.starblade.api.utils.GsonUtils;
+import fr.heriamc.api.utils.GsonUtils;
 
 public interface SerializableData<A> extends Identifiable<A> {
 

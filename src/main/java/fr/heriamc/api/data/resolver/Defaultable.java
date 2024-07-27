@@ -1,8 +1,8 @@
-package fr.starblade.api.data.resolver;
+package fr.heriamc.api.data.resolver;
 
-import fr.starblade.api.data.SerializableData;
+import fr.heriamc.api.data.SerializableData;
 
-public interface Defaultable<A extends SerializableData> {
+public interface Defaultable<A extends SerializableData<?>> {
 
     A getDefault();
 

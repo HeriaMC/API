@@ -1,6 +1,23 @@
-package fr.starblade.api.data;
+package fr.heriamc.api.data;
 
 import java.util.concurrent.TimeUnit;
 
-public record LocalDataExpiration(long duration, TimeUnit unit) {
+public class LocalDataExpiration {
+
+    private final long duration;
+    private final TimeUnit unit;
+
+    public LocalDataExpiration(long duration, TimeUnit unit) {
+        this.duration = duration;
+        this.unit = unit;
+    }
+
+    public long duration() {
+        return duration;
+    }
+
+    public TimeUnit unit() {
+        return unit;
+    }
+
 }

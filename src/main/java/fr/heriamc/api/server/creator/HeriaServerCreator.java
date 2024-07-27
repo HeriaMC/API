@@ -5,7 +5,7 @@ import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.HeriaServerStatus;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.utils.HeriaFileUtils;
-import org.bson.Document;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class ServerCreator {
+public class HeriaServerCreator {
 
     private final HeriaServerManager serverManager;
 
@@ -30,25 +30,25 @@ public class ServerCreator {
 
     private final Path serversFile = Paths.get(this.mainFile + "/SERVERS");
 
-    public ServerCreator(HeriaServerManager serverManager) {
+    public HeriaServerCreator(HeriaServerManager serverManager) {
         this.serverManager = serverManager;
     }
 
-    public String createServer(HeriaServerType serverType, UUID uuid){
+    public String createServer(HeriaServerType serverType, @Nullable UUID hostId){
         int port = this.nextFreePort();
         String name = serverType.getName() + "#" + this.foundId(serverType);
 
         this.serverManager.put(new HeriaServer(name,
                 serverType,
                 HeriaServerStatus.STARTING,
-                uuid,
+                hostId,
                 port,
                 System.currentTimeMillis(),
                 Collections.emptyList()));
 
         new Thread(() -> {
             try {
-                this.startServer(serverType, port, name, uuid);
+                this.startServer(serverType, port, name, hostId);
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -92,6 +92,22 @@ public class ServerCreator {
         File targetDirectory = new File(folder);
 
         new ProcessBuilder("./start.sh").directory(targetDirectory).start();
+    }
+
+    public void deleteServer(String serverName) {
+        Runtime runtime = Runtime.getRuntime();
+
+        String folder = this.serversFile + "/" + serverName;
+
+        try {
+            Process process = runtime.exec("screen -X -S " + serverName + " kill");
+            process.waitFor();
+            File file = new File(folder);
+            HeriaFileUtils.deleteDir(file);
+
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private int foundId(HeriaServerType serverType) {
