@@ -21,6 +21,7 @@ public class HeriaAPI {
     private final HeriaPlayerManager playerManager;
     private final HeriaServerManager serverManager;
     private final HeriaServerCreator serverCreator;
+
     public HeriaAPI(HeriaConfiguration configuration) {
         instance = this;
 
