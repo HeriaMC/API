@@ -56,6 +56,7 @@ public class ProxyPlayerListener {
         }
 
         this.proxy.getApi().getPlayerManager().saveInPersistant(cached);
+        this.proxy.getApi().getPlayerManager().remove(cached.getIdentifier());
     }
 
     @Subscribe

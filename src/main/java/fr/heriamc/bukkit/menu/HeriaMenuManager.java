@@ -33,7 +33,7 @@ public class HeriaMenuManager implements Listener {
         if (this.inventories.containsKey(player)) {
             HeriaMenu menu = this.inventories.get(player);
             if (inv.getName().equals(menu.getInventory().getName())) {
-                menu.onClick(event);
+                menu.onClick0(event);
             }
         }
     }

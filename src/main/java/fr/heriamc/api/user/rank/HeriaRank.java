@@ -5,24 +5,24 @@ import fr.heriamc.api.utils.HeriaChatColor;
 
 public enum HeriaRank {
 
-    OWNER("Gérant", HeriaChatColor.DARK_RED),
-    ADMIN("Admin", HeriaChatColor.RED),
-    RESPONSABLE("Responsable", HeriaChatColor.RED),
-    SUPER_MOD("SuperModo", HeriaChatColor.RED),
-    MOD("Modérateur", HeriaChatColor.BLUE),
-    HELPER("Assistant", HeriaChatColor.AQUA),
-    DEV("Développeur", HeriaChatColor.DARK_GREEN),
-    BUILD("Builder", HeriaChatColor.GREEN),
-    GRAPHIC("Graphiste", HeriaChatColor.DARK_GREEN),
+    OWNER("Gérant", HeriaChatColor.DARK_RED, 100),
+    ADMIN("Admin", HeriaChatColor.RED, 90),
+    RESPONSABLE("Responsable", HeriaChatColor.RED, 80),
+    SUPER_MOD("SuperModo", HeriaChatColor.RED, 70),
+    MOD("Modérateur", HeriaChatColor.BLUE, 60),
+    HELPER("Assistant", HeriaChatColor.AQUA, 50),
+    DEV("Développeur", HeriaChatColor.DARK_GREEN, 40),
+    BUILD("Builder", HeriaChatColor.GREEN, 40),
+    GRAPHIC("Graphiste", HeriaChatColor.DARK_GREEN, 40),
 
-    YOUTUBER("Youtuber", HeriaChatColor.GOLD),
-    STREAMER("Streamer", HeriaChatColor.DARK_PURPLE),
-    CUSTOM("Perso", HeriaChatColor.WHITE),
-    SUPREME("Suprême", HeriaChatColor.LIGHT_PURPLE),
-    SUPER_VIP("SuperVIP", HeriaChatColor.AQUA),
-    VIP_PLUS("VIP+", HeriaChatColor.DARK_AQUA),
-    VIP("VIP", HeriaChatColor.YELLOW),
-    PLAYER("Joueur", HeriaChatColor.GRAY),
+    YOUTUBER("Youtuber", HeriaChatColor.GOLD, 8),
+    STREAMER("Streamer", HeriaChatColor.DARK_PURPLE, 7),
+    CUSTOM("Perso", HeriaChatColor.WHITE, 6),
+    SUPREME("Suprême", HeriaChatColor.LIGHT_PURPLE, 5),
+    SUPER_VIP("SuperVIP", HeriaChatColor.AQUA, 4),
+    VIP_PLUS("VIP+", HeriaChatColor.DARK_AQUA, 3),
+    VIP("VIP", HeriaChatColor.YELLOW, 2),
+    PLAYER("Joueur", HeriaChatColor.GRAY, 1),
 
     ;
 
@@ -30,10 +30,12 @@ public enum HeriaRank {
 
     private final String name;
     private final HeriaChatColor color;
+    private final int power;
 
-    HeriaRank(String name, HeriaChatColor color) {
+    HeriaRank(String name, HeriaChatColor color, int power) {
         this.name = name;
         this.color = color;
+        this.power = power;
     }
 
     public String getName() {
@@ -48,7 +50,7 @@ public enum HeriaRank {
         return getColor() + getName() + " " + getColor();
     }
 
-    public int getPower(){
-        return this.ordinal() + 1;
+    public int getPower() {
+        return power;
     }
 }

@@ -25,32 +25,46 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
 
     @Override
     public D get(A identifier){
+        System.out.println(1);
         D data = this.getInLocal(identifier);
+        System.out.println(2);
 
         if(data == null){
+            System.out.println(3);
             data = this.getInCache(identifier);
+            System.out.println(4);
 
             boolean toCache = false;
             if(data == null){
+                System.out.println(5);
                 data = this.loadInPersistant(identifier);
+                System.out.println(6);
                 toCache = true;
             }
 
             if(data != null){
+                System.out.println(7);
                 if(toCache){
+                    System.out.println(8);
                     this.putInCache(data);
                 }
 
+                System.out.println(9);
                 this.putInLocal(data);
             }
         }
+        System.out.println(10);
 
         return data;
     }
 
     public D loadInPersistant(A identifier){
+        System.out.println("mongoCollection= " + this.mongoCollection);
+        System.out.println("id= " + identifier.toString());
         Document document = this.mongoConnection.getDatabase().getCollection(this.mongoCollection)
                 .find(Filters.eq("id", identifier.toString())).first();
+
+        System.out.println("document= " + document);
 
         if(document == null){
             return null;
@@ -58,7 +72,11 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
 
         Document checked = DataResolver.resolveJson(this, document);
 
+        System.out.println("checked= " + checked);
+
         D data = SerializableData.fromJson(checked.toJson(), this.getClazz(1));
+
+        System.out.println("data= " + data);
         try (Jedis jedis = this.redisConnection.getResource()) {
             jedis.hset(this.redisKey, identifier.toString(), data.toJson());
         }

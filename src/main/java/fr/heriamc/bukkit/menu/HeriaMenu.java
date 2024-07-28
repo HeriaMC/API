@@ -53,6 +53,19 @@ public abstract class HeriaMenu implements InventoryHolder {
 
     public abstract void contents(Inventory inv);
 
+    public void insertInteractItem(Inventory inv, int slot, ItemBuilder builder){
+        inv.setItem(slot, builder.build());
+        interactItems.put(slot, builder);
+    }
+
+    void onClick0(InventoryClickEvent event){
+        ItemBuilder interactItem = this.interactItems.get(event.getSlot());
+        if(interactItem != null) interactItem.getClickEvent().accept(event);
+        event.setCancelled(true);
+
+        this.onClick(event);
+    }
+
     public void onClick(InventoryClickEvent event){
 
     }

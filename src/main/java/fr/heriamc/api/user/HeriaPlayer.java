@@ -8,26 +8,26 @@ import java.util.UUID;
 
 public class HeriaPlayer implements SerializableData<UUID> {
 
-    private UUID uuid;
+    private UUID id;
     private String name;
     private HeriaRank rank;
 
     @NonPersistantData
     private String connectedTo;
 
-    public HeriaPlayer(UUID uuid, String name, HeriaRank rank, String connectedTo) {
-        this.uuid = uuid;
+    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo) {
+        this.id = id;
         this.name = name;
         this.rank = rank;
         this.connectedTo = connectedTo;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public HeriaPlayer setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public HeriaPlayer setId(UUID id) {
+        this.id = id;
         return this;
     }
 
@@ -64,11 +64,11 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     @Override
     public UUID getIdentifier() {
-        return this.uuid;
+        return this.id;
     }
 
     @Override
     public void setIdentifier(UUID identifier) {
-        this.uuid = identifier;
+        this.id = identifier;
     }
 }

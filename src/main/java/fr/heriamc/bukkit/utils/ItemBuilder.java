@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 public class ItemBuilder {
 
     private final ItemStack is;
+    private Consumer<InventoryClickEvent> clickEvent;
 
     public ItemBuilder(Material m) {
         this(m, 1);
@@ -182,6 +183,15 @@ public class ItemBuilder {
             is.setItemMeta(im);
         } catch (ClassCastException expected) {
         }
+        return this;
+    }
+
+    public Consumer<InventoryClickEvent> getClickEvent() {
+        return clickEvent;
+    }
+
+    public ItemBuilder onClick(Consumer<InventoryClickEvent> clickEvent) {
+        this.clickEvent = clickEvent;
         return this;
     }
 

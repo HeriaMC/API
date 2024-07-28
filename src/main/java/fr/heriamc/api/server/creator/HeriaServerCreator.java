@@ -36,7 +36,7 @@ public class HeriaServerCreator {
 
     public String createServer(HeriaServerType serverType, @Nullable UUID hostId){
         int port = this.nextFreePort();
-        String name = serverType.getName() + "#" + this.foundId(serverType);
+        String name = serverType.getName() + "-" + this.foundId(serverType);
 
         this.serverManager.put(new HeriaServer(name,
                 serverType,
@@ -112,7 +112,7 @@ public class HeriaServerCreator {
 
     private int foundId(HeriaServerType serverType) {
         int id = serverType.equals(HeriaServerType.HUB) ? 1 : RANDOM.nextInt(500);
-        while (this.serverManager.get(serverType.getName() + "#" + id) != null)
+        while (this.serverManager.get(serverType.getName() + "-" + id) != null)
             id++;
         return id;
     }
