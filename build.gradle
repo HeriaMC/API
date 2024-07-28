@@ -41,7 +41,7 @@ jar {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'fr.starblade'
+            groupId = 'fr.heria'
             artifactId = 'api'
             version = '1.0.0'
 
