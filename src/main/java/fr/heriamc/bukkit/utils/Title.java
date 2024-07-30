@@ -11,6 +11,20 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 
 public class Title {
+
+    public static void sendActionBar(Player player, String message) {
+        message = message.replaceAll("%player%", player.getDisplayName());
+        message = ChatColor.translateAlternateColorCodes('&', message);
+
+        net.minecraft.server.v1_8_R3.PacketPlayOutChat actionBarPacket = new net.minecraft.server.v1_8_R3.PacketPlayOutChat(
+                net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + message + "\"}"),
+                (byte) 2
+        );
+
+        net.minecraft.server.v1_8_R3.PlayerConnection connection = ((org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer) player).getHandle().playerConnection;
+        connection.sendPacket(actionBarPacket);
+    }
+
     public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String message) {
         sendTitle(player, fadeIn, stay, fadeOut, message, null);
     }

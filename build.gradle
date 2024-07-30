@@ -10,7 +10,10 @@ compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenLocal()
     mavenCentral()
-
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
     maven {
         name = 'spigot'
         url = 'https://hub.spigotmc.org/nexus/content/Srepositories/snapshots/'
