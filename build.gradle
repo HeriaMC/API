@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'fr.heriamc'
+group = 'fr.heria'
 version = '1.0.0'
 compileJava.options.encoding = 'UTF-8'
 
@@ -13,7 +13,7 @@ repositories {
 
     maven {
         name = 'spigot'
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        url = 'https://hub.spigotmc.org/nexus/content/Srepositories/snapshots/'
     }
 }
 

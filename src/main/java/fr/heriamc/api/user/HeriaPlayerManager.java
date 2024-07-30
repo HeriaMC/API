@@ -15,7 +15,7 @@ public class HeriaPlayerManager extends PersistentDataManager<UUID, HeriaPlayer>
 
     @Override
     public HeriaPlayer getDefault() {
-        return new HeriaPlayer(null, null, HeriaRank.DEFAULT, null);
+        return new HeriaPlayer(null, null, HeriaRank.DEFAULT, null, 0, 0,0);
     }
 
 }

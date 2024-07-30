@@ -28,7 +28,7 @@ public class InstanceConnectRunnable extends BukkitRunnable {
     @Override
     public void run() {
         HeriaServer server = this.bukkit.getApi().getServerManager().get(this.serverName);
-        System.out.println("serverType= " + server.getStatus().name());
+        Bukkit.broadcastMessage("serverState of " + server.getName() + "=" + server.getStatus().name());
 
         if (server.getStatus().isReachable()) {
             Title.sendTitle(this.player, 0, 20, 0, "", "§aTéléportation vers votre serveur...");

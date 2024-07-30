@@ -70,27 +70,9 @@ public class HeriaCommandManager implements CommandExecutor {
                 // HeriaMC start power rank permission system
                 Player player = (Player) sender;
 
-                if(player == null){
-                    Bukkit.broadcastMessage("player IS NULL");
-                    return true;
-                }
-
-                if(HeriaAPI.get().getPlayerManager() == null){
-                    Bukkit.broadcastMessage("playerManager IS NULL");
-                    return false;
-                }
-
                 HeriaPlayer heriaPlayer = HeriaAPI.get().getPlayerManager().get(player.getUniqueId());
-
-                if(heriaPlayer == null){
-                    Bukkit.broadcastMessage("heriaplayer IS NULL");
-                    return true;
-                }
-
                 int rankPower = heriaPlayer.getRank().getPower();
 
-                Bukkit.broadcastMessage("commandPower= " + command.power().getPower());
-                Bukkit.broadcastMessage("rankPower= " + rankPower);
                 if(command.power().getPower() > rankPower){
                     sender.sendMessage(command.noPerm());
                     return true;

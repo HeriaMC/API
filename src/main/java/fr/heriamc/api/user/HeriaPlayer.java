@@ -15,11 +15,18 @@ public class HeriaPlayer implements SerializableData<UUID> {
     @NonPersistantData
     private String connectedTo;
 
-    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo) {
+    private float coins;
+    private int hosts;
+    private int credits;
+
+    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo, float coins, int hosts, int credits) {
         this.id = id;
         this.name = name;
         this.rank = rank;
         this.connectedTo = connectedTo;
+        this.coins = coins;
+        this.hosts = hosts;
+        this.credits = credits;
     }
 
     public UUID getId() {
@@ -60,6 +67,33 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public boolean isConnected(){
         return this.connectedTo != null;
+    }
+
+    public float getCoins() {
+        return coins;
+    }
+
+    public HeriaPlayer setCoins(float coins) {
+        this.coins = coins;
+        return this;
+    }
+
+    public int getHosts() {
+        return hosts;
+    }
+
+    public HeriaPlayer setHosts(int hosts) {
+        this.hosts = hosts;
+        return this;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public HeriaPlayer setCredits(int credits) {
+        this.credits = credits;
+        return this;
     }
 
     @Override

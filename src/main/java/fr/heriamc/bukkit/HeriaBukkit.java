@@ -6,9 +6,11 @@ import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
+import fr.heriamc.bukkit.chat.HeriaChatManager;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
 import fr.heriamc.bukkit.instance.InstanceCommand;
 import fr.heriamc.bukkit.menu.HeriaMenuManager;
+import fr.heriamc.bukkit.tab.TabUpdater;
 import fr.heriamc.proxy.packet.ServerRegisterPacket;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
@@ -28,6 +30,7 @@ public class HeriaBukkit extends JavaPlugin {
 
     private HeriaMenuManager menuManager;
     private HeriaCommandManager commandManager;
+    private HeriaChatManager chatManager;
 
     @Override
     public void onEnable() {
@@ -53,8 +56,10 @@ public class HeriaBukkit extends JavaPlugin {
 
         this.menuManager = new HeriaMenuManager(this);
         this.commandManager = new HeriaCommandManager(this);
+        this.chatManager = new HeriaChatManager(this.getApi().getRedisConnection(), this);
 
         this.commandManager.registerCommand(new InstanceCommand(this));
+        this.getServer().getScheduler().runTaskTimer(this, new TabUpdater(this), 0L, 20L);
     }
 
     @Override
@@ -80,5 +85,9 @@ public class HeriaBukkit extends JavaPlugin {
 
     public HeriaCommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public HeriaChatManager getChatManager() {
+        return chatManager;
     }
 }
