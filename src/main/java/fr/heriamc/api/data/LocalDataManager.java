@@ -11,7 +11,7 @@ public abstract class LocalDataManager<A, D extends SerializableData<A>> {
     protected final Cache<A, D> localData;
 
     public LocalDataManager() {
-        this(new LocalDataExpiration(5L, TimeUnit.MINUTES));
+        this(new LocalDataExpiration(1L, TimeUnit.SECONDS));
     }
 
     public LocalDataManager(LocalDataExpiration expiration) {

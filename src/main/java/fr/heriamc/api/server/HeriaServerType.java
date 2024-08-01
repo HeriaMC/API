@@ -3,6 +3,10 @@ package fr.heriamc.api.server;
 public enum HeriaServerType {
 
     HUB("hub"),
+
+    RUSHFFA("rushffa"),
+    ONESHOT("oneshot"),
+
     HIKABRAIN("hikabrain");
 
     private final String name;

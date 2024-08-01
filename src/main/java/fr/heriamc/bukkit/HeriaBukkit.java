@@ -48,11 +48,13 @@ public class HeriaBukkit extends JavaPlugin {
         }
 
         this.api = HeriaAPI.createHeriaAPI(config);
+
+
         HeriaServer server = this.api.getServerManager().get(this.getInstanceName());
+        this.api.getMessaging().send(new ServerRegisterPacket(server.getName(), server.getPort()));
+
         server.setStatus(HeriaServerStatus.STARTED);
         this.api.getServerManager().save(server);
-
-        this.api.getMessaging().send(new ServerRegisterPacket(server.getName(), server.getPort()));
 
         this.menuManager = new HeriaMenuManager(this);
         this.commandManager = new HeriaCommandManager(this);

@@ -27,7 +27,7 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
                 return;
             }
 
-            player.createConnectionRequest(server);
+            player.createConnectionRequest(server).connect();
         }
 
         if(packet instanceof ServerRegisterPacket found){
