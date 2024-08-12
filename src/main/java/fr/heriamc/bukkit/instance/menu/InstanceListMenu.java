@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InstanceListMenu extends HeriaMenu {
@@ -67,7 +68,14 @@ public class InstanceListMenu extends HeriaMenu {
                     .setSkullURL(instance.getStatus().getSkull().getURL())
                     .setName(instance.getStatus().getColor() + instance.getName())
                     .addLore(" ")
-                    .addLore(" §8» §7")
+                    .addLore(" §8» §7Nom: §e" + instance.getName())
+                    .addLore(" §8» §7Type: §3" + instance.getType().getName())
+                    .addLore(" §8» §7Statut: " + instance.getStatus().getColor().getColor() + instance.getStatus().getName())
+                    .addLore(" §8» §7Host: §a" + instance.getHost())
+                    .addLore(" §8» §7Crée le: §d" + formatMillis(instance.getCreation()))
+                    .addLore(" §8» §7Connectés: §6" + instance.getConnected().size())
+                    .addLore(" ")
+                    .addLore("§6§l» §eClique: §fAfficher")
                     .build());
 
             instances.put(slot, instance);
@@ -158,6 +166,12 @@ public class InstanceListMenu extends HeriaMenu {
         }
 
         return name;
+    }
+
+    public static String formatMillis(long millis) {
+        Date date = new Date(millis);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM HH'h'mm");
+        return formatter.format(date);
     }
 
 }

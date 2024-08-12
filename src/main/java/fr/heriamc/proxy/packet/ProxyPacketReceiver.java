@@ -6,6 +6,7 @@ import com.velocitypowered.api.proxy.server.ServerInfo;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.proxy.HeriaProxy;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.net.InetSocketAddress;
 
@@ -33,6 +34,17 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
         if(packet instanceof ServerRegisterPacket found){
             ServerInfo serverInfo = new ServerInfo(found.getServerName(), new InetSocketAddress(found.getServerPort()));
             this.proxy.getServer().registerServer(serverInfo);
+        }
+
+        if(packet instanceof SendPlayerMessagePacket found){
+            Player player = proxy.getServer().getPlayer(found.getPlayer()).orElse(null);
+            String message = found.getMessage();
+
+            if(player == null || message == null){
+                return;
+            }
+
+            player.sendMessage(PlainTextComponentSerializer.plainText().deserialize(message));
         }
     }
 

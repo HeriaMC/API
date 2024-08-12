@@ -15,15 +15,19 @@ public class HeriaPlayer implements SerializableData<UUID> {
     @NonPersistantData
     private String connectedTo;
 
+    @NonPersistantData
+    private UUID reply;
+
     private float coins;
     private int hosts;
     private int credits;
 
-    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo, float coins, int hosts, int credits) {
+    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo, UUID reply, float coins, int hosts, int credits) {
         this.id = id;
         this.name = name;
         this.rank = rank;
         this.connectedTo = connectedTo;
+        this.reply = reply;
         this.coins = coins;
         this.hosts = hosts;
         this.credits = credits;
@@ -95,6 +99,16 @@ public class HeriaPlayer implements SerializableData<UUID> {
         this.credits = credits;
         return this;
     }
+
+    public UUID getReply() {
+        return reply;
+    }
+
+    public HeriaPlayer setReply(UUID reply) {
+        this.reply = reply;
+        return this;
+    }
+
 
     @Override
     public UUID getIdentifier() {

@@ -24,4 +24,16 @@ public class HeriaServerManager extends CacheDataManager<String, HeriaServer> {
                 .min(Comparator.comparingInt(HeriaServer::getConnectedCount))
                 .orElse(null);
     }
+
+    public int getAllPlayersOnServerType(HeriaServerType type) {
+        List<HeriaServer> serverListByType = getAll(type);
+
+        int a = 0;
+        for(HeriaServer server : serverListByType){
+            a += server.getConnected().size();
+        }
+
+        return a;
+    }
+
 }

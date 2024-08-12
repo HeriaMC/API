@@ -12,6 +12,8 @@ import fr.heriamc.api.HeriaConfiguration;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerType;
+import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
 import fr.heriamc.proxy.listeners.ProxyPlayerListener;
@@ -77,6 +79,16 @@ public class HeriaProxy {
             }
 
             this.api.onDisable();
+
+            for (HeriaPlayerResolver resolver : this.api.getResolverManager().getAllInCache()) {
+                this.api.getResolverManager().remove(resolver.getIdentifier());
+            }
+
+            for (HeriaPlayer heriaPlayer : this.api.getPlayerManager().getAllInCache()) {
+                this.api.getPlayerManager().remove(heriaPlayer.getIdentifier());
+            }
+
+
         }
     }
 

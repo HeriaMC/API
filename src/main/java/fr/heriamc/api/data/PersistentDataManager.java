@@ -70,6 +70,7 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
         Document document = Document.parse(data.toJson());
 
         for (String annotated : this.getAnnotatedFields(this.getClazz(1), NonPersistantData.class)) {
+            System.out.println("nonpersistentdata found= " + annotated);
             document.remove(annotated);
         }
 

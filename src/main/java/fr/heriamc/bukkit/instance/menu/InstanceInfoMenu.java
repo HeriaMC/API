@@ -4,6 +4,7 @@ import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.HeriaMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
+import fr.heriamc.proxy.packet.SendPlayerPacket;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -23,7 +24,10 @@ public class InstanceInfoMenu extends HeriaMenu {
 
     @Override
     public void contents(Inventory inv) {
-        inv.setItem(1, new ItemBuilder(Material.NAME_TAG).setName(heriaServer.getName()).build());
+        inv.setItem(0, new ItemBuilder(Material.NAME_TAG).setName(heriaServer.getName()).build());
+        this.insertInteractItem(inv, 1, new ItemBuilder(Material.SLIME_BLOCK).setName("§aRejoindre").onClick(event -> {
+            this.bukkit.getApi().getMessaging().send(new SendPlayerPacket(getPlayer().getUniqueId(), heriaServer.getName()));
+        }));
 
         this.insertInteractItem(inv, 2, new ItemBuilder(Material.DARK_OAK_DOOR_ITEM).onClick(event -> {
             bukkit.getMenuManager().open(before);

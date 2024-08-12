@@ -1,5 +1,6 @@
 package fr.heriamc.proxy.listeners;
 
+import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
@@ -11,6 +12,7 @@ import com.velocitypowered.api.proxy.server.ServerPing;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.proxy.HeriaProxy;
 import net.kyori.adventure.text.Component;
 
@@ -43,6 +45,22 @@ public class ProxyPlayerListener {
         HeriaPlayer loaded = this.proxy.getApi().getPlayerManager().createOrLoad(uuid);
         loaded.setName(player.getUsername());
         this.proxy.getApi().getPlayerManager().save(loaded);
+
+        HeriaPlayerResolver resolver = this.proxy.getApi().getResolverManager().createOrLoad(player.getUsername());
+
+        if(resolver.getUuid() == null){
+            resolver.setUuid(player.getUniqueId());
+            this.proxy.getApi().getResolverManager().saveInPersistant(resolver);
+            this.proxy.getApi().getResolverManager().save(resolver);
+        }
+
+
+        // maintenance
+        if(loaded.getRank().getPower() < 10) {
+            Component component = Component.text("Vous n'êtes pas dans la liste blanche du serveur");
+            event.setResult(ResultedEvent.ComponentResult.denied(component));
+            event.getPlayer().disconnect(component);
+        }
 
     }
 
