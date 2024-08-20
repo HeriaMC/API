@@ -6,8 +6,7 @@ import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
-import fr.heriamc.proxy.packet.SendPlayerMessagePacket;
-import org.bukkit.Bukkit;
+import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -55,7 +54,7 @@ public class PrivateMessageCommand {
         String message = String.join(" ", Arrays.copyOfRange(args.getArgs(), 1, args.getArgs().length));
 
         player.sendMessage("§fMessage envoyé à §6" + target.getName() + "§f: " + message);
-        bukkit.getApi().getMessaging().send(new SendPlayerMessagePacket(target.getId(), "§fMessage reçu de §6" + heriaPlayer.getName() + "§f: " + message));
+        bukkit.getApi().getMessaging().send(new ProxyPlayerMessagePacket(target.getId(), "§fMessage reçu de §6" + heriaPlayer.getName() + "§f: " + message));
 
         heriaPlayer.setReply(target.getId());
         bukkit.getApi().getPlayerManager().save(heriaPlayer);
@@ -69,7 +68,7 @@ public class PrivateMessageCommand {
         HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());
 
         if(args.getArgs().length < 1){
-            player.sendMessage("/reply <message>");
+            player.sendMessage("§c/reply <message>");
             return;
         }
 
@@ -89,6 +88,6 @@ public class PrivateMessageCommand {
         String message = String.join(" ", Arrays.copyOfRange(args.getArgs(), 0, args.getArgs().length));
 
         player.sendMessage("§fMessage envoyé à §6" + heriaReply.getName() + "§f: " + message);
-        bukkit.getApi().getMessaging().send(new SendPlayerMessagePacket(heriaReply.getId(), "§fMessage reçu de §6" + heriaPlayer.getName() + "§f: " + message));
+        bukkit.getApi().getMessaging().send(new ProxyPlayerMessagePacket(heriaReply.getId(), "§fMessage reçu de §6" + heriaPlayer.getName() + "§f: " + message));
     }
 }

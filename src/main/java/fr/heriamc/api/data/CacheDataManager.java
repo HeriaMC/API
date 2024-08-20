@@ -48,6 +48,10 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
         this.putInLocal(data);
     }
 
+    public void remove(D data){
+        this.remove(data.getIdentifier());
+    }
+
     public void remove(A identifier){
         this.removeInLocal(identifier);
         this.removeInCache(identifier);

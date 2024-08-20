@@ -82,6 +82,7 @@ public class HeriaServerCreator {
 
         String scriptContent = "nice -n 4 screen -dmS " + name + " java -Djava.awt.headless=true -jar -Xms1G -Xmx4G server.jar";
         if(serverType == HeriaServerType.ONESHOT) scriptContent = "nice -n 4 screen -dmS " + name + " java -Djava.awt.headless=true -javaagent:slimeagent.jar -jar -Xms1G -Xmx4G server.jar";
+        if(serverType == HeriaServerType.RUSHFFA) scriptContent = "nice -n 4 screen -dmS " + name + " java -Djava.awt.headless=true -javaagent:slimeagent.jar -jar -Xms1G -Xmx4G server.jar";
         Writer output = new BufferedWriter(new FileWriter(folder + "/start.sh"));
         output.write(scriptContent);
         output.close();

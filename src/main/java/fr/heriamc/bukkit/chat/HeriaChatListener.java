@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -23,13 +24,17 @@ public class HeriaChatListener implements Listener {
         this.bukkit = bukkit;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
         UUID chatID = UUID.randomUUID();
 
         HeriaChatMessage chat = new HeriaChatMessage(chatID, player.getUniqueId(), e.getMessage(), false);
         bukkit.getChatManager().put(chat);
+
+        if(e.isCancelled()){
+            return;
+        }
 
         HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());
 

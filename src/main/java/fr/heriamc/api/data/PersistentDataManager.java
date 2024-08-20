@@ -78,6 +78,16 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
                 .replaceOne(new Document("id", data.getIdentifier().toString()), document);
     }
 
+    /**
+     * @deprecated This method is deprecated and should not be used unless you know what you are doing.
+     * It directly interacts with the persistent storage and can lead to data loss if misused.
+     */
+    @Deprecated
+    public void removeInPersistant(D data){
+        this.mongoConnection.getDatabase().getCollection(this.mongoCollection)
+                .deleteOne(new Document("id", data.getIdentifier().toString()));
+    }
+
     public D createOrLoad(A identifier){
         D data = this.get(identifier);
 

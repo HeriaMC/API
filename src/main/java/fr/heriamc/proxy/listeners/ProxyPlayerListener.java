@@ -4,6 +4,7 @@ import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
+import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.Player;
@@ -15,6 +16,7 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.proxy.HeriaProxy;
 import net.kyori.adventure.text.Component;
+import org.bukkit.event.player.PlayerKickEvent;
 
 import java.util.UUID;
 
@@ -31,7 +33,8 @@ public class ProxyPlayerListener {
         ServerPing ping = event.getPing();
 
         ServerPing newPing = ping.asBuilder().maximumPlayers(500)
-                .description(Component.text("heria developpement instance"))
+                .description(Component.text("  §6§l«§b-§6§l» HeriaMC §8▪ §eServeur Mini-Jeux §8(§b1.8+§8) §6§l«§b-§6§l»\n" +
+                                                   "     §8- §cServeur en maintenance temporaire §8-"))
                 .build();
 
         event.setPing(newPing);
@@ -89,5 +92,21 @@ public class ProxyPlayerListener {
 
         RegisteredServer registeredServer = this.proxy.getServer().getServer(server.getName()).orElse(null);
         e.setInitialServer(registeredServer);
+    }
+
+    @Subscribe
+    public void onKick(KickedFromServerEvent event){
+        if(!(event.getResult() instanceof KickedFromServerEvent.RedirectPlayer playerRedirection)){
+            return;
+        }
+
+        HeriaServer server = proxy.getApi().getServerManager().getWithLessPlayers(HeriaServerType.HUB);
+        RegisteredServer registeredServer = proxy.getServer().getServer(server.getName()).orElse(null);
+
+        if(registeredServer == null){
+            return;
+        }
+
+        event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer, Component.text("redirect player to hub")));
     }
 }

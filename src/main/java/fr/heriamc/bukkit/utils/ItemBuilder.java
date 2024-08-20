@@ -68,6 +68,10 @@ public class ItemBuilder {
         return this;
     }
 
+    public String getName(){
+        return is.getItemMeta().getDisplayName();
+    }
+
     public ItemBuilder setName(String name) {
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(name);

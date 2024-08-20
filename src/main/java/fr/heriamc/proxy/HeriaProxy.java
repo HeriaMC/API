@@ -18,7 +18,6 @@ import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
 import fr.heriamc.proxy.listeners.ProxyPlayerListener;
 import fr.heriamc.proxy.packet.ProxyPacketReceiver;
-import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import java.io.File;

@@ -6,6 +6,8 @@ import com.velocitypowered.api.proxy.server.ServerInfo;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.proxy.HeriaProxy;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.net.InetSocketAddress;
@@ -36,7 +38,7 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
             this.proxy.getServer().registerServer(serverInfo);
         }
 
-        if(packet instanceof SendPlayerMessagePacket found){
+        if(packet instanceof ProxyPlayerMessagePacket found){
             Player player = proxy.getServer().getPlayer(found.getPlayer()).orElse(null);
             String message = found.getMessage();
 
@@ -44,7 +46,15 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
                 return;
             }
 
-            player.sendMessage(PlainTextComponentSerializer.plainText().deserialize(message));
+            Component component;
+
+            try {
+                component = GsonComponentSerializer.gson().deserialize(message);
+            } catch (Exception e){
+                component = PlainTextComponentSerializer.plainText().deserialize(message);
+            }
+
+            player.sendMessage(component);
         }
     }
 
