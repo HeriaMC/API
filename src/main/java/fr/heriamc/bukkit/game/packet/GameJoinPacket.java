@@ -9,11 +9,13 @@ public class GameJoinPacket extends HeriaPacket {
 
     private final UUID uuid;
     private final String gameName;
+    private final boolean spectator;
 
-    public GameJoinPacket(UUID uuid, String gameName) {
+    public GameJoinPacket(UUID uuid, String gameName, boolean spectator) {
         super(HeriaPacketChannel.GAME);
         this.uuid = uuid;
         this.gameName = gameName;
+        this.spectator = spectator;
     }
 
     public UUID getUuid() {
@@ -24,4 +26,7 @@ public class GameJoinPacket extends HeriaPacket {
         return gameName;
     }
 
+    public boolean isSpectator() {
+        return spectator;
+    }
 }
