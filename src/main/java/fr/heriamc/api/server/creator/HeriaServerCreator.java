@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class HeriaServerCreator {
 
@@ -46,13 +47,15 @@ public class HeriaServerCreator {
                 System.currentTimeMillis(),
                 Collections.emptyList()));
 
-        new Thread(() -> {
+        ExecutorService service = Executors.newFixedThreadPool(5);
+
+        Future<?> scheduledFuture = service.submit(() -> {
             try {
                 this.startServer(serverType, port, name, hostId);
             } catch (Exception e){
                 e.printStackTrace();
             }
-        }).start();;
+        });
 
         return name;
     }

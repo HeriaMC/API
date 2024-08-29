@@ -116,6 +116,10 @@ public class HeriaBukkit extends JavaPlugin {
         return friendRequestManager;
     }
 
+    public HeriaGameManager getHeriaGameManager() {
+        return heriaGameManager;
+    }
+
     public HeriaReportManager getReportManager() {
         return reportManager;
     }

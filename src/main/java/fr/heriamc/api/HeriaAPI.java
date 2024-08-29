@@ -8,6 +8,7 @@ import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.creator.HeriaServerCreator;
 import fr.heriamc.api.user.HeriaPlayerManager;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolverManager;
+import fr.heriamc.api.user.unlock.HeriaUnlockableManager;
 import redis.clients.jedis.JedisPool;
 
 public class HeriaAPI {
@@ -24,6 +25,7 @@ public class HeriaAPI {
     private final HeriaServerManager serverManager;
     private final HeriaSanctionManager sanctionManager;
     private final HeriaServerCreator serverCreator;
+    private final HeriaUnlockableManager unlockableManager;
     private final HeriaPlayerResolverManager resolverManager;
 
     public HeriaAPI(HeriaConfiguration configuration) {
@@ -38,6 +40,7 @@ public class HeriaAPI {
         this.serverManager = new HeriaServerManager(this.redisConnection);
         this.serverCreator = new HeriaServerCreator(this.serverManager);
         this.sanctionManager = new HeriaSanctionManager(this.redisConnection, this.mongoConnection);
+        this.unlockableManager = new HeriaUnlockableManager(this.redisConnection, this.mongoConnection);
         this.resolverManager = new HeriaPlayerResolverManager(this.redisConnection, this.mongoConnection);
     }
 
@@ -87,6 +90,10 @@ public class HeriaAPI {
 
     public HeriaServerCreator getServerCreator() {
         return serverCreator;
+    }
+
+    public HeriaUnlockableManager getUnlockableManager() {
+        return unlockableManager;
     }
 
     public HeriaPlayerResolverManager getResolverManager() {
