@@ -32,7 +32,7 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
             data = this.getInCache(identifier);
 
             if(data != null){
-                this.putInLocal(data);
+                this.putInLocal(data.getIdentifier(), data);
             }
         }
 
@@ -45,7 +45,7 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
 
     public void save(D data){
         this.putInCache(data);
-        this.putInLocal(data);
+        this.putInLocal(data.getIdentifier(), data);
     }
 
     public void remove(D data){
@@ -53,7 +53,6 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
     }
 
     public void remove(A identifier){
-        this.removeInLocal(identifier);
         this.removeInCache(identifier);
     }
 
@@ -61,7 +60,7 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
         try (Jedis jedis = this.redisConnection.getResource()) {
             String redisData = jedis.hget(this.redisKey, identifier.toString());
             if(redisData == null) return null;
-            return SerializableData.fromJson(redisData, this.getClazz(1));
+            return SerializableData.fromJson(redisData, this.getDataClass());
         }
     }
 
@@ -82,9 +81,13 @@ public abstract class CacheDataManager<A, D extends SerializableData<A>> extends
         try (Jedis jedis = this.redisConnection.getResource()) {
             return jedis.hgetAll(this.redisKey).values()
                     .stream()
-                    .map(rd -> SerializableData.fromJson(rd, this.getClazz(1)))
+                    .map(rd -> SerializableData.fromJson(rd, this.getDataClass()))
                     .collect(Collectors.toList());
         }
+    }
+
+    public Class<D> getDataClass(){
+        return this.getClazz(1);
     }
 
 }

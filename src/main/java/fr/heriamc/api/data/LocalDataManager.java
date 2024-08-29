@@ -6,7 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
-public abstract class LocalDataManager<A, D extends SerializableData<A>> {
+public abstract class LocalDataManager<A, D> {
 
     protected final Cache<A, D> localData;
 
@@ -27,8 +27,8 @@ public abstract class LocalDataManager<A, D extends SerializableData<A>> {
         return this.localData.getIfPresent(identifier);
     }
 
-    public void putInLocal(D data){
-        this.localData.put(data.getIdentifier(), data);
+    public void putInLocal(A identifier, D data){
+        this.localData.put(identifier, data);
     }
 
     public void removeInLocal(A identifier){

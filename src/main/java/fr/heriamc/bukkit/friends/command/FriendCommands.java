@@ -34,7 +34,7 @@ public class FriendCommands {
         player.sendMessage("§fAide pour la commande §6/friend§f:");
         player.sendMessage(" §6» §e/friend add <joueur>§f: Ajouter/Accepter un ami");
         player.sendMessage(" §6» §e/friend remove <joueur>§f: Retirer un ami");
-        player.sendMessage(" §6» §e/friend list <joueur>§f: Voir la liste de ses amis");
+        player.sendMessage(" §6» §e/friend list §f: Voir la liste de ses amis");
         player.sendMessage(" ");
     }
 

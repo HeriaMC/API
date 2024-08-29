@@ -6,6 +6,11 @@ import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.chat.HeriaChatMessage;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
+import fr.heriamc.bukkit.mod.sanction.SubSanctionMenu;
+import fr.heriamc.bukkit.mod.sanction.UISanctionType;
+import fr.heriamc.bukkit.packet.BukkitBroadcastMessagePacket;
+import fr.heriamc.bukkit.report.HeriaReport;
+import fr.heriamc.bukkit.report.HeriaReportType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -55,18 +60,37 @@ public class ReportChatCommand {
             return;
         }
 
+        HeriaPlayer reported = this.bukkit.getApi().getPlayerManager().get(chatMessage.getSender());
+
         if(args.getArgs().length == 2 && args.getArgs(1).equals("confirm")){
+            HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());
+
+            if(heriaPlayer.getRank().getPower() >= HeriaRank.HELPER.getPower()){
+                SubSanctionMenu subSanctionMenu = new SubSanctionMenu(player, bukkit, reported, UISanctionType.CHAT, null);
+                subSanctionMenu.setChatMessage(chatMessage);
+                bukkit.getMenuManager().open(subSanctionMenu);
+                return;
+            }
+
             chatMessage.setReported(true);
             bukkit.getChatManager().save(chatMessage);
 
-            //TODO: create report
+            UUID uuid = UUID.randomUUID();
+            HeriaReport loaded = bukkit.getReportManager().createOrLoad(uuid);
+            loaded.setType(HeriaReportType.CHAT);
+            loaded.setSender(player.getUniqueId());
+            loaded.setTarget(chatMessage.getSender());
+            loaded.setReason(chatMessage.getContent());
+            bukkit.getReportManager().save(loaded);
+            bukkit.getReportManager().saveInPersistant(loaded);
 
+            String message = "§6§lREPORTS §7» §fUn nouveau report chat viens d'être §acrée §fpar " + player.getName();
+            this.bukkit.getApi().getMessaging().send(new BukkitBroadcastMessagePacket(message, HeriaRank.HELPER.getPower()));
 
             player.sendMessage("§aVotre report a bien été pris en compte.");
             return;
         }
 
-        HeriaPlayer reported = this.bukkit.getApi().getPlayerManager().get(chatMessage.getSender());
 
         TextComponent confirm = new TextComponent(TextComponent.fromLegacyText("§a[§a§l✓ §aConfirmer]"));
         confirm.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§aÊtes vous sur de vouloir signaler le message de " + reported.getName() + " ?")));

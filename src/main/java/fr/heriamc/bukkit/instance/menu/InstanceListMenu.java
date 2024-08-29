@@ -7,6 +7,7 @@ import fr.heriamc.api.utils.EnumUtils;
 import fr.heriamc.api.utils.HeriaSkull;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.HeriaMenu;
+import fr.heriamc.bukkit.menu.pagination.HeriaPaginationMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

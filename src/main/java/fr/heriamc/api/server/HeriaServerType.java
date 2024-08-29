@@ -7,7 +7,11 @@ public enum HeriaServerType {
     RUSHFFA("rushffa"),
     ONESHOT("oneshot"),
 
-    HIKABRAIN("hikabrain");
+    HIKABRAIN("hikabrain"),
+    FREECUBE("freecube"),
+    JUMPSCADE("jumpscade")
+
+    ;
 
     private final String name;
 

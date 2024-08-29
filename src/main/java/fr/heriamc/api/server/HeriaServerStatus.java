@@ -5,13 +5,13 @@ import fr.heriamc.api.utils.HeriaSkull;
 
 public enum HeriaServerStatus {
 
-    STARTING("Démarrage", (byte) 4, HeriaChatColor.GOLD, HeriaSkull.LIME, false, false),
+    STARTING("Démarrage", (byte) 4, HeriaChatColor.GOLD, HeriaSkull.ORANGE, false, false),
     STARTED("Démarré", (byte) 5, HeriaChatColor.GREEN, HeriaSkull.LIME, true, false),
     WAITING_PLAYERS("En attente de joueurs", (byte) 5, HeriaChatColor.YELLOW, HeriaSkull.LIME, true, true),
     GAME_STARTING("Démarrage de la partie", (byte) 9, HeriaChatColor.GOLD, HeriaSkull.LIME, true, true),
     GAME_PLAYING("Partie en cours", (byte) 9, HeriaChatColor.RED, HeriaSkull.LIME, true, true),
-    GAME_ENDING("Fin de la partie", (byte) 15, HeriaChatColor.RED, HeriaSkull.LIME, true, false),
-    STOPPING("Arrêt", (byte) 14, HeriaChatColor.RED, HeriaSkull.LIME, false, false);
+    GAME_ENDING("Fin de la partie", (byte) 15, HeriaChatColor.RED, HeriaSkull.YELLOW, true, false),
+    STOPPING("Arrêt", (byte) 14, HeriaChatColor.RED, HeriaSkull.RED, false, false);
     
     private final String name;
     private final byte byteColor;

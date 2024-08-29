@@ -14,4 +14,10 @@ public class HeriaPlayerResolverManager extends PersistentDataManager<String, He
     public HeriaPlayerResolver getDefault() {
         return new HeriaPlayerResolver(null, null);
     }
+
+    @Override
+    public HeriaPlayerResolver get(String identifier) {
+        return super.get(identifier.toLowerCase());
+    }
+
 }

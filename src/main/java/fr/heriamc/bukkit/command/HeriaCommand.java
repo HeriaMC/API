@@ -15,8 +15,6 @@ public @interface HeriaCommand {
 
     HeriaRank power() default HeriaRank.ADMIN;
 
-    String noPerm() default "§6§lHeriaMC §8┃ §cAction non autorisée.";
-
     String[] aliases() default {};
 
     String description() default "";

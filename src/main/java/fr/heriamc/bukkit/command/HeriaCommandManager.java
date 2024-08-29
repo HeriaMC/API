@@ -4,6 +4,7 @@ import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -74,7 +75,7 @@ public class HeriaCommandManager implements CommandExecutor {
                 int rankPower = heriaPlayer.getRank().getPower();
 
                 if(command.power().getPower() > rankPower){
-                    sender.sendMessage(command.noPerm());
+                    sender.sendMessage("§6§lHeriaMC §8┃ §cAction non autorisée. (" + ChatColor.stripColor(command.power().getPrefix()) + ")");
                     return true;
                 }
 

@@ -15,7 +15,7 @@ public class HeriaServerManager extends CacheDataManager<String, HeriaServer> {
 
     public List<HeriaServer> getAll(HeriaServerType type){
         return this.getAllInCache().stream()
-                .filter(starServer -> starServer.getType() == type)
+                .filter(heriaServer -> heriaServer.getType() == type)
                 .collect(Collectors.toList());
     }
 

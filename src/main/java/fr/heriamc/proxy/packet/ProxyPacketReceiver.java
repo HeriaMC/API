@@ -56,6 +56,25 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
 
             player.sendMessage(component);
         }
+
+        if(packet instanceof ProxyPlayerKickPacket found){
+            Player player = proxy.getServer().getPlayer(found.getPlayer()).orElse(null);
+            String message = found.getReason();
+
+            if(player == null || message == null){
+                return;
+            }
+
+            Component component;
+
+            try {
+                component = GsonComponentSerializer.gson().deserialize(message);
+            } catch (Exception e){
+                component = PlainTextComponentSerializer.plainText().deserialize(message);
+            }
+
+            player.disconnect(component);
+        }
     }
 
 }

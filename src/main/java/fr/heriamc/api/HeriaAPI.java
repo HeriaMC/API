@@ -3,6 +3,7 @@ package fr.heriamc.api;
 import fr.heriamc.api.data.mongo.MongoConnection;
 import fr.heriamc.api.data.redis.RedisConnection;
 import fr.heriamc.api.messaging.HeriaMessaging;
+import fr.heriamc.api.sanction.HeriaSanctionManager;
 import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.creator.HeriaServerCreator;
 import fr.heriamc.api.user.HeriaPlayerManager;
@@ -21,6 +22,7 @@ public class HeriaAPI {
     private final HeriaMessaging heriaMessaging;
     private final HeriaPlayerManager playerManager;
     private final HeriaServerManager serverManager;
+    private final HeriaSanctionManager sanctionManager;
     private final HeriaServerCreator serverCreator;
     private final HeriaPlayerResolverManager resolverManager;
 
@@ -35,6 +37,7 @@ public class HeriaAPI {
         this.playerManager = new HeriaPlayerManager(this.redisConnection, this.mongoConnection);
         this.serverManager = new HeriaServerManager(this.redisConnection);
         this.serverCreator = new HeriaServerCreator(this.serverManager);
+        this.sanctionManager = new HeriaSanctionManager(this.redisConnection, this.mongoConnection);
         this.resolverManager = new HeriaPlayerResolverManager(this.redisConnection, this.mongoConnection);
     }
 
@@ -76,6 +79,10 @@ public class HeriaAPI {
 
     public HeriaServerManager getServerManager() {
         return serverManager;
+    }
+
+    public HeriaSanctionManager getSanctionManager() {
+        return sanctionManager;
     }
 
     public HeriaServerCreator getServerCreator() {

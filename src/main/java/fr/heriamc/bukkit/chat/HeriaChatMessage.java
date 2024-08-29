@@ -11,7 +11,6 @@ public class HeriaChatMessage implements SerializableData<UUID> {
     private String content;
     private boolean reported;
 
-
     public HeriaChatMessage(UUID uuid, UUID sender, String content, boolean reported) {
         this.uuid = uuid;
         this.sender = sender;

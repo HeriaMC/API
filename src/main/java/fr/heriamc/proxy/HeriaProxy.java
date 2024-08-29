@@ -72,12 +72,12 @@ public class HeriaProxy {
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event){
         if(this.api != null){
+            int serverCount = 0;
             for (HeriaServer heriaServer : this.api.getServerManager().getAllInCache()) {
                 this.api.getServerCreator().deleteServer(heriaServer.getName());
                 this.api.getServerManager().remove(heriaServer.getName());
+                serverCount++;
             }
-
-            this.api.onDisable();
 
             for (HeriaPlayerResolver resolver : this.api.getResolverManager().getAllInCache()) {
                 this.api.getResolverManager().remove(resolver.getIdentifier());
@@ -85,9 +85,16 @@ public class HeriaProxy {
 
             for (HeriaPlayer heriaPlayer : this.api.getPlayerManager().getAllInCache()) {
                 this.api.getPlayerManager().remove(heriaPlayer.getIdentifier());
+                System.out.println(heriaPlayer.getIdentifier() + " a été retiré du cache");
             }
 
+            try {
+                Thread.sleep(serverCount * 500L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
+            this.api.onDisable();
         }
     }
 

@@ -64,6 +64,7 @@ public class InstanceCreateMenu extends HeriaMenu {
         public void contents(Inventory inv) {
             this.insertInteractItem(inv, 11, new ItemBuilder(Material.SLIME_BALL).setName("§aOui")
                     .onClick(event -> {
+                        this.getPlayer().closeInventory();
                         String name = this.bukkit.getApi().getServerCreator().createServer(serverType, null);
                         InstanceConnectRunnable connectRunnable = new InstanceConnectRunnable(bukkit, getPlayer(), name);
                         connectRunnable.runTaskTimer(bukkit, 0L, 3L);

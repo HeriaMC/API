@@ -1,16 +1,20 @@
 package fr.heriamc.api.data;
 
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import fr.heriamc.api.data.mongo.MongoConnection;
 import fr.heriamc.api.data.redis.RedisConnection;
 import fr.heriamc.api.data.resolver.DataResolver;
 import fr.heriamc.api.data.resolver.Defaultable;
-import fr.heriamc.api.utils.AnnotatedFieldRetriever;
+import fr.heriamc.api.utils.FieldUtils;
 import org.bson.Document;
 import redis.clients.jedis.Jedis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class PersistentDataManager<A, D extends SerializableData<A>> extends CacheDataManager<A, D>
-        implements Defaultable<D>, AnnotatedFieldRetriever {
+        implements Defaultable<D> {
 
     protected final MongoConnection mongoConnection;
     protected final String mongoCollection;
@@ -30,18 +34,15 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
         if(data == null){
             data = this.getInCache(identifier);
 
-            boolean toCache = false;
             if(data == null){
                 data = this.loadInPersistant(identifier);
-                toCache = true;
+                if(data != null) {
+                    this.putInCache(data);
+                }
             }
 
             if(data != null){
-                if(toCache){
-                    this.putInCache(data);
-                }
-
-                this.putInLocal(data);
+                this.putInLocal(data.getIdentifier(), data);
             }
         }
 
@@ -57,7 +58,7 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
         }
 
         Document checked = DataResolver.resolveJson(this, document);
-        D data = SerializableData.fromJson(checked.toJson(), this.getClazz(1));
+        D data = SerializableData.fromJson(checked.toJson(), this.getDataClass());
 
         try (Jedis jedis = this.redisConnection.getResource()) {
             jedis.hset(this.redisKey, identifier.toString(), data.toJson());
@@ -69,7 +70,7 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
     public void saveInPersistant(D data){
         Document document = Document.parse(data.toJson());
 
-        for (String annotated : this.getAnnotatedFields(this.getClazz(1), NonPersistantData.class)) {
+        for (String annotated : FieldUtils.getAnnotatedFields(this.getDataClass(), NonPersistantData.class)) {
             System.out.println("nonpersistentdata found= " + annotated);
             document.remove(annotated);
         }
@@ -88,6 +89,33 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
                 .deleteOne(new Document("id", data.getIdentifier().toString()));
     }
 
+    /**
+     * @deprecated This method is deprecated and should not be used unless you know what you are doing.
+     * It fetches all data available in mongo database, it can create lag.
+     */
+    @Deprecated
+    public List<D> getAllFromPersistent() {
+        List<D> dataList = new ArrayList<>();
+
+        try (MongoCursor<Document> cursor = this.mongoConnection.getDatabase()
+                .getCollection(this.mongoCollection)
+                .find()
+                .iterator()) {
+
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                A identifier = (A) document.get("id");
+                D data = this.get(identifier);
+                if (data != null) {
+                    dataList.add(data);
+                }
+            }
+        }
+
+        return dataList;
+    }
+
+
     public D createOrLoad(A identifier){
         D data = this.get(identifier);
 
@@ -96,7 +124,7 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
             return data;
         }
 
-        D newData = SerializableData.fromJson(this.getDefault().toJson(), this.getClazz(1));
+        D newData = SerializableData.fromJson(this.getDefault().toJson(), this.getDataClass());
         newData.setIdentifier(identifier);
         Document document = Document.parse(newData.toJson());
 

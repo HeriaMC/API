@@ -2,13 +2,24 @@ package fr.heriamc.bukkit.packet;
 
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
+import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.bukkit.HeriaBukkit;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+import java.util.List;
+
 public class BukkitPacketReceiver implements HeriaPacketReceiver {
+
+    private final HeriaBukkit bukkit;
+
+    public BukkitPacketReceiver(HeriaBukkit bukkit) {
+        this.bukkit = bukkit;
+    }
 
     @Override
     public void execute(String channel, HeriaPacket packet) {
@@ -36,7 +47,26 @@ public class BukkitPacketReceiver implements HeriaPacketReceiver {
             } catch (Exception e){
                 player.sendMessage(message);
             }
+        }
 
+        if(packet instanceof BukkitBroadcastMessagePacket found){
+            Collection<? extends Player> viewers = bukkit.getServer().getOnlinePlayers();
+            int neededPower = found.getNeededPower();
+
+            if(neededPower != 0){
+
+                for (Player onlinePlayer : bukkit.getServer().getOnlinePlayers()) {
+                    HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(onlinePlayer.getUniqueId());
+
+                    if(heriaPlayer.getRank().getPower() < neededPower){
+                        viewers.remove(onlinePlayer);
+                    }
+                }
+            }
+
+            for (Player viewer : viewers) {
+                viewer.sendMessage(found.getMessage());
+            }
         }
     }
 
