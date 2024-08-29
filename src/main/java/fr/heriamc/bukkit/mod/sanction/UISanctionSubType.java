@@ -22,7 +22,7 @@ public enum UISanctionSubType {
     BAD_NAME(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(30), "Pseudo Inapproprié", Material.NAME_TAG),
     DDOS(UISanctionType.CHAT, TimeUnit.DAYS.toSeconds(60), "Menace de DDOS", Material.BLAZE_POWDER, HeriaSanctionType.BAN),
     PERSONAL_INFO(UISanctionType.CHAT, TimeUnit.DAYS.toSeconds(60), "Divulguation d'Informations Personnelles", Material.STRING, HeriaSanctionType.BAN),
-    RACISM(UISanctionType.CHAT, TimeUnit.DAYS.toSeconds(7), "Racisme/Sexisme/Homophobie", Material.SIGN, HeriaSanctionType.BANc),
+    RACISM(UISanctionType.CHAT, TimeUnit.DAYS.toSeconds(7), "Racisme/Sexisme/Homophobie", Material.SIGN, HeriaSanctionType.BAN),
 
     ANTI_KB(UISanctionType.CHEAT, TimeUnit.DAYS.toSeconds(30), "Anti-Knockback", Material.LEATHER),
     KILLAURA(UISanctionType.CHEAT, TimeUnit.DAYS.toSeconds(30), "KillAura/ForceField", Material.RAW_FISH),
