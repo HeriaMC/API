@@ -36,4 +36,11 @@ public class HeriaServerManager extends CacheDataManager<String, HeriaServer> {
         return a;
     }
 
+    public HeriaServer getReadyWithLessPlayers(HeriaServerType type){
+        return this.getAll(type).stream()
+                .filter(heriaServer -> heriaServer.getStatus().isReachable())
+                .min(Comparator.comparingInt(HeriaServer::getConnectedCount))
+                .orElse(null);
+    }
+
 }

@@ -61,6 +61,8 @@ public class ProxyPlayerListener {
             this.proxy.getApi().getResolverManager().save(resolver);
         }
 
+        this.proxy.getApi().getUnlockableManager().createOrLoad(player.getUniqueId());
+
         List<HeriaSanction> bans = this.proxy.getApi().getSanctionManager().getActiveSanctions(uuid, HeriaSanctionType.BAN);
         if(!bans.isEmpty()){
             HeriaSanction active = bans.get(0);
@@ -104,10 +106,10 @@ public class ProxyPlayerListener {
 
     @Subscribe
     public void onServerChoose(PlayerChooseInitialServerEvent e){
-        HeriaServer server = this.proxy.getApi().getServerManager().getWithLessPlayers(HeriaServerType.HUB);
+        HeriaServer server = this.proxy.getApi().getServerManager().getReadyWithLessPlayers(HeriaServerType.HUB);
 
         if(server == null){
-            e.getPlayer().disconnect(Component.text("Aucun serveur hub n'a été trouvé"));
+            e.getPlayer().disconnect(Component.text("§cAucun serveur hub n'a été trouvé"));
             e.setInitialServer(null);
             return;
         }

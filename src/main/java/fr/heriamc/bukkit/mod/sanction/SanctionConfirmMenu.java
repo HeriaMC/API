@@ -37,7 +37,7 @@ public class SanctionConfirmMenu extends ConfirmMenu {
             sanction.setType(sanctionType.getSanctionType());
             sanction.setBy(player.getUniqueId());
             sanction.setReason(sanctionType.getBanReason());
-            sanction.setDuration(sanction.getDuration());
+            sanction.setDuration(sanctionType.getDuration());
 
             bukkit.getApi().getSanctionManager().save(sanction);
             bukkit.getApi().getSanctionManager().saveInPersistant(sanction);

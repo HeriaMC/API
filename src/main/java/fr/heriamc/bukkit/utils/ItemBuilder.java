@@ -48,7 +48,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder clone() {
-        return new ItemBuilder(is);
+        return new ItemBuilder(is.clone());
     }
 
     public ItemBuilder setMaterial(Material material) {

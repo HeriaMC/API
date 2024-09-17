@@ -22,7 +22,7 @@ public class HeriaServerCreator {
 
     private static final Random RANDOM = new Random();
 
-    private final Path mainFile = Paths.get("/home/");
+    private final Path mainFile = Paths.get("/home/debian");
 
     private final Path proxyFile = Paths.get(this.mainFile + "/PROXY");
 

@@ -1,5 +1,7 @@
 package fr.heriamc.bukkit.game;
 
+import fr.heriamc.bukkit.game.size.GameSize;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -9,14 +11,16 @@ public class HeriaGameInfo {
     private List<UUID> players;
     private int playersCount, alivePlayersCount, spectatorsCount;
     private GameState state;
+    private GameSize gameSize;
 
-    public HeriaGameInfo(String gameName, List<UUID> players, int playersCount, int alivePlayersCount, int spectatorsCount, GameState state) {
+    public HeriaGameInfo(String gameName, List<UUID> players, int playersCount, int alivePlayersCount, int spectatorsCount, GameState state, GameSize gameSize) {
         this.gameName = gameName;
         this.players = players;
         this.playersCount = playersCount;
         this.alivePlayersCount = alivePlayersCount;
         this.spectatorsCount = spectatorsCount;
         this.state = state;
+        this.gameSize = gameSize;
     }
 
     public String getGameName() {
@@ -70,6 +74,15 @@ public class HeriaGameInfo {
 
     public HeriaGameInfo setState(GameState state) {
         this.state = state;
+        return this;
+    }
+
+    public GameSize getGameSize() {
+        return gameSize;
+    }
+
+    public HeriaGameInfo setGameSize(GameSize gameSize) {
+        this.gameSize = gameSize;
         return this;
     }
 }
