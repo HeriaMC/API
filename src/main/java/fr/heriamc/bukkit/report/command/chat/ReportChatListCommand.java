@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.report.command;
+package fr.heriamc.bukkit.report.command.chat;
 
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;

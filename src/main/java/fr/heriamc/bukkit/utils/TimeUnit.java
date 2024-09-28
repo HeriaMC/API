@@ -3,10 +3,10 @@ package fr.heriamc.bukkit.utils;
 import java.util.HashMap;
 
 public enum TimeUnit {
-    SECONDE("Seconde(s)", "sec", 1L),
-    MINUTE("Minute(s)", "min", 60L),
+    SECONDE("Seconde(s)", "s", 1L),
+    MINUTE("Minute(s)", "m", 60L),
     HEURE("Heure(s)", "h", 3600L),
-    JOUR("Jour(s)", "j", 86400L),
+    JOUR("Jour(s)", "d", 86400L),
     MOIS("Mois", "m", 2592000L),
     ANNEE("Année(s)", "y", 31536000L);
 
@@ -139,6 +139,37 @@ public enum TimeUnit {
             tempsRestant -= SECONDE.getToSecond();
         }
         return annee + " " + ANNEE.getName() + ", " + mois + " " + MOIS.getName() + ", " + jours + " " + JOUR.getName() + ", " + heures + " " + HEURE.getName() + ", " + minutes + " " + MINUTE.getName() + ", " + secondes + " " + SECONDE.getName();
+    }
+
+    public static Long parseTimeStringToSeconds(String timeString) {
+        long totalSeconds = 0L;
+        StringBuilder numberBuffer = new StringBuilder();
+
+        try {
+            for (int i = 0; i < timeString.length(); i++) {
+                char currentChar = timeString.charAt(i);
+
+                if (Character.isDigit(currentChar)) {
+                    numberBuffer.append(currentChar);
+                } else {
+                    String unitShortcut = String.valueOf(currentChar);
+                    int duration = Integer.parseInt(numberBuffer.toString());
+                    TimeUnit unit = TimeUnit.getFromShortcut(unitShortcut);
+
+                    if (unit != null) {
+                        totalSeconds += duration * unit.getToSecond();
+                    } else {
+                        throw new IllegalArgumentException("Unité de temps inconnue: " + unitShortcut);
+                    }
+
+                    numberBuffer.setLength(0);
+                }
+            }
+
+            return totalSeconds;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String getName() {

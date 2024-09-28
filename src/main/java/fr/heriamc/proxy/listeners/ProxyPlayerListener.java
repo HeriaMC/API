@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
 import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
+import com.velocitypowered.api.event.player.PlayerClientBrandEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.Player;
@@ -61,6 +62,7 @@ public class ProxyPlayerListener {
             this.proxy.getApi().getResolverManager().save(resolver);
         }
 
+
         this.proxy.getApi().getUnlockableManager().createOrLoad(player.getUniqueId());
 
         List<HeriaSanction> bans = this.proxy.getApi().getSanctionManager().getActiveSanctions(uuid, HeriaSanctionType.BAN);
@@ -83,6 +85,19 @@ public class ProxyPlayerListener {
             return;
         }
 
+    }
+
+    @Subscribe
+    public void onClientBrand(PlayerClientBrandEvent event){
+        Player player = event.getPlayer();
+        HeriaPlayer cached = this.proxy.getApi().getPlayerManager().getInCache(player.getUniqueId());
+
+        if(cached != null){
+            cached.setClientBrand(event.getBrand());
+            if(event.getBrand() == null) cached.setClientBrand("Inconnu (cheater probablement?)");
+
+            this.proxy.getApi().getPlayerManager().save(cached);
+        }
     }
 
     @Subscribe

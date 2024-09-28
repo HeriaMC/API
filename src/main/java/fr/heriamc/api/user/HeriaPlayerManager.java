@@ -16,8 +16,9 @@ public class HeriaPlayerManager extends PersistentDataManager<UUID, HeriaPlayer>
 
     @Override
     public HeriaPlayer getDefault() {
-        return new HeriaPlayer(null, null, HeriaRank.DEFAULT, null, null,
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0, 0,0);
+        return new HeriaPlayer(null, null, HeriaRank.DEFAULT, System.currentTimeMillis(), null,
+                null, null, false, false, null, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), 0, 0,0);
     }
 
 }

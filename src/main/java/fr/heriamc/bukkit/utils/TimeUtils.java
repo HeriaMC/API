@@ -2,12 +2,16 @@ package fr.heriamc.bukkit.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeUtils {
+
     public static String getTimeToString(Long millisecondes) {
         long diff1 = millisecondes.longValue() / 1000L;
         String diff2 = String.valueOf(diff1);
@@ -60,18 +64,9 @@ public class TimeUtils {
         return diff + " secondes ";
     }
 
-    public static String ConvertMilliSecondsToFormattedDate(String milliSeconds) {
+    public static String convertMilliSecondsToFormattedDate(Long milliSeconds) {
         String dateFormat = "dd/MM/yyyy hh:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(milliSeconds));
-        return simpleDateFormat.format(calendar.getTime());
-    }
-
-    public static String ConvertMilliSecondsToFormattedDate(Long milliSeconds) {
-        String dateFormat = "dd/MM/yyyy HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);
         return simpleDateFormat.format(calendar.getTime());

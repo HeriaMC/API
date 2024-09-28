@@ -1,5 +1,7 @@
 package fr.heriamc.bukkit.chat.command;
 
+import fr.heriamc.api.sanction.HeriaSanction;
+import fr.heriamc.api.sanction.HeriaSanctionType;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
@@ -10,6 +12,7 @@ import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class PrivateMessageCommand {
@@ -27,6 +30,18 @@ public class PrivateMessageCommand {
 
         if(args.getArgs().length < 2){
             player.sendMessage("§c/message <joueur> <message>");
+            return;
+        }
+
+        List<HeriaSanction> mutes = bukkit.getApi().getSanctionManager().getActiveSanctions(heriaPlayer.getId(), HeriaSanctionType.MUTE);
+
+        if(!mutes.isEmpty()){
+            HeriaSanction mute = mutes.get(0);
+
+            for (String s : bukkit.getApi().getSanctionManager().getMuteMessage(mute)) {
+                player.sendMessage(s);
+            }
+
             return;
         }
 

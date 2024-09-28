@@ -32,7 +32,6 @@ public class BukkitPacketReceiver implements HeriaPacketReceiver {
                 return;
             }
 
-
             try {
                 System.out.println("message: " + message);
                 BaseComponent[] components = ComponentSerializer.parse(message);

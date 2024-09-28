@@ -50,4 +50,17 @@ public class HeriaSanctionManager extends PersistentDataManager<UUID, HeriaSanct
                 "§r§7ID: §f" + sanction.getIdentifier().toString().split("-")[0] + "\n" +
                 "§r§7Partager cet ID peut affecter votre bannissement";
     }
+
+    public List<String> getMuteMessage(HeriaSanction sanction){
+        long expireTime = sanction.getWhen().toInstant().toEpochMilli() + sanction.getDuration() * 1000L;
+
+        List<String> messages = new ArrayList<>();
+
+        messages.add(" ");
+        messages.add("§cVous êtes mute pour " + sanction.getReason() + " !");
+        messages.add("§cDurée: " + TimeUtils.transformLongToFormatedDate(expireTime));
+        messages.add(" ");
+
+        return messages;
+    }
 }

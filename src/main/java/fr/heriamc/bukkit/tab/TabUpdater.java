@@ -20,7 +20,7 @@ public class TabUpdater implements Runnable {
     public void run() {
         for (Player player : heriaBukkit.getServer().getOnlinePlayers()) {
             Title.sendTabTitle(player, "\n§r§e§l» §6§lHERIAMC §e§l«\n§r §7Vous êtes connecté sur §e" + serverName + " \n§r",
-                    "\n§r §7Un §csouci §7? Utilise §c/report \n§r§6play.heria-mc.fr\n§r");
+                    "\n§r §fUn problème ? Demande à un §bAssistant\n§r §fVous suspectez un joueur de triche ? §c/report\n §r\n §7Boutique,Forum,Support sur\n§r§b§nplay.heria-mc.fr\n§r");
         }
     }
 }

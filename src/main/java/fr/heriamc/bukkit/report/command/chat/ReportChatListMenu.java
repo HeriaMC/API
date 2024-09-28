@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.report.command;
+package fr.heriamc.bukkit.report.command.chat;
 
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
@@ -56,7 +56,9 @@ public class ReportChatListMenu extends HeriaPaginationMenu<HeriaReport> {
                         " ",
                         "§6&l❱ §eClique pour juger")
                 .onClick(event -> {
-                    this.heriaBukkit.getMenuManager().open(new SubSanctionMenu(getPlayer(), heriaBukkit, heriaTarget, UISanctionType.CHAT, this));
+                    SubSanctionMenu menu = new SubSanctionMenu(getPlayer(), heriaBukkit, heriaTarget, UISanctionType.CHAT, this);
+                    menu.setHeriaReport(heriaReport);
+                    this.heriaBukkit.getMenuManager().open(menu);
                 });
     }
 }

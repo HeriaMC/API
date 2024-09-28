@@ -2,6 +2,7 @@ package fr.heriamc.api.user;
 
 import fr.heriamc.api.data.NonPersistantData;
 import fr.heriamc.api.data.SerializableData;
+import fr.heriamc.api.user.nick.NickPlayerData;
 import fr.heriamc.api.user.rank.HeriaRank;
 
 import java.util.List;
@@ -13,11 +14,25 @@ public class HeriaPlayer implements SerializableData<UUID> {
     private String name;
     private HeriaRank rank;
 
+    private long firstConnection;
+
+    @NonPersistantData
+    private String clientBrand;
+
     @NonPersistantData
     private String connectedTo;
 
     @NonPersistantData
     private UUID reply;
+
+    @NonPersistantData
+    public boolean removedTag;
+
+    @NonPersistantData
+    public boolean mod;
+
+    @NonPersistantData
+    public NickPlayerData nickData;
 
     private List<UUID> friends;
     private List<UUID> pendingFriendsRequests;
@@ -27,12 +42,20 @@ public class HeriaPlayer implements SerializableData<UUID> {
     private int hosts;
     private float credits;
 
-    public HeriaPlayer(UUID id, String name, HeriaRank rank, String connectedTo, UUID reply, List<UUID> friends, List<UUID> pendingFriendsRequests, List<UUID> sentFriendsRequests, float coins, int hosts, float credits) {
+    public HeriaPlayer(UUID id, String name, HeriaRank rank, long firstConnection, String clientBrand, String connectedTo,
+                       UUID reply, boolean removedTag, boolean mod, NickPlayerData nickData, List<UUID> friends,
+                       List<UUID> pendingFriendsRequests, List<UUID> sentFriendsRequests, float coins, int hosts, float credits) {
+
         this.id = id;
         this.name = name;
         this.rank = rank;
+        this.firstConnection = firstConnection;
+        this.clientBrand = clientBrand;
         this.connectedTo = connectedTo;
         this.reply = reply;
+        this.removedTag = removedTag;
+        this.mod = mod;
+        this.nickData = nickData;
         this.friends = friends;
         this.pendingFriendsRequests = pendingFriendsRequests;
         this.sentFriendsRequests = sentFriendsRequests;
@@ -54,10 +77,19 @@ public class HeriaPlayer implements SerializableData<UUID> {
         return name;
     }
 
+    public String getNickedName(){
+        if(!isNicked()){
+            return getName();
+        }
+
+        return nickData.getNewName();
+    }
+
     public HeriaPlayer setName(String name) {
         this.name = name;
         return this;
     }
+
 
     public HeriaRank getRank() {
         return rank;
@@ -145,6 +177,55 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public HeriaPlayer addSentFriendsRequest(UUID sentFriendsRequest) {
         this.sentFriendsRequests.add(sentFriendsRequest);
+        return this;
+    }
+
+    public long getFirstConnection() {
+        return firstConnection;
+    }
+
+    public HeriaPlayer setFirstConnection(long firstConnection) {
+        this.firstConnection = firstConnection;
+        return this;
+    }
+
+    public String getClientBrand() {
+        return clientBrand;
+    }
+
+    public HeriaPlayer setClientBrand(String clientBrand) {
+        this.clientBrand = clientBrand;
+        return this;
+    }
+
+    public boolean isRemovedTag() {
+        return removedTag;
+    }
+
+    public HeriaPlayer setRemovedTag(boolean removedTag) {
+        this.removedTag = removedTag;
+        return this;
+    }
+
+    public boolean isMod() {
+        return mod;
+    }
+
+    public HeriaPlayer setMod(boolean mod) {
+        this.mod = mod;
+        return this;
+    }
+
+    public boolean isNicked(){
+        return nickData != null;
+    }
+
+    public NickPlayerData getNickData() {
+        return nickData;
+    }
+
+    public HeriaPlayer setNickData(NickPlayerData nickData) {
+        this.nickData = nickData;
         return this;
     }
 

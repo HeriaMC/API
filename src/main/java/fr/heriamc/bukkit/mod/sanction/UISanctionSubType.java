@@ -37,8 +37,9 @@ public enum UISanctionSubType {
     TEAMING_TEAM(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(3), "Alliance entre Equipe", Material.RAW_CHICKEN),
     SPAWN_KILL(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(1), "SpawnKill", Material.DIAMOND_SWORD),
     BAD_ZONE_NAME(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(3), "Nom de zone Incorrect", Material.NAME_TAG),
-    SANCTION_ESCAPE(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(7), "Contournement de Sanction", Material.ENDER_PEARL)
+    SANCTION_ESCAPE(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(7), "Contournement de Sanction", Material.ENDER_PEARL),
 
+    ABUS(UISanctionType.GAMEPLAY, TimeUnit.DAYS.toSeconds(1), "Abus de report", Material.REDSTONE_BLOCK, HeriaSanctionType.WARN)
 
     ;
 

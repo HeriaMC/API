@@ -9,12 +9,15 @@ import fr.heriamc.bukkit.chat.HeriaChatMessage;
 import fr.heriamc.bukkit.menu.HeriaMenu;
 import fr.heriamc.bukkit.menu.confirm.ConfirmMenu;
 import fr.heriamc.bukkit.packet.BukkitBroadcastMessagePacket;
+import fr.heriamc.bukkit.report.HeriaReport;
 import fr.heriamc.bukkit.utils.ItemBuilder;
 import fr.heriamc.proxy.packet.ProxyPlayerKickPacket;
+import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import java.util.List;
 import java.util.UUID;
 
 public class SanctionConfirmMenu extends ConfirmMenu {
@@ -22,12 +25,17 @@ public class SanctionConfirmMenu extends ConfirmMenu {
     private final HeriaPlayer target;
     private final UISanctionSubType sanctionType;
     private final HeriaChatMessage chatMessage;
+    private final HeriaReport report;
 
-    public SanctionConfirmMenu(Player player, HeriaBukkit bukkit, HeriaMenu before, HeriaPlayer target, UISanctionSubType sanctionType, HeriaChatMessage chatMessage) {
+    public SanctionConfirmMenu(Player player, HeriaBukkit bukkit, HeriaMenu before, HeriaPlayer target, UISanctionSubType sanctionType, HeriaChatMessage chatMessage, HeriaReport report) {
         super(player, "Confirmer la sanction de " + target.getName() + " ?", bukkit, before, actionPlayer -> {
             if(chatMessage != null){
                 chatMessage.setReported(true);
                 bukkit.getChatManager().save(chatMessage);
+            }
+
+            if(report != null){
+                bukkit.getReportManager().removeInPersistant(report);
             }
 
             player.closeInventory();
@@ -48,7 +56,8 @@ public class SanctionConfirmMenu extends ConfirmMenu {
             }
 
             if(sanction.getType() == HeriaSanctionType.MUTE){
-
+                List<String> muteMessage = bukkit.getApi().getSanctionManager().getMuteMessage(sanction);
+                bukkit.getApi().getMessaging().send(new ProxyPlayerMessagePacket(target.getId(), String.join("\n", muteMessage)));
             }
 
             String action = "banni";
@@ -61,6 +70,7 @@ public class SanctionConfirmMenu extends ConfirmMenu {
         this.target = target;
         this.sanctionType = sanctionType;
         this.chatMessage = chatMessage;
+        this.report = report;
     }
 
     @Override

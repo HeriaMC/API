@@ -51,6 +51,7 @@ public final class GsonUtils {
         gsonBuilder.serializeNulls();
         gsonBuilder.disableHtmlEscaping();
         gsonBuilder.enableComplexMapKeySerialization();
+        gsonBuilder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         if(option.pretty) gsonBuilder.setPrettyPrinting();
         if(option.customSettings != null) option.customSettings.accept(gsonBuilder);
@@ -64,8 +65,7 @@ public final class GsonUtils {
                 if(option.serializers.containsKey(adapter.getKey())) continue;
 
                 gsonBuilder.registerTypeAdapter(adapter.getKey(), adapter.getValue());
-                if(adapter.getKey() instanceof Class<?>){
-                    Class<?> clazz = (Class<?>) adapter.getKey();
+                if(adapter.getKey() instanceof Class<?> clazz){
                     gsonBuilder.registerTypeHierarchyAdapter(clazz, adapter.getValue());
                 }
 

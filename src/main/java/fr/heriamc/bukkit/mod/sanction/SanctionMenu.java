@@ -27,8 +27,9 @@ public class SanctionMenu extends HeriaMenu {
             this.insertInteractItem(inv, value.getSlot(), value.getItem()
                     .onClick(event -> {
                         if(value != UISanctionType.CHAT){
-
+                            //TODO: check player permissions (above helper ?)
                         }
+
                         heriaBukkit.getMenuManager().open(new SubSanctionMenu(getPlayer(), heriaBukkit, target, value, this));
                     }));
         }

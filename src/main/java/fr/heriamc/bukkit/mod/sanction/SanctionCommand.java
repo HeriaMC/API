@@ -32,13 +32,24 @@ public class SanctionCommand {
             return;
         }
 
-        HeriaPlayer heriaPlayer = heriaBukkit.getApi().getPlayerManager().get(resolver.getUuid());
+        HeriaPlayer heriaPlayer = heriaBukkit.getApi().getPlayerManager().get(player.getUniqueId());
+        HeriaPlayer target = heriaBukkit.getApi().getPlayerManager().get(resolver.getUuid());
 
-        if(heriaPlayer == null){
+        if(target == null){
             player.sendMessage("§cCe joueur n'existe plus, il a surement changé de pseudonyme");
             return;
         }
 
-        heriaBukkit.getMenuManager().open(new SanctionMenu(player, heriaBukkit, heriaPlayer));
+        if(heriaPlayer.equals(target)){
+            player.sendMessage("§cVous ne pouvez malheureusement pas vous sanctionner :c");
+            return;
+        }
+        
+        if(heriaPlayer.getRank().getPower() <= target.getRank().getPower()){
+            player.sendMessage("§cVous ne pouvez pas sanctionner quelqu'un au dessus de vous.");
+            return;
+        }
+
+        heriaBukkit.getMenuManager().open(new SanctionMenu(player, heriaBukkit, target));
     }
 }

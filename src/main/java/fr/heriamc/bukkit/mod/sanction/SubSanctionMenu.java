@@ -4,6 +4,7 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.chat.HeriaChatMessage;
 import fr.heriamc.bukkit.menu.HeriaMenu;
+import fr.heriamc.bukkit.report.HeriaReport;
 import fr.heriamc.bukkit.utils.ItemBuilder;
 import fr.heriamc.bukkit.utils.TimeUtils;
 import org.bukkit.DyeColor;
@@ -21,6 +22,7 @@ public class SubSanctionMenu extends HeriaMenu {
     private final HeriaMenu before;
 
     private HeriaChatMessage chatMessage;
+    private HeriaReport report;
 
     private final int[] slots = new int[]{
             11,12,13,14,15,
@@ -47,6 +49,8 @@ public class SubSanctionMenu extends HeriaMenu {
                 continue;
             }
 
+            if(value == UISanctionSubType.ABUS) continue;
+
             long expireTime = new Date().toInstant().toEpochMilli() + value.getDuration() * 1000L;
             this.insertInteractItem(inv, slots[index], new ItemBuilder(value.getMaterial())
                     .setName("§c" + value.getInternBanReason())
@@ -57,11 +61,13 @@ public class SubSanctionMenu extends HeriaMenu {
                     .addLore(" ")
                     .addLore("§6§l» §eClique: §fSanctionner")
                     .onClick(event -> {
-                        heriaBukkit.getMenuManager().open(new SanctionConfirmMenu(getPlayer(), heriaBukkit, this, target, value, chatMessage));
+                        heriaBukkit.getMenuManager().open(new SanctionConfirmMenu(getPlayer(), heriaBukkit, this, target, value, chatMessage, report));
                     }));
 
             index++;
         }
+
+        //TODO: sanctionner un abus
 
         this.insertInteractItem(inv, 49, new ItemBuilder(Material.DARK_OAK_DOOR_ITEM)
                 .setName("§cRetour en arrière")
@@ -82,4 +88,13 @@ public class SubSanctionMenu extends HeriaMenu {
     public void setChatMessage(HeriaChatMessage chatMessage) {
         this.chatMessage = chatMessage;
     }
+
+    public HeriaReport getHeriaReport() {
+        return report;
+    }
+
+    public void setHeriaReport(HeriaReport heriaReport) {
+        this.report = heriaReport;
+    }
+
 }
