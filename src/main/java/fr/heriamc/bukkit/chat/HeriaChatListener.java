@@ -6,21 +6,17 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.chat.event.HeriaChatEvent;
-import fr.heriamc.bukkit.utils.TimeUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
-import org.bukkit.event.server.TabCompleteEvent;
 
 import java.util.*;
 
@@ -93,7 +89,7 @@ public class HeriaChatListener implements Listener {
 
         TextComponent messageComponent = new TextComponent(TextComponent.fromLegacyText(" " + displayed + heriaPlayer.getNickedName() +" §8» §f" + message));
 
-        HeriaChatEvent chatEvent = new HeriaChatEvent(player, heriaPlayer, heriaPlayer.getNickedName(), reportSymbol, messageComponent);
+        HeriaChatEvent chatEvent = new HeriaChatEvent(player, heriaPlayer, heriaPlayer.getNickedName(), message, reportSymbol, messageComponent);
         bukkit.getServer().getPluginManager().callEvent(chatEvent);
 
         if(chatEvent.isCancelled()){

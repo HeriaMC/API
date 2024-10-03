@@ -14,20 +14,26 @@ public class HeriaChatEvent extends Event implements Cancellable {
     private final Player player;
     private final HeriaPlayer heriaPlayer;
     private final String name;
+    private final String formattedMessage;
     private final TextComponent reportComponent;
     private final TextComponent messageComponent;
     private boolean cancelled;
 
-    public HeriaChatEvent(Player player, HeriaPlayer heriaPlayer, String name, TextComponent reportComponent, TextComponent messageComponent) {
+    public HeriaChatEvent(Player player, HeriaPlayer heriaPlayer, String name, String formattedMessage, TextComponent reportComponent, TextComponent messageComponent) {
         this.player = player;
         this.heriaPlayer = heriaPlayer;
         this.name = name;
+        this.formattedMessage = formattedMessage;
         this.reportComponent = reportComponent;
         this.messageComponent = messageComponent;
     }
 
     @Override
     public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -51,6 +57,10 @@ public class HeriaChatEvent extends Event implements Cancellable {
 
     public String getName() {
         return name;
+    }
+
+    public String getFormattedMessage() {
+        return formattedMessage;
     }
 
     public TextComponent getReportComponent() {
