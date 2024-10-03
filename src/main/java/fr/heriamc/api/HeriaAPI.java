@@ -2,13 +2,17 @@ package fr.heriamc.api;
 
 import fr.heriamc.api.data.mongo.MongoConnection;
 import fr.heriamc.api.data.redis.RedisConnection;
+import fr.heriamc.api.friends.HeriaFriendLinkManager;
 import fr.heriamc.api.messaging.HeriaMessaging;
+import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.sanction.HeriaSanctionManager;
 import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.creator.HeriaServerCreator;
 import fr.heriamc.api.user.HeriaPlayerManager;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolverManager;
 import fr.heriamc.api.user.unlock.HeriaUnlockableManager;
+import fr.heriamc.api.web.WebCreditsPacket;
+import fr.heriamc.api.web.WebListener;
 import redis.clients.jedis.JedisPool;
 
 public class HeriaAPI {
@@ -27,6 +31,7 @@ public class HeriaAPI {
     private final HeriaServerCreator serverCreator;
     private final HeriaUnlockableManager unlockableManager;
     private final HeriaPlayerResolverManager resolverManager;
+    private final HeriaFriendLinkManager friendLinkManager;
 
     public HeriaAPI(HeriaConfiguration configuration) {
         instance = this;
@@ -42,6 +47,10 @@ public class HeriaAPI {
         this.sanctionManager = new HeriaSanctionManager(this.redisConnection, this.mongoConnection);
         this.unlockableManager = new HeriaUnlockableManager(this.redisConnection, this.mongoConnection);
         this.resolverManager = new HeriaPlayerResolverManager(this.redisConnection, this.mongoConnection);
+        this.friendLinkManager = new HeriaFriendLinkManager(this.redisConnection, this.mongoConnection);
+
+        this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
+        this.heriaMessaging.send(new WebCreditsPacket("Karaam_", 15.50F));
     }
 
     public void onDisable(){
@@ -99,4 +108,10 @@ public class HeriaAPI {
     public HeriaPlayerResolverManager getResolverManager() {
         return resolverManager;
     }
+
+    public HeriaFriendLinkManager getFriendLinkManager() {
+        return friendLinkManager;
+    }
+
+
 }

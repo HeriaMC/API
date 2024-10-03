@@ -8,20 +8,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class HeriaPaginationMenu<P> extends HeriaMenu {
 
     private final List<Integer> slots;
+    private final Supplier<List<P>> itemsSupplier;
     private final Pagination<P> pagination;
     private int page = 0;
 
     private int leftSlot;
     private int rightSlot;
 
-    public HeriaPaginationMenu(Player player, String name, int size, boolean update, List<Integer> slots, List<P> items) {
+    public HeriaPaginationMenu(Player player, String name, int size, boolean update, List<Integer> slots, Supplier<List<P>> items) {
         super(player, name, size, update);
         this.slots = slots;
-        this.pagination = new Pagination<>(slots.size(), items);
+        this.itemsSupplier = items;
+        this.pagination = new Pagination<>(slots.size(), itemsSupplier.get());
 
         this.leftSlot = 50;
         this.rightSlot = 51;
@@ -61,6 +64,14 @@ public abstract class HeriaPaginationMenu<P> extends HeriaMenu {
 
     }
 
+    @Override
+    public void updateMenu() {
+        this.pagination.clear();
+        this.pagination.addAll(this.itemsSupplier.get());
+
+        super.updateMenu();
+    }
+
     public abstract void inventory(Inventory inventory);
 
     protected abstract ItemBuilder item(P data, int slot, int page);
@@ -85,5 +96,9 @@ public abstract class HeriaPaginationMenu<P> extends HeriaMenu {
     public HeriaPaginationMenu<P> setRightSlot(int rightSlot) {
         this.rightSlot = rightSlot;
         return this;
+    }
+
+    public Pagination<P> getPagination() {
+        return pagination;
     }
 }

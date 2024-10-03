@@ -15,6 +15,7 @@ public class HeriaPlayer implements SerializableData<UUID> {
     private HeriaRank rank;
 
     private long firstConnection;
+    private String customPrefix;
 
     @NonPersistantData
     private String clientBrand;
@@ -42,14 +43,14 @@ public class HeriaPlayer implements SerializableData<UUID> {
     private int hosts;
     private float credits;
 
-    public HeriaPlayer(UUID id, String name, HeriaRank rank, long firstConnection, String clientBrand, String connectedTo,
-                       UUID reply, boolean removedTag, boolean mod, NickPlayerData nickData, List<UUID> friends,
+    public HeriaPlayer(UUID id, String name, HeriaRank rank, long firstConnection, String customPrefix, String clientBrand,
+                       String connectedTo, UUID reply, boolean removedTag, boolean mod, NickPlayerData nickData, List<UUID> friends,
                        List<UUID> pendingFriendsRequests, List<UUID> sentFriendsRequests, float coins, int hosts, float credits) {
-
         this.id = id;
         this.name = name;
         this.rank = rank;
         this.firstConnection = firstConnection;
+        this.customPrefix = customPrefix;
         this.clientBrand = clientBrand;
         this.connectedTo = connectedTo;
         this.reply = reply;
@@ -226,6 +227,15 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public HeriaPlayer setNickData(NickPlayerData nickData) {
         this.nickData = nickData;
+        return this;
+    }
+
+    public String getCustomPrefix() {
+        return customPrefix;
+    }
+
+    public HeriaPlayer setCustomPrefix(String customPrefix) {
+        this.customPrefix = customPrefix;
         return this;
     }
 

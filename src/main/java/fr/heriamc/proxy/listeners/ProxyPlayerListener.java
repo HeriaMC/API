@@ -4,14 +4,12 @@ import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
-import com.velocitypowered.api.event.player.KickedFromServerEvent;
-import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
-import com.velocitypowered.api.event.player.PlayerClientBrandEvent;
-import com.velocitypowered.api.event.player.ServerConnectedEvent;
+import com.velocitypowered.api.event.player.*;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerPing;
+import com.velocitypowered.api.util.GameProfile;
 import fr.heriamc.api.sanction.HeriaSanction;
 import fr.heriamc.api.sanction.HeriaSanctionType;
 import fr.heriamc.api.server.HeriaServer;
@@ -20,6 +18,7 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.proxy.HeriaProxy;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.List;
@@ -84,7 +83,22 @@ public class ProxyPlayerListener {
             event.getPlayer().disconnect(component);
             return;
         }
+    }
 
+    @Subscribe
+    public void onGameProfile(GameProfileRequestEvent e){
+        if(e.isOnlineMode()){
+            return;
+        }
+
+        // GROS BIG-UP A SUPER_CRAFTING
+
+        GameProfile originalProfile = e.getGameProfile();
+        OfflineModeSkin skin = OfflineModeSkin.random();
+
+        originalProfile = originalProfile.addProperty(new GameProfile.Property("textures", skin.getValue(), skin.getSignature()));
+
+        e.setGameProfile(originalProfile);
     }
 
     @Subscribe
@@ -170,6 +184,6 @@ public class ProxyPlayerListener {
             return;
         }
 
-        event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer, Component.text("§cVotre serveur précédent a rencontré un problème, vous avez été redirigé vers " + server.getName())));
+        event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer, Component.text("Votre serveur précédent a rencontré un problème, vous avez été redirigé vers " + server.getName(), NamedTextColor.RED)));
     }
 }

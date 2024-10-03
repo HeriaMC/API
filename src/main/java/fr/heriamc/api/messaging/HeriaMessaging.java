@@ -56,6 +56,8 @@ public class HeriaMessaging {
     }
 
     public void send(HeriaPacket packet) {
+        System.out.println("packet channel = " + CHANNEL_PREFIX + packet.getChannel());
+        System.out.println("packet content = " + GsonUtils.get().toJson(packet));
         this.redisConnection.process(jedis -> jedis.publish(CHANNEL_PREFIX + packet.getChannel(), GsonUtils.get().toJson(packet)));
     }
 

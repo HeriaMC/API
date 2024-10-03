@@ -2,6 +2,7 @@ package fr.heriamc.bukkit.command;
 
 import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +25,8 @@ public class HeriaCommandManager implements CommandExecutor {
     private final Map<String, Entry<Method, Object>> commandMap = new HashMap<String, Entry<Method, Object>>();
     private CommandMap map;
     private final Plugin plugin;
+
+    private final Map<String, HeriaRank> permissionsCommands = new HashMap<>();
 
     public HeriaCommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -75,7 +78,7 @@ public class HeriaCommandManager implements CommandExecutor {
                 int rankPower = heriaPlayer.getRank().getPower();
 
                 if(command.power().getPower() > rankPower){
-                    sender.sendMessage("§6§lHeriaMC §8┃ §cAction non autorisée. (" + ChatColor.stripColor(command.power().getPrefix()) + ")");
+                    sender.sendMessage("§6§lHeriaMC §8┃ §cAction non autorisée. (" + command.power().getColor() + command.power().getName().toUpperCase() + ")");
                     return true;
                 }
 
@@ -103,6 +106,9 @@ public class HeriaCommandManager implements CommandExecutor {
                     System.out.println("Unable to register command " + m.getName() + ". Unexpected method arguments");
                     continue;
                 }
+
+                permissionsCommands.put(command.name(), command.power());
+
                 registerCommand0(command, command.name(), m, obj);
                 for (String alias : command.aliases()) {
                     registerCommand0(command, alias, m, obj);
@@ -194,5 +200,9 @@ public class HeriaCommandManager implements CommandExecutor {
 
     private void defaultCommand(CommandArgs args) {
         args.getSender().sendMessage("§cCette commande n'est pas executable. Utilisez plutôt /" + args.getCommand().getName());
+    }
+
+    public Map<String, HeriaRank> getPermissionsCommands() {
+        return permissionsCommands;
     }
 }

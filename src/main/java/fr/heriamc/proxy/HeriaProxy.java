@@ -9,6 +9,7 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.HeriaConfiguration;
+import fr.heriamc.api.friends.HeriaFriendLink;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerType;
@@ -86,6 +87,11 @@ public class HeriaProxy {
             for (HeriaPlayer heriaPlayer : this.api.getPlayerManager().getAllInCache()) {
                 this.api.getPlayerManager().remove(heriaPlayer.getIdentifier());
                 System.out.println(heriaPlayer.getIdentifier() + " a été retiré du cache");
+            }
+
+            for (HeriaFriendLink heriaFriendLink : this.api.getFriendLinkManager().getAllInCache()) {
+                this.api.getFriendLinkManager().saveInPersistant(heriaFriendLink);
+                this.api.getFriendLinkManager().remove(heriaFriendLink.getIdentifier());
             }
 
             try {

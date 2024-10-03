@@ -140,6 +140,18 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder removeLastLore(){
+        ItemMeta im = is.getItemMeta();
+        List<String> loreList = im.getLore();
+        if (loreList == null) {
+            loreList = new ArrayList<>();
+        }
+        loreList.remove(loreList.size() - 1);
+        im.setLore(loreList);
+        is.setItemMeta(im);
+        return this;
+    }
+
     public ItemBuilder setWoolColor(DyeColor color) {
         this.is.setDurability(color.getWoolData());
         return this;

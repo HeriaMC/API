@@ -1,21 +1,21 @@
-package fr.heriamc.bukkit.friends.command;
+package fr.heriamc.bukkit.friends;
 
+import fr.heriamc.api.friends.HeriaFriendLink;
+import fr.heriamc.api.friends.HeriaFriendLinkStatus;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
-import fr.heriamc.bukkit.friends.FriendRequest;
 import fr.heriamc.bukkit.packet.BukkitPlayerMessagePacket;
-import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
 
 public class FriendCommands {
@@ -39,11 +39,11 @@ public class FriendCommands {
     }
 
     @HeriaCommand(name = "friend.add", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f.add", "friends.add"})
-    public void onFriendAddCommand(CommandArgs args){
+    public void onFriendAddCommand(CommandArgs args) {
         Player player = args.getPlayer();
         HeriaPlayer heriaPlayer = this.bukkit.getApi().getPlayerManager().get(player.getUniqueId());
 
-        if(args.length() != 1){
+        if (args.length() != 1) {
             player.sendMessage("§c/friend add <joueur>");
             return;
         }
@@ -51,61 +51,49 @@ public class FriendCommands {
         String targetName = args.getArgs(0);
         HeriaPlayerResolver targetResolver = bukkit.getApi().getResolverManager().get(targetName);
 
-        if(targetResolver == null){
+        if (targetResolver == null) {
             player.sendMessage("§cCe joueur n'existe pas");
             return;
         }
 
         HeriaPlayer target = bukkit.getApi().getPlayerManager().get(targetResolver.getUuid());
+        List<HeriaFriendLink> friendLinks = bukkit.getFriendLinkManager().getFromPlayer(target.getId());
 
-        /*if(target.getId().equals(heriaPlayer.getId())){
-            player.sendMessage("§cVous ne pouvez pas vous ajouter en ami");
-            return;
-        }*/
+        HeriaFriendLink active = null;
 
-        if(target.getFriends().contains(player.getUniqueId())){
-            player.sendMessage("§cVous êtes déjà ami avec ce joueur.");
-            return;
-        }
-
-        for (UUID requestId : target.getPendingFriendsRequests()) {
-            FriendRequest pendingRequest = this.bukkit.getFriendRequestManager().get(requestId);
-            if(pendingRequest.getSender() == player.getUniqueId()){
-                player.sendMessage("§cVous avez déjà une demande d'ami envoyée à ce joueur");
-                return;
+        for (HeriaFriendLink friendLink : friendLinks) {
+            if(friendLink.hasLink(heriaPlayer.getId(), target.getId())){
+                active = friendLink;
             }
         }
 
-        for (UUID requestId : target.getSentFriendsRequests()) {
-            FriendRequest sentRequest = this.bukkit.getFriendRequestManager().get(requestId);
-            if(sentRequest.getReceiver() == player.getUniqueId()){
-
-                this.bukkit.getFriendRequestManager().removeInPersistant(sentRequest);
-                this.bukkit.getFriendRequestManager().remove(sentRequest);
-
-                heriaPlayer.addFriend(target.getId());
-                this.bukkit.getApi().getPlayerManager().save(heriaPlayer);
-
-                target.addFriend(heriaPlayer.getId());
-                this.bukkit.getApi().getPlayerManager().save(target);
+        if(active != null){
+            if(active.getStatus() == HeriaFriendLinkStatus.ACTIVE){
+                player.sendMessage("§cVous êtes déjà ami avec ce joueur.");
 
                 return;
             }
+            if(active.getReceiver().equals(heriaPlayer.getId())){
+                player.sendMessage("§aVous avez accepté la demande d'ami de " + target.getName());
+                active.setStatus(HeriaFriendLinkStatus.ACTIVE);
+                bukkit.getFriendLinkManager().save(active);
+
+                this.bukkit.getApi().getMessaging().send(new BukkitPlayerMessagePacket(target.getId(), "§a" + heriaPlayer.getName() + " a accepté votre demande d'ami !"));
+                return;
+            }
+
+            player.sendMessage("§cVous avez déjà une demande d'ami envoyée à ce joueur");
+
+            return;
         }
 
-        UUID uuid = UUID.randomUUID();
-        FriendRequest loaded = this.bukkit.getFriendRequestManager().createOrLoad(uuid);
-        loaded.setSender(player.getUniqueId());
+        HeriaFriendLink loaded = bukkit.getFriendLinkManager().createOrLoad(UUID.randomUUID());
+
         loaded.setReceiver(target.getId());
-        this.bukkit.getFriendRequestManager().saveInPersistant(loaded);
-        this.bukkit.getFriendRequestManager().save(loaded);
+        loaded.setSender(heriaPlayer.getId());
 
-        target.addPendingFriendsRequest(uuid);
-        this.bukkit.getApi().getPlayerManager().save(target);
-
-        heriaPlayer.addSentFriendsRequest(uuid);
-        this.bukkit.getApi().getPlayerManager().save(heriaPlayer);
-
+        bukkit.getFriendLinkManager().saveInPersistant(loaded);
+        bukkit.getFriendLinkManager().save(loaded);
 
         player.sendMessage("§aVotre demande d'ami pour " + target.getName() + " a bien été envoyée !");
 
@@ -119,17 +107,6 @@ public class FriendCommands {
         refuse.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§cRefuser la demande de " + player.getName() + "?")));
         refuse.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend refuse " + player.getName()));
 
-        /*Component component = Component.empty().append(Component.text("§fVous avez reçu une demande d'ami de §6" + player.getName() + "§f."))
-                .appendNewline()
-                .append(Component.text("§a[§a§l✓ §aAccepter]")
-                        .hoverEvent(HoverEvent.showText(Component.text("§aDevenir ami avec " + player.getName() + "?")
-                        .clickEvent(ClickEvent.runCommand("friend add " + player.getName())))))
-                .appendSpace()
-                .append(Component.text("§c[§c§l✗ §cRefuser]")
-                        .hoverEvent(HoverEvent.showText(Component.text("§cRefuser la demande de " + player.getName() + "?")
-                                .clickEvent(ClickEvent.runCommand("friend refuse " + player.getName())))));
-
-        GsonComponentSerializer gsonSerializer = GsonComponentSerializer.builder().downsampleColors().build();*/
 
         this.bukkit.getApi().getMessaging().send(new BukkitPlayerMessagePacket(target.getId(), ComponentSerializer.toString(mainText,accept,refuse)));
     }
@@ -141,6 +118,8 @@ public class FriendCommands {
 
     @HeriaCommand(name = "friend.list", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f.list", "friends.list"})
     public void onFriendListCommand(CommandArgs args){
-
+        Player player = args.getPlayer();
+        bukkit.getMenuManager().open(new FriendsMenu(player, bukkit, bukkit.getApi().getPlayerManager().get(player.getUniqueId())));
     }
+
 }

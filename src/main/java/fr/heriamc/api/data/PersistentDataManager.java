@@ -8,6 +8,7 @@ import fr.heriamc.api.data.resolver.DataResolver;
 import fr.heriamc.api.data.resolver.Defaultable;
 import fr.heriamc.api.utils.FieldUtils;
 import org.bson.Document;
+import org.bson.json.JsonWriterSettings;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
 
     protected final MongoConnection mongoConnection;
     protected final String mongoCollection;
+
+    private static final JsonWriterSettings JSON_SETTINGS = JsonWriterSettings.builder()
+            .objectIdConverter((objectId, strictJsonWriter) -> strictJsonWriter.writeString(objectId.toHexString()))
+            .int64Converter((value, writer) -> writer.writeNumber(value.toString()))
+            .build();
 
     public PersistentDataManager(RedisConnection redisConnection, MongoConnection mongoConnection,
                                  String redisKey, String mongoCollection) {
@@ -58,7 +64,7 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
         }
 
         Document checked = DataResolver.resolveJson(this, document);
-        D data = SerializableData.fromJson(checked.toJson(), this.getDataClass());
+        D data = SerializableData.fromJson(checked.toJson(JSON_SETTINGS), this.getDataClass());
 
         try (Jedis jedis = this.redisConnection.getResource()) {
             jedis.hset(this.redisKey, identifier.toString(), data.toJson());
@@ -87,6 +93,9 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
     public void removeInPersistant(D data){
         this.mongoConnection.getDatabase().getCollection(this.mongoCollection)
                 .deleteOne(new Document("id", data.getIdentifier().toString()));
+
+        this.removeInCache(data.getIdentifier());
+        this.removeInLocal(data.getIdentifier());
     }
 
     /**

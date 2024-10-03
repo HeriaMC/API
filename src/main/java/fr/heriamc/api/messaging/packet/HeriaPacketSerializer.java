@@ -15,18 +15,18 @@ public class HeriaPacketSerializer implements JsonDeserializer<HeriaPacket> {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         if (!jsonObject.has("classPath")) return null;
 
-        HeriaPacket starPacket;
+        HeriaPacket heriaPacket;
         String classPath = jsonObject.get("classPath").getAsString();
         try {
 
             Class<?> classFound = Class.forName(classPath);
             Class<? extends HeriaPacket> classCast = classFound.asSubclass(HeriaPacket.class);
-            starPacket = gson.fromJson(jsonObject, classCast);
+            heriaPacket = gson.fromJson(jsonObject, classCast);
 
         } catch (ClassCastException | ClassNotFoundException e) {
-            starPacket = null;
+            heriaPacket = null;
         }
 
-        return starPacket;
+        return heriaPacket;
     }
 }

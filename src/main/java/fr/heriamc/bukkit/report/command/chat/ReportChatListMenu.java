@@ -24,7 +24,7 @@ public class ReportChatListMenu extends HeriaPaginationMenu<HeriaReport> {
                         19,20,21,22,23,24,25,
                         28,29,30,31,32,33,34,
                         37,38,39,40,41,42,43),
-                heriaBukkit.getReportManager().getAllReports(HeriaReportType.CHAT));
+                () -> heriaBukkit.getReportManager().getAllReports(HeriaReportType.CHAT));
 
         this.heriaBukkit = heriaBukkit;
     }

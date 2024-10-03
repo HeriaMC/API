@@ -2,6 +2,7 @@ package fr.heriamc.bukkit;
 
 import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.HeriaConfiguration;
+import fr.heriamc.api.friends.HeriaFriendLinkManager;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
@@ -10,15 +11,16 @@ import fr.heriamc.api.utils.HeriaFileUtils;
 import fr.heriamc.bukkit.chat.HeriaChatManager;
 import fr.heriamc.bukkit.chat.command.PrivateMessageCommand;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
-import fr.heriamc.bukkit.friends.FriendRequestManager;
-import fr.heriamc.bukkit.friends.command.FriendCommands;
+import fr.heriamc.bukkit.friends.FriendCommands;
 import fr.heriamc.bukkit.game.HeriaGameManager;
 import fr.heriamc.bukkit.instance.InstanceCommand;
 import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.bukkit.mod.ModManager;
 import fr.heriamc.bukkit.packet.BukkitPacketReceiver;
+import fr.heriamc.bukkit.prefix.PrefixManager;
 import fr.heriamc.bukkit.report.HeriaReportManager;
 import fr.heriamc.bukkit.tab.TabUpdater;
+import fr.heriamc.bukkit.vip.VipManager;
 import fr.heriamc.proxy.packet.ServerRegisterPacket;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
@@ -41,7 +43,7 @@ public class HeriaBukkit extends JavaPlugin {
     private HeriaChatManager chatManager;
     private HeriaReportManager reportManager;
     private HeriaGameManager heriaGameManager;
-    private FriendRequestManager friendRequestManager;
+    private PrefixManager prefixManager;
 
     @Override
     public void onEnable() {
@@ -71,9 +73,9 @@ public class HeriaBukkit extends JavaPlugin {
         this.menuManager = new HeriaMenuManager(this);
         this.commandManager = new HeriaCommandManager(this);
         this.chatManager = new HeriaChatManager(this.getApi().getRedisConnection(), this);
-        this.friendRequestManager = new FriendRequestManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
         this.heriaGameManager = new HeriaGameManager(this.getApi().getRedisConnection());
         this.reportManager = new HeriaReportManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
+        this.prefixManager = new PrefixManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
 
         this.commandManager.registerCommand(new InstanceCommand(this));
         this.commandManager.registerCommand(new PrivateMessageCommand(this));
@@ -81,6 +83,7 @@ public class HeriaBukkit extends JavaPlugin {
         this.getServer().getScheduler().runTaskTimer(this, new TabUpdater(this), 0L, 20L);
 
         new ModManager(this);
+        new VipManager(this);
     }
 
     @Override
@@ -112,8 +115,8 @@ public class HeriaBukkit extends JavaPlugin {
         return chatManager;
     }
 
-    public FriendRequestManager getFriendRequestManager() {
-        return friendRequestManager;
+    public HeriaFriendLinkManager getFriendLinkManager() {
+        return api.getFriendLinkManager();
     }
 
     public HeriaGameManager getHeriaGameManager() {
@@ -122,5 +125,9 @@ public class HeriaBukkit extends JavaPlugin {
 
     public HeriaReportManager getReportManager() {
         return reportManager;
+    }
+
+    public PrefixManager getPrefixManager() {
+        return prefixManager;
     }
 }

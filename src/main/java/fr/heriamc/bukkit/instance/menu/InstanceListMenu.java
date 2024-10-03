@@ -33,7 +33,7 @@ public class InstanceListMenu extends HeriaMenu {
     private HeriaServerStatus statusFilter;
     private HeriaServerType typeFilter;
 
-    public InstanceListMenu(Player player, HeriaBukkit bukkit) {
+    public  InstanceListMenu(Player player, HeriaBukkit bukkit) {
         super(player, "Liste des instances", 54, true);
         this.bukkit = bukkit;
     }
