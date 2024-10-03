@@ -64,6 +64,10 @@ public class HeriaChatEvent extends Event implements Cancellable {
         return name;
     }
 
+    public String getDisplayedRank() {
+        return displayedRank;
+    }
+
     public String getFormattedMessage() {
         return formattedMessage;
     }
