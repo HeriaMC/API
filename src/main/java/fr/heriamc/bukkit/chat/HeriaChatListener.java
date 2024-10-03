@@ -89,7 +89,7 @@ public class HeriaChatListener implements Listener {
 
         TextComponent messageComponent = new TextComponent(TextComponent.fromLegacyText(" " + displayed + heriaPlayer.getNickedName() +" §8» §f" + message));
 
-        HeriaChatEvent chatEvent = new HeriaChatEvent(player, heriaPlayer, heriaPlayer.getNickedName(), message, reportSymbol, messageComponent);
+        HeriaChatEvent chatEvent = new HeriaChatEvent(player, heriaPlayer, heriaPlayer.getNickedName(), message, displayed, reportSymbol, messageComponent);
         bukkit.getServer().getPluginManager().callEvent(chatEvent);
 
         if(chatEvent.isCancelled()){

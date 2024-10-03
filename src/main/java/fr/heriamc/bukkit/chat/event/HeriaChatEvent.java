@@ -13,17 +13,22 @@ public class HeriaChatEvent extends Event implements Cancellable {
 
     private final Player player;
     private final HeriaPlayer heriaPlayer;
+
     private final String name;
     private final String formattedMessage;
+    private final String displayedRank;
+
     private final TextComponent reportComponent;
     private final TextComponent messageComponent;
+
     private boolean cancelled;
 
-    public HeriaChatEvent(Player player, HeriaPlayer heriaPlayer, String name, String formattedMessage, TextComponent reportComponent, TextComponent messageComponent) {
+    public HeriaChatEvent(Player player, HeriaPlayer heriaPlayer, String name, String formattedMessage, String displayedRank, TextComponent reportComponent, TextComponent messageComponent) {
         this.player = player;
         this.heriaPlayer = heriaPlayer;
         this.name = name;
         this.formattedMessage = formattedMessage;
+        this.displayedRank = displayedRank;
         this.reportComponent = reportComponent;
         this.messageComponent = messageComponent;
     }
