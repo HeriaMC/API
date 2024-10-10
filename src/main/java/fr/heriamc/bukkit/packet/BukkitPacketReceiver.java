@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class BukkitPacketReceiver implements HeriaPacketReceiver {
@@ -52,7 +53,7 @@ public class BukkitPacketReceiver implements HeriaPacketReceiver {
         }
 
         if(packet instanceof BukkitBroadcastMessagePacket found){
-            Collection<? extends Player> viewers = bukkit.getServer().getOnlinePlayers();
+            Collection<? extends Player> viewers = new HashSet<>(bukkit.getServer().getOnlinePlayers());
             int neededPower = found.getNeededPower();
 
             if(neededPower != 0){
