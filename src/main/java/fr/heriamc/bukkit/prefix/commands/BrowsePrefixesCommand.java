@@ -1,6 +1,8 @@
 package fr.heriamc.bukkit.prefix.commands;
 
+import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
+import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
