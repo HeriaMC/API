@@ -35,13 +35,16 @@ public class BukkitPacketReceiver implements HeriaPacketReceiver {
             try {
                 System.out.println("message: " + message);
                 BaseComponent[] components = ComponentSerializer.parse(message);
+
+                if(components == null){
+                    throw new NullPointerException("components null");
+                }
+
                 for (BaseComponent component : components) {
                     ClickEvent clickEvent = component.getClickEvent();
                     System.out.println("clickEvent: " + clickEvent);
                 }
-                if(components == null){
-                    throw new NullPointerException("components null");
-                }
+
                 player.spigot().sendMessage(components);
             } catch (Exception e){
                 player.sendMessage(message);

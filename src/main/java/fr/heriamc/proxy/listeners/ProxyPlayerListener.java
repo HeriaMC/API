@@ -69,7 +69,7 @@ public class ProxyPlayerListener {
             HeriaSanction active = bans.get(0);
 
             Component banComponent = PlainTextComponentSerializer.plainText().deserialize(
-                    this.proxy.getApi().getSanctionManager().getKickMessage(active));
+                    this.proxy.getApi().getSanctionManager().getBanMessage(active));
 
             event.setResult(ResultedEvent.ComponentResult.denied(banComponent));
             event.getPlayer().disconnect(banComponent);

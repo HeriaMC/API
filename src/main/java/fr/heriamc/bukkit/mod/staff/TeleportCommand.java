@@ -32,7 +32,7 @@ public class TeleportCommand {
             return;
         }
 
-        target.teleport(player.getLocation());
+        player.teleport(target.getLocation());
         player.sendMessage("§e[§6§lMOD§e] §fVous avez été téléporté sur §b" + target.getName() + "§f.");
     }
 }

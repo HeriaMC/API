@@ -8,13 +8,15 @@ import java.util.UUID;
 public class HeriaGameInfo {
 
     private String gameName;
+    private String serverName;
     private List<UUID> players;
     private int playersCount, alivePlayersCount, spectatorsCount;
     private GameState state;
     private GameSize gameSize;
 
-    public HeriaGameInfo(String gameName, List<UUID> players, int playersCount, int alivePlayersCount, int spectatorsCount, GameState state, GameSize gameSize) {
+    public HeriaGameInfo(String gameName, String serverName, List<UUID> players, int playersCount, int alivePlayersCount, int spectatorsCount, GameState state, GameSize gameSize) {
         this.gameName = gameName;
+        this.serverName = serverName;
         this.players = players;
         this.playersCount = playersCount;
         this.alivePlayersCount = alivePlayersCount;
@@ -29,6 +31,15 @@ public class HeriaGameInfo {
 
     public HeriaGameInfo setGameName(String gameName) {
         this.gameName = gameName;
+        return this;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public HeriaGameInfo setServerName(String serverName) {
+        this.serverName = serverName;
         return this;
     }
 

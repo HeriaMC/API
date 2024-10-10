@@ -31,5 +31,12 @@ public class HeriaFriendLinkManager extends PersistentDataManager<UUID, HeriaFri
                 .toList();
     }
 
+    public List<HeriaFriendLink> getReceivedFromPlayer(UUID uuid) {
+        return getFromPlayer(uuid)
+                .stream()
+                .filter(heriaFriendLink -> heriaFriendLink.getStatus() == HeriaFriendLinkStatus.SENT)
+                .filter(heriaFriendLink -> heriaFriendLink.getReceiver() == uuid)
+                .toList();
+    }
 
 }

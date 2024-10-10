@@ -9,7 +9,8 @@ public enum HeriaServerType {
 
     HIKABRAIN("hikabrain"),
     FREECUBE("freecube"),
-    JUMPSCADE("jumpscade")
+    JUMPSCADE("jumpscade"),
+    SHOOTCRAFT("shootcraft"),
 
     ;
 

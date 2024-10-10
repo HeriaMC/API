@@ -75,10 +75,10 @@ public class BanCommand {
         bukkit.getApi().getSanctionManager().save(sanction);
         bukkit.getApi().getSanctionManager().saveInPersistant(sanction);
 
-        String kickReason = bukkit.getApi().getSanctionManager().getKickMessage(sanction);
+        String kickReason = bukkit.getApi().getSanctionManager().getBanMessage(sanction);
         bukkit.getApi().getMessaging().send(new ProxyPlayerKickPacket(target.getId(), kickReason));
 
-        String broadcast = "§a" + player.getName() + " §fa banni §a" + target.getName() + " §fpour \"§c" + reason + "§f\"";
+        String broadcast = "§a" + player.getName() + " §fa banni §a" + target.getName() + " §fpour \"§c" + reason + "§f\" durant §c" + time;
         bukkit.getApi().getMessaging().send(new BukkitBroadcastMessagePacket(broadcast, HeriaRank.HELPER.getPower()));
     }
 
@@ -121,7 +121,7 @@ public class BanCommand {
             bukkit.getApi().getSanctionManager().saveInPersistant(ban);
         }
 
-        String broadcast = "§a" + player.getName() + " §fa dé-banni §a" + target.getName() + " §f(" + count + "§7)";
+        String broadcast = "§a" + player.getName() + " §fa dé-banni §a" + target.getName() + " §f(" + count + ")";
         bukkit.getApi().getMessaging().send(new BukkitBroadcastMessagePacket(broadcast, HeriaRank.HELPER.getPower()));
     }
 

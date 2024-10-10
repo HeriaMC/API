@@ -99,7 +99,7 @@ public class AskPrefixCommand {
         }
 
         if(!prefix.matches(PREFIX_PATTERN)){
-            return "§cVotre préfixe ne peut contenir que des lettres, des chiffres et ces couleurs.";
+            return "§cVotre préfixe ne peut contenir que des lettres, des chiffres et des couleurs.";
         }
 
         List<String> forbiddenColors = List.of("&k", "&l", "&m", "&n", "&o", "&r", "&8", "&0", "&1");

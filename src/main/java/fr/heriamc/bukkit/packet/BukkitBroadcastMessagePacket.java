@@ -18,8 +18,6 @@ public class BukkitBroadcastMessagePacket extends HeriaPacket {
         this.neededPower = neededPower;
     }
 
-
-
     public String getMessage() {
         return message;
     }

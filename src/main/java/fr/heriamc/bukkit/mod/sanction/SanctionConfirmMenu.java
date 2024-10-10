@@ -51,7 +51,7 @@ public class SanctionConfirmMenu extends ConfirmMenu {
             bukkit.getApi().getSanctionManager().saveInPersistant(sanction);
 
             if(sanction.getType() == HeriaSanctionType.BAN){
-                String kickReason = bukkit.getApi().getSanctionManager().getKickMessage(sanction);
+                String kickReason = bukkit.getApi().getSanctionManager().getBanMessage(sanction);
                 bukkit.getApi().getMessaging().send(new ProxyPlayerKickPacket(target.getId(), kickReason));
             }
 

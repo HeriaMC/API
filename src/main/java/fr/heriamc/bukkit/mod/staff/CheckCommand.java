@@ -50,6 +50,6 @@ public class CheckCommand {
         player.sendMessage(" §8» §7Grade: " + target.getRank().getPrefix());
         player.sendMessage(" §8» §7Première conn.: §3" + TimeUtils.convertMilliSecondsToFormattedDate(target.getFirstConnection()));
         player.sendMessage(" §8» §7Client: §6" + target.getClientBrand());
-        player.sendMessage(" §8» §7Nick?: pas encore dev");
+        player.sendMessage(" §8» §7Nick?: " + (target.getNickData() == null ? "§cAucun" : target.getNickData().getNewName()));
     }
 }

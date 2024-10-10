@@ -116,6 +116,12 @@ public class FriendCommands {
 
     }
 
+    @HeriaCommand(name = "friend.refuse", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f.refuse", "friends.refuse"})
+    public void onFriendRefuseCommand(CommandArgs args){
+
+    }
+
+
     @HeriaCommand(name = "friend.list", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f.list", "friends.list"})
     public void onFriendListCommand(CommandArgs args){
         Player player = args.getPlayer();

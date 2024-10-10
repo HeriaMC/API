@@ -8,10 +8,12 @@ import java.util.List;
 public class HeriaGamesList implements SerializableData<String>{
 
     private HeriaServerType serverType;
+    private String serverName;
     private List<HeriaGameInfo> games;
 
-    public HeriaGamesList(HeriaServerType serverType, List<HeriaGameInfo> games) {
+    public HeriaGamesList(HeriaServerType serverType, String serverName, List<HeriaGameInfo> games) {
         this.serverType = serverType;
+        this.serverName = serverName;
         this.games = games;
     }
 
@@ -21,6 +23,15 @@ public class HeriaGamesList implements SerializableData<String>{
 
     public HeriaGamesList setServerType(HeriaServerType serverType) {
         this.serverType = serverType;
+        return this;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public HeriaGamesList setServerName(String serverName) {
+        this.serverName = serverName;
         return this;
     }
 

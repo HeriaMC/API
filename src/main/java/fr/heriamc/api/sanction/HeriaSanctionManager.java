@@ -37,7 +37,7 @@ public class HeriaSanctionManager extends PersistentDataManager<UUID, HeriaSanct
                 .toList();
     }
 
-    public String getKickMessage(HeriaSanction sanction){
+    public String getBanMessage(HeriaSanction sanction){
         long expireTime = sanction.getWhen().toInstant().toEpochMilli() + sanction.getDuration() * 1000L;
         return "§r§6§lHERIAMC\n" +
                 "§r \n" +
@@ -50,6 +50,18 @@ public class HeriaSanctionManager extends PersistentDataManager<UUID, HeriaSanct
                 "§r§7ID: §f" + sanction.getIdentifier().toString().split("-")[0] + "\n" +
                 "§r§7Partager cet ID peut affecter votre bannissement";
     }
+
+    public String getKickMessage(HeriaSanction sanction){
+        long expireTime = sanction.getWhen().toInstant().toEpochMilli() + sanction.getDuration() * 1000L;
+        return "§r§6§lHERIAMC\n" +
+                "§r \n" +
+                "§r§cVous avez été exclu du serveur:\n" +
+                "§r§c" + sanction.getReason() + "\n" +
+                "§r \n" +
+                "§r§7ID: §f" + sanction.getIdentifier().toString().split("-")[0] + "\n" +
+                "§r§7Partager cet ID peut affecter votre bannissement";
+    }
+
 
     public List<String> getMuteMessage(HeriaSanction sanction){
         long expireTime = sanction.getWhen().toInstant().toEpochMilli() + sanction.getDuration() * 1000L;
