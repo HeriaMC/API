@@ -16,6 +16,7 @@ import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
+import fr.heriamc.api.user.unlock.HeriaUnlockable;
 import fr.heriamc.proxy.HeriaProxy;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -120,17 +121,24 @@ public class ProxyPlayerListener {
 
         HeriaPlayer cached = this.proxy.getApi().getPlayerManager().getInCache(player.getUniqueId());
 
-        if(cached == null){
-            return;
+        if(cached != null){
+            System.out.println("Le joueur " + player.getUsername() + " s'est déconnecté et a été trouvé dans le cache. sauvegarde de son profil...");
+
+            cached.setConnectedTo(null);
+
+            this.proxy.getApi().getPlayerManager().saveInPersistant(cached);
+            this.proxy.getApi().getPlayerManager().remove(cached.getIdentifier());
+            System.out.println("Sauvegarde réussie.");
         }
 
-        System.out.println("Le joueur " + player.getUsername() + " s'est déconnecté et a été trouvé dans le cache. sauvegarde de son profil...");
+        HeriaUnlockable unlockable = this.proxy.getApi().getUnlockableManager().getInCache(player.getUniqueId());
 
-        cached.setConnectedTo(null);
+        if(unlockable != null){
+            this.proxy.getApi().getUnlockableManager().saveInPersistant(unlockable);
+            this.proxy.getApi().getUnlockableManager().remove(unlockable);
+        }
 
-        this.proxy.getApi().getPlayerManager().saveInPersistant(cached);
-        this.proxy.getApi().getPlayerManager().remove(cached.getIdentifier());
-        System.out.println("Sauvegarde réussie.");
+
     }
 
     @Subscribe

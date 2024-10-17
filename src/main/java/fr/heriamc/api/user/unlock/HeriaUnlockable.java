@@ -9,9 +9,9 @@ import java.util.UUID;
 public class HeriaUnlockable implements SerializableData<UUID> {
 
     private UUID id;
-    private Map<Serializable, Boolean> unlockableData;
+    private Map<String, Boolean> unlockableData;
 
-    public HeriaUnlockable(UUID id, Map<Serializable, Boolean> unlockableData) {
+    public HeriaUnlockable(UUID id, Map<String, Boolean> unlockableData) {
         this.id = id;
         this.unlockableData = unlockableData;
     }
@@ -20,16 +20,16 @@ public class HeriaUnlockable implements SerializableData<UUID> {
         return id;
     }
 
-    public boolean isUnlocked(Serializable serializable){
+    public boolean isUnlocked(String serializable){
         return this.unlockableData.containsKey(serializable);
     }
 
-    public HeriaUnlockable unlock(Serializable serializable){
+    public HeriaUnlockable unlock(String serializable){
         this.unlockableData.put(serializable, true);
         return this;
     }
 
-    public Map<Serializable, Boolean> getUnlockableData() {
+    public Map<String, Boolean> getUnlockableData() {
         return unlockableData;
     }
 
