@@ -6,13 +6,18 @@ import fr.heriamc.api.friends.HeriaFriendLinkManager;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
+import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
+import fr.heriamc.bukkit.announce.AnnounceManager;
 import fr.heriamc.bukkit.chat.HeriaChatManager;
 import fr.heriamc.bukkit.chat.command.PrivateMessageCommand;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
 import fr.heriamc.bukkit.friends.FriendCommands;
 import fr.heriamc.bukkit.game.HeriaGameManager;
+import fr.heriamc.bukkit.game.packet.GameCreationRequestPacket;
+import fr.heriamc.bukkit.game.size.GameSize;
+import fr.heriamc.bukkit.game.size.GameSizeTemplate;
 import fr.heriamc.bukkit.instance.InstanceCommand;
 import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.bukkit.mod.ModManager;
@@ -20,6 +25,7 @@ import fr.heriamc.bukkit.packet.BukkitPacketReceiver;
 import fr.heriamc.bukkit.prefix.PrefixManager;
 import fr.heriamc.bukkit.report.HeriaReportManager;
 import fr.heriamc.bukkit.tab.TabUpdater;
+import fr.heriamc.bukkit.utils.bossbar.BossBarManager;
 import fr.heriamc.bukkit.vip.VipManager;
 import fr.heriamc.proxy.packet.ServerRegisterPacket;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +35,7 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 import org.bukkit.plugin.java.annotation.plugin.author.Authors;
 
 import java.io.File;
+import java.util.UUID;
 
 @Plugin(name = "HeriaAPI", version = "1.0.0")
 @Authors(@Author("Karaam_"))
@@ -44,6 +51,7 @@ public class HeriaBukkit extends JavaPlugin {
     private HeriaReportManager reportManager;
     private HeriaGameManager heriaGameManager;
     private PrefixManager prefixManager;
+    private AnnounceManager announceManager;
 
     @Override
     public void onEnable() {
@@ -67,8 +75,11 @@ public class HeriaBukkit extends JavaPlugin {
         this.api.getMessaging().registerReceiver(HeriaPacketChannel.API, new BukkitPacketReceiver(this));
         this.api.getMessaging().send(new ServerRegisterPacket(server.getName(), server.getPort()));
 
+        this.api.getMessaging().send(new GameCreationRequestPacket(UUID.randomUUID(), "jumpscade-235", HeriaServerType.JUMPSCADE, new GameSize(GameSizeTemplate.SIZE_1V1)));
+
         server.setStatus(HeriaServerStatus.STARTED);
         this.api.getServerManager().save(server);
+        BossBarManager.init(this);
 
         this.menuManager = new HeriaMenuManager(this);
         this.commandManager = new HeriaCommandManager(this);
@@ -76,6 +87,8 @@ public class HeriaBukkit extends JavaPlugin {
         this.heriaGameManager = new HeriaGameManager(this.getApi().getRedisConnection());
         this.reportManager = new HeriaReportManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
         this.prefixManager = new PrefixManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
+        this.announceManager = new AnnounceManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
+
 
         this.commandManager.registerCommand(new InstanceCommand(this));
         this.commandManager.registerCommand(new PrivateMessageCommand(this));
@@ -129,5 +142,9 @@ public class HeriaBukkit extends JavaPlugin {
 
     public PrefixManager getPrefixManager() {
         return prefixManager;
+    }
+
+    public AnnounceManager getAnnounceManager() {
+        return announceManager;
     }
 }

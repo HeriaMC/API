@@ -83,6 +83,8 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
 
         this.mongoConnection.getDatabase().getCollection(this.mongoCollection)
                 .replaceOne(new Document("id", data.getIdentifier().toString()), document);
+
+        this.onDataSave(data);
     }
 
     /**
@@ -139,8 +141,17 @@ public abstract class PersistentDataManager<A, D extends SerializableData<A>> ex
 
         this.mongoConnection.getDatabase().getCollection(this.mongoCollection).insertOne(document);
         this.putInCache(newData);
+        onDataCreate(identifier, newData);
 
         return newData;
+    }
+
+    public void onDataCreate(A identifier, D data){
+
+    }
+
+    public void onDataSave(D data){
+
     }
 
 }

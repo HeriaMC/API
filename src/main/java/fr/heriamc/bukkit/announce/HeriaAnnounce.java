@@ -2,7 +2,6 @@ package fr.heriamc.bukkit.announce;
 
 import fr.heriamc.api.data.SerializableData;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 public class HeriaAnnounce implements SerializableData<UUID> {

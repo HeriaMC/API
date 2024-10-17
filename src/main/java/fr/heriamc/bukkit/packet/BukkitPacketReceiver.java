@@ -4,6 +4,7 @@ import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
+import fr.heriamc.bukkit.game.packet.GameCreatedPacket;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -70,6 +71,10 @@ public class BukkitPacketReceiver implements HeriaPacketReceiver {
             for (Player viewer : viewers) {
                 viewer.sendMessage(found.getMessage());
             }
+        }
+
+        if(packet instanceof GameCreatedPacket found){
+            System.out.println(found);
         }
     }
 

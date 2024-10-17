@@ -5,6 +5,7 @@ import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.HeriaServerStatus;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.utils.HeriaFileUtils;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -83,7 +84,14 @@ public class HeriaServerCreator {
         props.put("motd", name);
         props.store(Files.newOutputStream(path.toPath()), "Minecraft server properties");
 
-        if (Arrays.stream(templatesFile.toFile().listFiles()).noneMatch(file -> file.getName().equals("start.sh"))) {
+
+        File startFile = new File(folder, "start.sh");
+
+        if(startFile.exists()){
+            String s = FileUtils.readFileToString(startFile);
+            s = s.replaceAll("%servername%", name);
+            FileUtils.writeStringToFile(startFile, s);
+        } else {
             String scriptContent = "nice -n 4 screen -dmS " + name + " java -Djava.awt.headless=true -jar -Xms1G -Xmx4G server.jar";
             //if(serverType == HeriaServerType.ONESHOT) scriptContent = "nice -n 4 screen -dmS " + name + " java -Djava.awt.headless=true -javaagent:slimeagent.jar -jar -Xms1G -Xmx4G server.jar";
             Writer output = new BufferedWriter(new FileWriter(folder + "/start.sh"));

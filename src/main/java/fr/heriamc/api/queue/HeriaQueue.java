@@ -1,5 +1,9 @@
 package fr.heriamc.api.queue;
 
+import fr.heriamc.api.HeriaAPI;
+import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.bukkit.HeriaBukkit;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -65,6 +69,10 @@ public class HeriaQueue {
     public HeriaQueue setPlayers(Set<UUID> players) {
         this.players = players;
         return this;
+    }
+
+    public Set<Set<UUID>> getTotalPlayers(){
+        return null;
     }
 
     public enum QueueType {
