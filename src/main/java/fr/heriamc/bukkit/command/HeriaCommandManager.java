@@ -4,6 +4,7 @@ import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
+import fr.heriamc.bukkit.command.help.HelpCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +27,7 @@ public class HeriaCommandManager implements CommandExecutor {
     private CommandMap map;
     private final Plugin plugin;
 
-    private final Map<String, HeriaRank> permissionsCommands = new HashMap<>();
+    private final Map<HeriaCommand, HeriaRank> permissionsCommands = new HashMap<>();
 
     public HeriaCommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -107,7 +108,7 @@ public class HeriaCommandManager implements CommandExecutor {
                     continue;
                 }
 
-                permissionsCommands.put(command.name(), command.power());
+                permissionsCommands.put(command, command.power());
 
                 registerCommand0(command, command.name(), m, obj);
                 for (String alias : command.aliases()) {
@@ -202,7 +203,7 @@ public class HeriaCommandManager implements CommandExecutor {
         args.getSender().sendMessage("§cCette commande n'est pas executable. Utilisez plutôt /" + args.getCommand().getName());
     }
 
-    public Map<String, HeriaRank> getPermissionsCommands() {
+    public Map<HeriaCommand, HeriaRank> getPermissionsCommands() {
         return permissionsCommands;
     }
 }

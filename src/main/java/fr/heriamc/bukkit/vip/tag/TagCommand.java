@@ -15,7 +15,7 @@ public class TagCommand {
         this.bukkit = heriaBukkit;
     }
 
-    @HeriaCommand(name = "tag", power = HeriaRank.VIP)
+    @HeriaCommand(name = "tag", power = HeriaRank.VIP, description = "Vous permet de désactiver votre grade")
     public void onTagCommand(CommandArgs args){
         Player player = args.getPlayer();
 

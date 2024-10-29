@@ -26,7 +26,7 @@ public class FriendCommands {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "friend", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f", "friends"})
+    @HeriaCommand(name = "friend", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"f", "friends"}, description = "Vous permet de gérer des amis")
     public void onFriendCommand(CommandArgs args){
         Player player = args.getPlayer();
 

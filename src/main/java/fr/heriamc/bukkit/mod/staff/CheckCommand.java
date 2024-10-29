@@ -46,10 +46,12 @@ public class CheckCommand {
             return;
         }
 
+        player.sendMessage(" ");
         player.sendMessage("§7Check de §6" + target.getName());
-        player.sendMessage(" §8» §7Grade: " + target.getRank().getPrefix());
-        player.sendMessage(" §8» §7Première conn.: §3" + TimeUtils.convertMilliSecondsToFormattedDate(target.getFirstConnection()));
-        player.sendMessage(" §8» §7Client: §6" + target.getClientBrand());
-        player.sendMessage(" §8» §7Nick?: " + (target.getNickData() == null ? "§cAucun" : target.getNickData().getNewName()));
+        player.sendMessage(" §8■ §fGrade: " + target.getRank().getPrefix());
+        player.sendMessage(" §8■ §f1ere connection: §3" + TimeUtils.convertMilliSecondsToFormattedDate(target.getFirstConnection()));
+        player.sendMessage(" §8■ §fClient: §6" + target.getClientBrand());
+        player.sendMessage(" §8■ §fNick?: " + (target.getNickData() == null ? "§cAucun" : target.getNickData().getNewName()));
+        player.sendMessage(" ");
     }
 }

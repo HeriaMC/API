@@ -9,7 +9,6 @@ public enum HeriaServerStatus {
     STARTED("Démarré", HeriaChatColor.GREEN, HeriaSkull.LIME, true),
     STOPPING("Arrêt", HeriaChatColor.RED, HeriaSkull.RED, false);
 
-
     private final String name;
     private final HeriaChatColor color;
     private final HeriaSkull skull;

@@ -26,7 +26,7 @@ public class ReportChatCommand {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "reportchat", inGameOnly = true, power = HeriaRank.PLAYER)
+    @HeriaCommand(name = "reportchat", inGameOnly = true, power = HeriaRank.PLAYER, showInHelp = false)
     public void onCommand(CommandArgs args){
         Player player = args.getPlayer();
 

@@ -1,5 +1,6 @@
 package fr.heriamc.bukkit.mod;
 
+import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.mod.freeze.FreezeCommand;
 import fr.heriamc.bukkit.mod.history.HistoryCommand;
@@ -11,10 +12,10 @@ import fr.heriamc.bukkit.mod.sanction.types.MuteCommand;
 import fr.heriamc.bukkit.mod.sanction.types.WarnCommand;
 import fr.heriamc.bukkit.mod.staff.*;
 import fr.heriamc.bukkit.report.command.chat.ReportChatListCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
-public class ModManager {
-
-    private final HeriaBukkit bukkit;
+public record ModManager(HeriaBukkit bukkit) {
 
     public ModManager(HeriaBukkit bukkit) {
         this.bukkit = bukkit;
@@ -34,7 +35,41 @@ public class ModManager {
         bukkit.getCommandManager().registerCommand(new KickCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new MuteCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new WarnCommand(bukkit));
+
+        bukkit.getCommandManager().registerCommand(new ModCommand(this, bukkit));
+        bukkit.getServer().getPluginManager().registerEvents(new ModListener(this, bukkit), bukkit);
+        bukkit.getServer().getScheduler().runTaskTimer(bukkit, new ModTask(bukkit), 0L, 20L);
     }
 
+    public void setVanished(Player player, HeriaPlayer heriaPlayer, boolean state) {
 
+        heriaPlayer.setVanished(state);
+        bukkit.getApi().getPlayerManager().save(heriaPlayer);
+
+        if (state) {
+            player.setAllowFlight(true);
+            player.setFlying(true);
+
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                HeriaPlayer heriaOnline = bukkit.getApi().getPlayerManager().get(onlinePlayer.getUniqueId());
+
+                if(heriaOnline.isMod()){
+                    continue;
+                }
+
+                onlinePlayer.hidePlayer(player);
+            }
+
+        } else {
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.showPlayer(player);
+            }
+        }
+    }
+
+    public void giveItems(Player player){
+        for (ModItem value : ModItem.values()) {
+            value.setItem(player.getInventory());
+        }
+    }
 }

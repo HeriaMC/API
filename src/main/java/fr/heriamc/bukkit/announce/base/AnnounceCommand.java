@@ -16,7 +16,7 @@ public class AnnounceCommand {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "annonce", power = HeriaRank.CUSTOM)
+    @HeriaCommand(name = "annonce", power = HeriaRank.CUSTOM, description = "Vous permet de faire une annonce sur tout le serveur")
     public void onAnnounceCommand(CommandArgs args){
         Player player = args.getPlayer();
 

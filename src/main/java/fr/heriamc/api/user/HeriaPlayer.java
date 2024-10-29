@@ -27,25 +27,29 @@ public class HeriaPlayer implements SerializableData<UUID> {
     private UUID reply;
 
     @NonPersistantData
-    public boolean removedTag;
+    private boolean removedTag;
 
     @NonPersistantData
-    public boolean mod;
+    private boolean mod;
 
     @NonPersistantData
-    public NickPlayerData nickData;
+    private boolean vanished;
 
-    private List<UUID> friends;
-    private List<UUID> pendingFriendsRequests;
-    private List<UUID> sentFriendsRequests;
+    @NonPersistantData
+    private boolean hasModItems;
+
+    @NonPersistantData
+    private NickPlayerData nickData;
+
 
     private float coins;
     private int hosts;
     private float credits;
 
     public HeriaPlayer(UUID id, String name, HeriaRank rank, long firstConnection, String customPrefix, String clientBrand,
-                       String connectedTo, UUID reply, boolean removedTag, boolean mod, NickPlayerData nickData, List<UUID> friends,
-                       List<UUID> pendingFriendsRequests, List<UUID> sentFriendsRequests, float coins, int hosts, float credits) {
+                       String connectedTo, UUID reply, boolean removedTag, boolean mod, boolean vanished, boolean hasModItems,
+                       NickPlayerData nickData, float coins, int hosts, float credits) {
+
         this.id = id;
         this.name = name;
         this.rank = rank;
@@ -56,10 +60,9 @@ public class HeriaPlayer implements SerializableData<UUID> {
         this.reply = reply;
         this.removedTag = removedTag;
         this.mod = mod;
+        this.vanished = vanished;
+        this.hasModItems = hasModItems;
         this.nickData = nickData;
-        this.friends = friends;
-        this.pendingFriendsRequests = pendingFriendsRequests;
-        this.sentFriendsRequests = sentFriendsRequests;
         this.coins = coins;
         this.hosts = hosts;
         this.credits = credits;
@@ -154,33 +157,6 @@ public class HeriaPlayer implements SerializableData<UUID> {
         return this;
     }
 
-    public List<UUID> getFriends() {
-        return friends;
-    }
-
-    public HeriaPlayer addFriend(UUID friends) {
-        this.friends.add(friends);
-        return this;
-    }
-
-    public List<UUID> getPendingFriendsRequests() {
-        return pendingFriendsRequests;
-    }
-
-    public HeriaPlayer addPendingFriendsRequest(UUID pendingFriendsRequest) {
-        this.pendingFriendsRequests.add(pendingFriendsRequest);
-        return this;
-    }
-
-    public List<UUID> getSentFriendsRequests() {
-        return sentFriendsRequests;
-    }
-
-    public HeriaPlayer addSentFriendsRequest(UUID sentFriendsRequest) {
-        this.sentFriendsRequests.add(sentFriendsRequest);
-        return this;
-    }
-
     public long getFirstConnection() {
         return firstConnection;
     }
@@ -236,6 +212,24 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public HeriaPlayer setCustomPrefix(String customPrefix) {
         this.customPrefix = customPrefix;
+        return this;
+    }
+
+    public boolean isVanished() {
+        return vanished;
+    }
+
+    public HeriaPlayer setVanished(boolean vanished) {
+        this.vanished = vanished;
+        return this;
+    }
+
+    public boolean hasModItems() {
+        return hasModItems;
+    }
+
+    public HeriaPlayer setHasModItems(boolean hasModItems) {
+        this.hasModItems = hasModItems;
         return this;
     }
 

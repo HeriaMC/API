@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 public class Title {
 
     public static void sendActionBar(Player player, String message) {
-        message = message.replaceAll("%player%", player.getDisplayName());
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         net.minecraft.server.v1_8_R3.PacketPlayOutChat actionBarPacket = new net.minecraft.server.v1_8_R3.PacketPlayOutChat(
@@ -44,14 +43,12 @@ public class Title {
         PacketPlayOutTitle packetPlayOutTimes = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn.intValue(), stay.intValue(), fadeOut.intValue());
         connection.sendPacket(packetPlayOutTimes);
         if (subtitle != null) {
-            subtitle = subtitle.replaceAll("%player%", player.getName());
             subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
             IChatBaseComponent titleSub = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
             PacketPlayOutTitle packetPlayOutSubTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, titleSub);
             connection.sendPacket(packetPlayOutSubTitle);
         }
         if (title != null) {
-            title = title.replaceAll("%player%", player.getName());
             title = ChatColor.translateAlternateColorCodes('&', title);
             IChatBaseComponent titleMain = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + title + "\"}");
             PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleMain);
@@ -66,8 +63,6 @@ public class Title {
         if (footer == null)
             footer = "";
         footer = ChatColor.translateAlternateColorCodes('&', footer);
-        header = header.replaceAll("%player%", player.getName());
-        footer = footer.replaceAll("%player%", player.getName());
         PlayerConnection connection = (((CraftPlayer) player).getHandle()).playerConnection;
         IChatBaseComponent tabTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + header + "\"}");
         IChatBaseComponent tabFoot = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + footer + "\"}");

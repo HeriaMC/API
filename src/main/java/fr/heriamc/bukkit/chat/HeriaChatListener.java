@@ -87,7 +87,12 @@ public class HeriaChatListener implements Listener {
             message = message.replaceAll("(?i)(?<!\\p{L})(gg)(?!\\p{L})", "§6§lGG§r");
         }
 
-        TextComponent messageComponent = new TextComponent(TextComponent.fromLegacyText(" " + displayed + heriaPlayer.getNickedName() +" §8» §f" + message));
+        String color = "§f";
+        if(heriaPlayer.isMod()){
+            color = "§b";
+        }
+
+        TextComponent messageComponent = new TextComponent(TextComponent.fromLegacyText(" " + displayed + heriaPlayer.getNickedName() +" §8» " + color + message));
 
         HeriaChatEvent chatEvent = new HeriaChatEvent(player, heriaPlayer, heriaPlayer.getNickedName(), message, displayed, reportSymbol, messageComponent);
         bukkit.getServer().getPluginManager().callEvent(chatEvent);

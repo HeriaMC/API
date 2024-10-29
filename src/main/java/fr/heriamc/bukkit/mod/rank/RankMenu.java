@@ -37,7 +37,7 @@ public class RankMenu extends HeriaMenu {
             this.insertInteractItem(inv, slots[index], new ItemBuilder(Material.WOOL).setWoolColor(DyeColor.getByWoolData((byte) value.getColor().getWoolData()))
                     .setName(value.getColor() + value.getName())
                     .addLore(" ")
-                    .addLore("§6§l» §eClique: §fAttribuer ce role")
+                        .addLore("§6§l» §eClique: §fAttribuer ce role")
                     .onClick(event -> {
                         getPlayer().closeInventory();
 

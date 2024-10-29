@@ -13,6 +13,7 @@ import fr.heriamc.bukkit.announce.AnnounceManager;
 import fr.heriamc.bukkit.chat.HeriaChatManager;
 import fr.heriamc.bukkit.chat.command.PrivateMessageCommand;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
+import fr.heriamc.bukkit.command.help.HelpCommand;
 import fr.heriamc.bukkit.friends.FriendCommands;
 import fr.heriamc.bukkit.game.HeriaGameManager;
 import fr.heriamc.bukkit.game.packet.GameCreationRequestPacket;
@@ -75,7 +76,7 @@ public class HeriaBukkit extends JavaPlugin {
         this.api.getMessaging().registerReceiver(HeriaPacketChannel.API, new BukkitPacketReceiver(this));
         this.api.getMessaging().send(new ServerRegisterPacket(server.getName(), server.getPort()));
 
-        this.api.getMessaging().send(new GameCreationRequestPacket(UUID.randomUUID(), "jumpscade-235", HeriaServerType.JUMPSCADE, new GameSize(GameSizeTemplate.SIZE_1V1)));
+        //this.api.getMessaging().send(new GameCreationRequestPacket(UUID.randomUUID(), "jumpscade-235", HeriaServerType.JUMPSCADE, new GameSize(GameSizeTemplate.SIZE_1V1)));
 
         server.setStatus(HeriaServerStatus.STARTED);
         this.api.getServerManager().save(server);
@@ -93,6 +94,7 @@ public class HeriaBukkit extends JavaPlugin {
         this.commandManager.registerCommand(new InstanceCommand(this));
         this.commandManager.registerCommand(new PrivateMessageCommand(this));
         this.commandManager.registerCommand(new FriendCommands(this));
+        this.commandManager.registerCommand(new HelpCommand(this.commandManager.getPermissionsCommands()));
         this.getServer().getScheduler().runTaskTimer(this, new TabUpdater(this), 0L, 20L);
 
         new ModManager(this);

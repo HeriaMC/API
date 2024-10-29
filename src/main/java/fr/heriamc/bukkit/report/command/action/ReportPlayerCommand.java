@@ -13,7 +13,7 @@ public class ReportPlayerCommand {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "report", power = HeriaRank.PLAYER)
+    @HeriaCommand(name = "report", power = HeriaRank.PLAYER, description = "Vous permet de report un joueur")
     public void onReportCommand(CommandArgs args){
 
     }

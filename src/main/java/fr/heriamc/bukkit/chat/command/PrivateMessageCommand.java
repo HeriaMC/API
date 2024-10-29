@@ -23,7 +23,7 @@ public class PrivateMessageCommand {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "message", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"msg", "tell"})
+    @HeriaCommand(name = "message", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"msg", "tell"}, description = "Vous permet d'envoyer un message privé")
     public void onMessageCommand(CommandArgs args){
         Player player = args.getPlayer();
         HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());
@@ -77,7 +77,7 @@ public class PrivateMessageCommand {
         bukkit.getApi().getPlayerManager().save(target);
     }
 
-    @HeriaCommand(name = "reply", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"r"})
+    @HeriaCommand(name = "reply", inGameOnly = true, power = HeriaRank.PLAYER, aliases = {"r"}, description = "Vous permet de répondre à un message privé")
     public void onReplyCommand(CommandArgs args){
         Player player = args.getPlayer();
         HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());

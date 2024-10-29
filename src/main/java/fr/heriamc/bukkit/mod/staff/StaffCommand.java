@@ -34,7 +34,8 @@ public class StaffCommand {
                 continue;
             }
 
-            sender.sendMessage("§a・ " + heriaPlayer.getRank().getPrefix() + heriaPlayer.getName() + "§f: §e" + heriaPlayer.getConnectedTo());
+            sender.sendMessage("§a・ " + heriaPlayer.getRank().getPrefix() + heriaPlayer.getName() + "§f: §e" + heriaPlayer.getConnectedTo()
+            + (heriaPlayer.isMod() ? " §8(§6en /mod§8)" : "" ) + (heriaPlayer.isVanished() ? " §8(§dvanish§8)" : ""));
         }
         sender.sendMessage(" ");
     }

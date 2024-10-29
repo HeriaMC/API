@@ -24,7 +24,7 @@ public class BrowsePrefixesCommand {
         bukkit.getMenuManager().open(new PrefixRequestsMenu(player, bukkit));
     }
 
-    @HeriaCommand(name = "removeprefix", power = HeriaRank.CUSTOM)
+    @HeriaCommand(name = "removeprefix", power = HeriaRank.CUSTOM, description = "Vous permet de retirer votre préfixe")
     public void onRemovePrefixCommand(CommandArgs args){
 
         Player player = args.getPlayer();

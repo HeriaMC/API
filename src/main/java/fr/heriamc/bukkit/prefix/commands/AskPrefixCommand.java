@@ -23,7 +23,7 @@ public class AskPrefixCommand {
         this.bukkit = bukkit;
     }
 
-    @HeriaCommand(name = "prefix", power = HeriaRank.CUSTOM)
+    @HeriaCommand(name = "prefix", power = HeriaRank.CUSTOM, description = "Vous permet de faire une demande de préfixe")
     public void onPrefixCommand(CommandArgs args){
         Player player = args.getPlayer();
 
@@ -112,7 +112,7 @@ public class AskPrefixCommand {
         return null;
     }
 
-    @HeriaCommand(name = "prefixstatus", power = HeriaRank.CUSTOM)
+    @HeriaCommand(name = "prefixstatus", power = HeriaRank.CUSTOM, description = "Vous permet de vérifier le statut de votre demande de préfixe")
     public void onPrefixStatusCommand(CommandArgs args){
         Player player = args.getPlayer();
 

@@ -11,6 +11,7 @@ public enum HeriaServerType {
     FREECUBE("freecube"),
     JUMPSCADE("jumpscade"),
     SHOOTCRAFT("shootcraft"),
+    SPLEEF("spleef")
 
     ;
 

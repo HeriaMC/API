@@ -17,9 +17,11 @@ public @interface HeriaCommand {
 
     String[] aliases() default {};
 
-    String description() default "";
+    String description() default "description par défaut";
 
     String usage() default "";
+
+    boolean showInHelp() default true;
 
     boolean inGameOnly() default false;
 }
