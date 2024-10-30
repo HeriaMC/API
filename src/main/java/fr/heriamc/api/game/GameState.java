@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.game;
+package fr.heriamc.api.game;
 
 import fr.heriamc.api.utils.HeriaChatColor;
 import fr.heriamc.api.utils.HeriaSkull;

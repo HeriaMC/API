@@ -19,6 +19,7 @@ import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
 import fr.heriamc.proxy.listeners.ProxyPlayerListener;
 import fr.heriamc.proxy.packet.ProxyPacketReceiver;
+import fr.heriamc.proxy.pool.HeriaPoolManager;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -38,6 +39,8 @@ public class HeriaProxy {
 
     private static HeriaProxy instance;
     private HeriaAPI api;
+
+    private HeriaPoolManager poolManager;
 
     @Inject
     public HeriaProxy(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
@@ -64,6 +67,8 @@ public class HeriaProxy {
 
         this.api = HeriaAPI.createHeriaAPI(config);
         this.api.getMessaging().registerReceiver(HeriaPacketChannel.API, new ProxyPacketReceiver(this));
+
+        this.poolManager = new HeriaPoolManager(this);
 
         this.server.getEventManager().register(this, new ProxyPlayerListener(this));
 
@@ -118,6 +123,10 @@ public class HeriaProxy {
 
     public Path getDataDirectory() {
         return dataDirectory;
+    }
+
+    public HeriaPoolManager getPoolManager() {
+        return poolManager;
     }
 
     public HeriaAPI getApi() {

@@ -6,7 +6,6 @@ import fr.heriamc.api.friends.HeriaFriendLinkManager;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
-import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
 import fr.heriamc.bukkit.announce.AnnounceManager;
@@ -15,10 +14,7 @@ import fr.heriamc.bukkit.chat.command.PrivateMessageCommand;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
 import fr.heriamc.bukkit.command.help.HelpCommand;
 import fr.heriamc.bukkit.friends.FriendCommands;
-import fr.heriamc.bukkit.game.HeriaGameManager;
-import fr.heriamc.bukkit.game.packet.GameCreationRequestPacket;
-import fr.heriamc.bukkit.game.size.GameSize;
-import fr.heriamc.bukkit.game.size.GameSizeTemplate;
+import fr.heriamc.api.game.HeriaGameManager;
 import fr.heriamc.bukkit.instance.InstanceCommand;
 import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.bukkit.mod.ModManager;
@@ -36,7 +32,6 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 import org.bukkit.plugin.java.annotation.plugin.author.Authors;
 
 import java.io.File;
-import java.util.UUID;
 
 @Plugin(name = "HeriaAPI", version = "1.0.0")
 @Authors(@Author("Karaam_"))
@@ -50,7 +45,6 @@ public class HeriaBukkit extends JavaPlugin {
     private HeriaCommandManager commandManager;
     private HeriaChatManager chatManager;
     private HeriaReportManager reportManager;
-    private HeriaGameManager heriaGameManager;
     private PrefixManager prefixManager;
     private AnnounceManager announceManager;
 
@@ -85,7 +79,6 @@ public class HeriaBukkit extends JavaPlugin {
         this.menuManager = new HeriaMenuManager(this);
         this.commandManager = new HeriaCommandManager(this);
         this.chatManager = new HeriaChatManager(this.getApi().getRedisConnection(), this);
-        this.heriaGameManager = new HeriaGameManager(this.getApi().getRedisConnection());
         this.reportManager = new HeriaReportManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
         this.prefixManager = new PrefixManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
         this.announceManager = new AnnounceManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
@@ -132,10 +125,6 @@ public class HeriaBukkit extends JavaPlugin {
 
     public HeriaFriendLinkManager getFriendLinkManager() {
         return api.getFriendLinkManager();
-    }
-
-    public HeriaGameManager getHeriaGameManager() {
-        return heriaGameManager;
     }
 
     public HeriaReportManager getReportManager() {

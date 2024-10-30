@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.game.size;
+package fr.heriamc.api.game.size;
 
 public class GameSize {
 

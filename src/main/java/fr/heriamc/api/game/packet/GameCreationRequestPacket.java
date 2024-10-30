@@ -1,9 +1,9 @@
-package fr.heriamc.bukkit.game.packet;
+package fr.heriamc.api.game.packet;
 
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServerType;
-import fr.heriamc.bukkit.game.size.GameSize;
+import fr.heriamc.api.game.size.GameSize;
 
 import java.util.UUID;
 

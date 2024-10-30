@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.game;
+package fr.heriamc.api.game;
 
 import fr.heriamc.api.data.SerializableData;
 import fr.heriamc.api.server.HeriaServerType;

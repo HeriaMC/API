@@ -1,11 +1,10 @@
-package fr.heriamc.bukkit.game;
+package fr.heriamc.api.game;
 
 import fr.heriamc.api.data.CacheDataManager;
 import fr.heriamc.api.data.redis.RedisConnection;
 import fr.heriamc.api.server.HeriaServerType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HeriaGameManager extends CacheDataManager<String, HeriaGamesList> {

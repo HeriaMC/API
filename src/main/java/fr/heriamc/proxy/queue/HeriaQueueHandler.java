@@ -2,11 +2,13 @@ package fr.heriamc.proxy.queue;
 
 import fr.heriamc.api.HeriaAPI;
 import fr.heriamc.api.queue.HeriaQueue;
+import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.user.HeriaPlayer;
+import fr.heriamc.api.game.size.GameSize;
+import fr.heriamc.proxy.HeriaProxy;
+import fr.heriamc.proxy.pool.HeriaPool;
 
-import java.util.Comparator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -14,10 +16,31 @@ public class HeriaQueueHandler {
 
     private final PriorityBlockingQueue<Set<UUID>> groupsQueue = new PriorityBlockingQueue<>(1000, Comparator.comparing(this::calculatePriority));
     private long lastProcess;
+
     private final HeriaQueue queue;
+    private HeriaPool pool;
+
+    public HeriaQueueHandler(String server){
+        this(new HeriaQueue(UUID.randomUUID(), HeriaQueue.QueueType.SERVER, null, null, new HashSet<>()));
+    }
+
+    public HeriaQueueHandler(String server, String gameName){
+        this(new HeriaQueue(UUID.randomUUID(), HeriaQueue.QueueType.GAME, server, gameName, new HashSet<>()));
+    }
+
+    public HeriaQueueHandler(HeriaServerType serverType){
+        this(new HeriaQueue(UUID.randomUUID(), HeriaQueue.QueueType.SERVER, null, null, new HashSet<>()));
+        this.pool = HeriaProxy.get().getPoolManager().getServerPool(serverType);
+    }
+
+    public HeriaQueueHandler(HeriaServerType serverType, GameSize gameSize){
+        this(new HeriaQueue(UUID.randomUUID(), HeriaQueue.QueueType.GAME, null, null, new HashSet<>()));
+        this.pool = HeriaProxy.get().getPoolManager().getGamePool(serverType, gameSize);
+    }
 
     public HeriaQueueHandler(HeriaQueue queue) {
         this.queue = queue;
+        this.pool = null;
     }
 
     public void disable(){

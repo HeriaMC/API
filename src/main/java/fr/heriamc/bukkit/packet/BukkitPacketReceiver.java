@@ -4,7 +4,7 @@ import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
-import fr.heriamc.bukkit.game.packet.GameCreatedPacket;
+import fr.heriamc.api.game.packet.GameCreatedPacket;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public class BukkitPacketReceiver implements HeriaPacketReceiver {
 

@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.game.packet;
+package fr.heriamc.api.game.packet;
 
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;

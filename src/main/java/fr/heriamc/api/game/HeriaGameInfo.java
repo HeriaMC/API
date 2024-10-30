@@ -1,6 +1,6 @@
-package fr.heriamc.bukkit.game;
+package fr.heriamc.api.game;
 
-import fr.heriamc.bukkit.game.size.GameSize;
+import fr.heriamc.api.game.size.GameSize;
 
 import java.util.List;
 import java.util.UUID;

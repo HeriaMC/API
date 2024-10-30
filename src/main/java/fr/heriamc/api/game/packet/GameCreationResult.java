@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.game.packet;
+package fr.heriamc.api.game.packet;
 
 public enum GameCreationResult {
 

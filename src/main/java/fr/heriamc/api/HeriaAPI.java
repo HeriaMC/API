@@ -3,6 +3,7 @@ package fr.heriamc.api;
 import fr.heriamc.api.data.mongo.MongoConnection;
 import fr.heriamc.api.data.redis.RedisConnection;
 import fr.heriamc.api.friends.HeriaFriendLinkManager;
+import fr.heriamc.api.game.HeriaGameManager;
 import fr.heriamc.api.group.HeriaGroupManager;
 import fr.heriamc.api.messaging.HeriaMessaging;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
@@ -33,6 +34,7 @@ public class HeriaAPI {
     private final HeriaUnlockableManager unlockableManager;
     private final HeriaPlayerResolverManager resolverManager;
     private final HeriaFriendLinkManager friendLinkManager;
+    private final HeriaGameManager heriaGameManager;
     private final HeriaGroupManager groupManager;
 
     public HeriaAPI(HeriaConfiguration configuration) {
@@ -50,6 +52,7 @@ public class HeriaAPI {
         this.unlockableManager = new HeriaUnlockableManager(this.redisConnection, this.mongoConnection);
         this.resolverManager = new HeriaPlayerResolverManager(this.redisConnection, this.mongoConnection);
         this.friendLinkManager = new HeriaFriendLinkManager(this.redisConnection, this.mongoConnection);
+        this.heriaGameManager = new HeriaGameManager(this.redisConnection);
         this.groupManager = new HeriaGroupManager(this.redisConnection);
 
         this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
@@ -114,6 +117,10 @@ public class HeriaAPI {
 
     public HeriaFriendLinkManager getFriendLinkManager() {
         return friendLinkManager;
+    }
+
+    public HeriaGameManager getHeriaGameManager() {
+        return heriaGameManager;
     }
 
     public HeriaGroupManager getGroupManager() {
