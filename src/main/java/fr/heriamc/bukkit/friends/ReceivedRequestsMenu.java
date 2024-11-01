@@ -6,7 +6,7 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.pagination.HeriaPaginationMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
-import fr.heriamc.bukkit.utils.TimeUtils;
+import fr.heriamc.api.utils.TimeUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

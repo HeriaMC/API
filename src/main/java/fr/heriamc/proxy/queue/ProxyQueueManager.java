@@ -77,16 +77,27 @@ public class ProxyQueueManager {
         System.out.println("Searching for handler with server: " + server + ", game: " + game + ", serverType: " + serverType + ", gameSize: " + gameSize);
 
         for (HeriaQueueHandler handler : this.queues) {
+            System.out.println("Checking handler: " + handler);
             HeriaQueue queue = handler.getQueue();
+            System.out.println("Handler queue: " + queue);
 
             boolean serverMatch = (queue.getServer() == null && server == null) || (queue.getServer() != null && queue.getServer().equals(server));
+            System.out.println("Server match: " + serverMatch + " (queue server: " + queue.getServer() + ", requested server: " + server + ")");
+
             boolean gameMatch = (queue.getGame() == null && game == null) || (queue.getGame() != null && queue.getGame().equals(game));
+            System.out.println("Game match: " + gameMatch + " (queue game: " + queue.getGame() + ", requested game: " + game + ")");
+
             boolean serverTypeMatch = (queue.getServerType() == null && serverType == null) || (queue.getServerType() != null && queue.getServerType().equals(serverType));
+            System.out.println("Server type match: " + serverTypeMatch + " (queue server type: " + queue.getServerType() + ", requested server type: " + serverType + ")");
+
             boolean gameSizeMatch = (queue.getGameSize() == null && gameSize == null) || (queue.getGameSize() != null && queue.getGameSize().equals(gameSize));
+            System.out.println("Game size match: " + gameSizeMatch + " (queue game size: " + queue.getGameSize() + ", requested game size: " + gameSize + ")");
 
             if (serverMatch && gameMatch && serverTypeMatch && gameSizeMatch) {
                 System.out.println("Matching handler found: " + handler);
                 return handler;
+            } else {
+                System.out.println("No match for this handler.");
             }
         }
 

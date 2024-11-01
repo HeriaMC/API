@@ -113,6 +113,14 @@ public class ItemBuilder {
         return this;
     }
 
+
+    public ItemBuilder allFlags(){
+        ItemMeta im = is.getItemMeta();
+        im.addItemFlags(ItemFlag.values());
+        is.setItemMeta(im);
+        return this;
+    }
+
     public ItemBuilder setLoreWithList(List<String> lore) {
         final List<String> toSet = new ArrayList<String>();
         final ItemMeta meta = this.is.getItemMeta();

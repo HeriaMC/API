@@ -4,7 +4,7 @@ import com.mongodb.client.model.Filters;
 import fr.heriamc.api.data.PersistentDataManager;
 import fr.heriamc.api.data.mongo.MongoConnection;
 import fr.heriamc.api.data.redis.RedisConnection;
-import fr.heriamc.bukkit.utils.TimeUtils;
+import fr.heriamc.api.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -66,7 +66,11 @@ public class HeriaAPI {
     public void onDisable(){
         this.heriaMessaging.stop();
 
+
         JedisPool pool = this.redisConnection.getPool();
+        pool.getResource().flushAll();
+        pool.getResource().scriptFlush();
+        pool.getResource().flushDB();
         pool.close();
         pool.destroy();
     }

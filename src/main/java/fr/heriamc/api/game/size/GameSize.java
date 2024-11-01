@@ -1,5 +1,7 @@
 package fr.heriamc.api.game.size;
 
+import java.util.Objects;
+
 public class GameSize {
 
     private String name;
@@ -70,4 +72,21 @@ public class GameSize {
         return maxPlayer == 999 ? 30 : maxPlayer;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        GameSize other = (GameSize) obj;
+        return minPlayer == other.minPlayer &&
+                maxPlayer == other.maxPlayer &&
+                teamNeeded == other.teamNeeded &&
+                teamMaxPlayer == other.teamMaxPlayer &&
+                (Objects.equals(name, other.name));
+    }
 }

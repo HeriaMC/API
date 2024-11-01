@@ -121,7 +121,7 @@ public class HeriaQueue implements SerializableData<UUID> {
     public int getPlayerPosition(UUID player){
         int i = 1;
         for (UUID uuid : this.players) {
-            if(uuid == player){
+            if(uuid.equals(player)){
                 return i;
             }
             i++;

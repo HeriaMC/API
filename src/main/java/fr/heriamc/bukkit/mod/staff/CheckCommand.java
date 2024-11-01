@@ -6,12 +6,8 @@ import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
-import fr.heriamc.bukkit.utils.TimeUtils;
+import fr.heriamc.api.utils.TimeUtils;
 import org.bukkit.entity.Player;
-
-import java.time.Instant;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
 
 public class CheckCommand {
 

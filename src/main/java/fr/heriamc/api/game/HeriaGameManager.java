@@ -31,7 +31,7 @@ public class HeriaGameManager extends CacheDataManager<String, HeriaGamesList> {
             }
 
             for (HeriaGameInfo gameInfo : game.getGames()) {
-                if(gameInfo.getGameSize() == gameSize){
+                if(gameInfo.getGameSize().equals(gameSize)){
                     games.add(gameInfo);
                 }
             }

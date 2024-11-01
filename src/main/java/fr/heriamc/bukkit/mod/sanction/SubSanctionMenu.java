@@ -6,7 +6,7 @@ import fr.heriamc.bukkit.chat.HeriaChatMessage;
 import fr.heriamc.bukkit.menu.HeriaMenu;
 import fr.heriamc.bukkit.report.HeriaReport;
 import fr.heriamc.bukkit.utils.ItemBuilder;
-import fr.heriamc.bukkit.utils.TimeUtils;
+import fr.heriamc.api.utils.TimeUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -10,8 +10,10 @@ import fr.heriamc.api.game.packet.GameCreatedPacket;
 import fr.heriamc.api.game.packet.GameCreationRequestPacket;
 import fr.heriamc.api.game.packet.GameCreationResult;
 import fr.heriamc.api.game.size.GameSize;
+import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.proxy.HeriaProxy;
 import fr.heriamc.proxy.utils.ProxyPacketUtil;
+import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,13 +121,12 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
 
     private boolean isOldCorrect(){
         System.out.println("Checking if the old game is correct...");
+        System.out.println("Old server name is: " + this.lastServer);
         HeriaGamesList heriaGamesList = proxy.getApi().getHeriaGameManager().get(this.lastServer);
 
-        if(heriaGamesList == null){
-
-        }
         HeriaGameInfo game = null;
         for (HeriaGameInfo gameInfo : heriaGamesList.getGames()) {
+            System.out.println("Found game info: " + gameInfo);
             if(gameInfo.getGameName().equals(this.lastCreated.get(0))){
                 game = gameInfo;
                 System.out.println("Found matching game: " + gameInfo.getGameName());
@@ -137,11 +138,13 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
             return false;
         }
 
-        if(game.getPlayers().size() >= this.gameSize.getMaxPlayer()){
+        if(game.getAlivePlayersCount() >= this.gameSize.getMaxPlayer()){
             System.out.println("Game is full, returning false.");
             return false;
         }
 
+        System.out.println("Game state is " + game.getState());
+        //System.out.println("Json game is " + GsonUtils.get().toJson(game));
         boolean stateValid = game.getState().is(GameState.WAIT, GameState.ALWAYS_PLAYING, GameState.STARTING);
         System.out.println("Game state is valid: " + stateValid);
         return stateValid;

@@ -57,6 +57,7 @@ public class ServerPool implements HeriaPool {
 
         if(!isOldCorrect()){
             lastServer = null;
+            createServer();
         }
 
         return packets;
@@ -68,8 +69,6 @@ public class ServerPool implements HeriaPool {
         if(server.getConnected().size() >= HeriaQueueHandler.MAX_SERVER_SIZE){
             return false;
         }
-
-        createServer();
 
         return true;
     }

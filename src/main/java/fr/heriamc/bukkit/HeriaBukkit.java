@@ -14,13 +14,12 @@ import fr.heriamc.bukkit.chat.command.PrivateMessageCommand;
 import fr.heriamc.bukkit.command.HeriaCommandManager;
 import fr.heriamc.bukkit.command.help.HelpCommand;
 import fr.heriamc.bukkit.friends.FriendCommands;
-import fr.heriamc.api.game.HeriaGameManager;
 import fr.heriamc.bukkit.instance.InstanceCommand;
+import fr.heriamc.bukkit.instance.command.HubCommand;
 import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.bukkit.mod.ModManager;
 import fr.heriamc.bukkit.packet.BukkitPacketReceiver;
 import fr.heriamc.bukkit.prefix.PrefixManager;
-import fr.heriamc.bukkit.queue.BukkitQueueManager;
 import fr.heriamc.bukkit.report.HeriaReportManager;
 import fr.heriamc.bukkit.tab.TabUpdater;
 import fr.heriamc.bukkit.utils.bossbar.BossBarManager;
@@ -48,7 +47,6 @@ public class HeriaBukkit extends JavaPlugin {
     private HeriaReportManager reportManager;
     private PrefixManager prefixManager;
     private AnnounceManager announceManager;
-    private BukkitQueueManager bukkitQueueManager;
 
     @Override
     public void onEnable() {
@@ -84,13 +82,13 @@ public class HeriaBukkit extends JavaPlugin {
         this.reportManager = new HeriaReportManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
         this.prefixManager = new PrefixManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
         this.announceManager = new AnnounceManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
-        this.bukkitQueueManager = new BukkitQueueManager(this);
-
 
         this.commandManager.registerCommand(new InstanceCommand(this));
         this.commandManager.registerCommand(new PrivateMessageCommand(this));
         this.commandManager.registerCommand(new FriendCommands(this));
         this.commandManager.registerCommand(new HelpCommand(this.commandManager.getPermissionsCommands()));
+        this.commandManager.registerCommand(new HubCommand(this));
+
         this.getServer().getScheduler().runTaskTimer(this, new TabUpdater(this), 0L, 20L);
 
         new ModManager(this);
@@ -142,7 +140,4 @@ public class HeriaBukkit extends JavaPlugin {
         return announceManager;
     }
 
-    public BukkitQueueManager getBukkitQueueManager() {
-        return bukkitQueueManager;
-    }
 }

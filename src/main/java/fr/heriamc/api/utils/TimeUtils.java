@@ -1,4 +1,6 @@
-package fr.heriamc.bukkit.utils;
+package fr.heriamc.api.utils;
+
+import fr.heriamc.bukkit.utils.TimeUnit;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,7 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class TimeUtils {
+public final class TimeUtils {
 
     public static String getTimeToString(Long millisecondes) {
         long diff1 = millisecondes.longValue() / 1000L;
@@ -34,6 +36,23 @@ public class TimeUtils {
         if (diff > 60L)
             return "00:" + minutesStr + ":" + secondesStr;
         return "00:00:" + secondesStr;
+    }
+
+    public static String formatDurationMillisToString(long millis) {
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        seconds %= 60;
+        minutes %= 60;
+
+        if (hours > 0) {
+            return String.format("%dh%02dm%02ds", hours, minutes, seconds);
+        } else if (minutes > 0) {
+            return String.format("%dm%02ds", minutes, seconds);
+        } else {
+            return String.format("%ds", seconds);
+        }
     }
 
     public static String getStringTimeRestant(Long millisecondes) {

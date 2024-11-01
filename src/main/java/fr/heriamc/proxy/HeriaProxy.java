@@ -75,7 +75,8 @@ public class HeriaProxy {
 
         this.server.getEventManager().register(this, new ProxyPlayerListener(this));
 
-        this.api.getServerCreator().createServer(HeriaServerType.HUB, null);
+        this.poolManager.getServerPool(HeriaServerType.HUB);
+        //this.api.getServerCreator().createServer(HeriaServerType.HUB, null);
     }
 
     @Subscribe
@@ -108,6 +109,7 @@ public class HeriaProxy {
                 throw new RuntimeException(e);
             }
 
+            this.api.getRedisConnection().getResource().flushAll();
             this.api.onDisable();
         }
     }

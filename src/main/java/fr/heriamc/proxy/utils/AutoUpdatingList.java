@@ -19,14 +19,13 @@ public class AutoUpdatingList<T> {
         this.comparator = comparator;
     }
 
-    // Ajoute un élément et trie la liste après l'ajout
     public synchronized void add(T element) {
         list.add(element);
         Collections.sort(list, comparator);
     }
 
     public synchronized List<T> getList() {
-        return new ArrayList<>(list); // Retourne une copie pour éviter les modifications concurrentes
+        return new ArrayList<>(list);
     }
 
     public synchronized T get(int index) {
@@ -39,6 +38,6 @@ public class AutoUpdatingList<T> {
 
     public synchronized void remove(T element) {
         list.remove(element);
-        Collections.sort(list, comparator); // Trie à nouveau après suppression
+        Collections.sort(list, comparator);
     }
 }
