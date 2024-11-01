@@ -7,6 +7,8 @@ import fr.heriamc.api.game.HeriaGameManager;
 import fr.heriamc.api.group.HeriaGroupManager;
 import fr.heriamc.api.messaging.HeriaMessaging;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
+import fr.heriamc.api.queue.HeriaQueue;
+import fr.heriamc.api.queue.HeriaQueueManager;
 import fr.heriamc.api.sanction.HeriaSanctionManager;
 import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.creator.HeriaServerCreator;
@@ -36,6 +38,7 @@ public class HeriaAPI {
     private final HeriaFriendLinkManager friendLinkManager;
     private final HeriaGameManager heriaGameManager;
     private final HeriaGroupManager groupManager;
+    private final HeriaQueueManager queueManager;
 
     public HeriaAPI(HeriaConfiguration configuration) {
         instance = this;
@@ -54,6 +57,7 @@ public class HeriaAPI {
         this.friendLinkManager = new HeriaFriendLinkManager(this.redisConnection, this.mongoConnection);
         this.heriaGameManager = new HeriaGameManager(this.redisConnection);
         this.groupManager = new HeriaGroupManager(this.redisConnection);
+        this.queueManager = new HeriaQueueManager(this.redisConnection);
 
         this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
         this.heriaMessaging.send(new WebCreditsPacket("Karaam_", 15.50F));
@@ -125,5 +129,9 @@ public class HeriaAPI {
 
     public HeriaGroupManager getGroupManager() {
         return groupManager;
+    }
+
+    public HeriaQueueManager getQueueManager() {
+        return queueManager;
     }
 }

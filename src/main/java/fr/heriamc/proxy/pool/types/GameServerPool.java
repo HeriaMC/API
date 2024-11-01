@@ -1,5 +1,7 @@
 package fr.heriamc.proxy.pool.types;
 
+import fr.heriamc.api.game.GameState;
+import fr.heriamc.api.game.HeriaGameInfo;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.api.server.HeriaServerType;
@@ -7,9 +9,9 @@ import fr.heriamc.api.game.HeriaGamesList;
 import fr.heriamc.api.game.packet.GameCreatedPacket;
 import fr.heriamc.api.game.packet.GameCreationRequestPacket;
 import fr.heriamc.api.game.packet.GameCreationResult;
-import fr.heriamc.api.game.packet.GameJoinPacket;
 import fr.heriamc.api.game.size.GameSize;
 import fr.heriamc.proxy.HeriaProxy;
+import fr.heriamc.proxy.utils.ProxyPacketUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,100 +23,94 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
     private final GameSize gameSize;
 
     private boolean creatingGames = true;
-    private boolean waitingServer;
+    private boolean waitingServer = true;
 
-    private List<String> lastCreated;
+    private final List<String> lastCreated = new ArrayList<>();
     private UUID lastRequestID;
-
-    private int gamesToMake;
-    private int remainingPlaces;
 
     public GameServerPool(HeriaProxy proxy, HeriaServerType serverType, GameSize gameSize) {
         super(proxy, serverType);
         this.gameSize = gameSize;
-        this.remainingPlaces = gameSize.getMaxPlayer();
-    }
+        System.out.println("GameServerPool created with GameSize: " + gameSize);
 
-    @Override
-    public void run(){
-        proxy.getServer().getScheduler().buildTask(proxy, (scheduledTask -> {
-            if(gamesToMake == 0){
-                return;
-            }
-
+        this.proxy.getServer().getScheduler().buildTask(proxy, (scheduledTask -> {
             if(waitingServer && isServerEnabled){
-                this.waitingServer = false;
-                this.creatingGames = true;
+                waitingServer = false;
             }
 
-            createGame();
+            if(!this.isAvailable()){
+                createGame();
+            }
         })).repeat(500, TimeUnit.MILLISECONDS).schedule();
     }
 
-    @Override
-    public void createForPlayers(int players){
-        int maxPlayer = gameSize.getMaxPlayer();
-        int result = (players / maxPlayer) + 1;
-
-        this.gamesToMake += result;
-    }
-
     public void createGame(){
-        if(lastServer == null){
+        System.out.println("Attempting to create game...");
+
+        /*if(lastServer == null){
+            System.out.println("No server found, creating a new server.");
             createServer();
             this.waitingServer = true;
-        }
+        }*/
 
         if(waitingServer){
+            System.out.println("Waiting for server to become available...");
             return;
         }
 
         if(!creatingGames){
+            System.out.println("Game creation paused.");
             return;
         }
 
         this.lastRequestID = UUID.randomUUID();
+        System.out.println("Sending game creation request with ID: " + lastRequestID);
         this.proxy.getApi().getMessaging().send(new GameCreationRequestPacket(this.lastRequestID, lastServer, serverType, gameSize));
         this.creatingGames = false;
     }
 
     @Override
     public void execute(String channel, HeriaPacket packet) {
+        System.out.println("Executing packet received on channel: " + channel);
+
         if(!(packet instanceof GameCreatedPacket gamePacket)){
+            System.out.println("Packet is not an instance of GameCreatedPacket, ignoring...");
             return;
         }
 
         if(!gamePacket.getRequestID().equals(lastRequestID)){
+            System.out.println("Packet request ID does not match last request ID, ignoring...");
             return;
         }
 
         GameCreationResult result = gamePacket.getResult();
+        System.out.println("Game creation result: " + result);
 
         if(result == GameCreationResult.FAIL){
+            System.out.println("Game creation failed, creating a new server.");
             this.createServer();
             this.waitingServer = true;
-
             return;
         }
 
-
         this.creatingGames = true;
         this.lastCreated.add(gamePacket.getGameName());
-        this.gamesToMake -= 1;
+        System.out.println("Game created successfully with name: " + gamePacket.getGameName());
     }
 
     @Override
     public boolean isAvailable() {
+        System.out.println("Checking availability, lastCreated is empty: " + this.lastCreated.isEmpty());
         return !this.lastCreated.isEmpty();
     }
 
     @Override
     public List<HeriaPacket> createPackets(UUID player) {
-        List<HeriaPacket> packets = new ArrayList<>();
-        packets.add(new GameJoinPacket(player, lastCreated.get(0), false));
-        packets.addAll(super.createPackets(player));
+        System.out.println("Creating packets for player: " + player);
+        List<HeriaPacket> packets = ProxyPacketUtil.buildJoinGame(player, lastServer, lastCreated.get(0), false);
 
         if(!isOldCorrect()){
+            System.out.println("Old game is no longer valid, removing and creating a new game.");
             lastCreated.remove(0);
         }
 
@@ -122,7 +118,44 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
     }
 
     private boolean isOldCorrect(){
-        //HeriaGamesList heriaGamesList = proxy.getApi().getga
-        return false;
+        System.out.println("Checking if the old game is correct...");
+        HeriaGamesList heriaGamesList = proxy.getApi().getHeriaGameManager().get(this.lastServer);
+
+        if(heriaGamesList == null){
+
+        }
+        HeriaGameInfo game = null;
+        for (HeriaGameInfo gameInfo : heriaGamesList.getGames()) {
+            if(gameInfo.getGameName().equals(this.lastCreated.get(0))){
+                game = gameInfo;
+                System.out.println("Found matching game: " + gameInfo.getGameName());
+            }
+        }
+
+        if(game == null){
+            System.out.println("Game is null, returning false.");
+            return false;
+        }
+
+        if(game.getPlayers().size() >= this.gameSize.getMaxPlayer()){
+            System.out.println("Game is full, returning false.");
+            return false;
+        }
+
+        boolean stateValid = game.getState().is(GameState.WAIT, GameState.ALWAYS_PLAYING, GameState.STARTING);
+        System.out.println("Game state is valid: " + stateValid);
+        return stateValid;
+    }
+
+    @Override
+    public HeriaServerType getServerType() {
+        System.out.println("Getting server type: " + super.getServerType());
+        return super.getServerType();
+    }
+
+    @Override
+    public GameSize getGameSize() {
+        System.out.println("Getting game size: " + gameSize);
+        return gameSize;
     }
 }

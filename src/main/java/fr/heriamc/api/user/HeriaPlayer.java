@@ -41,6 +41,12 @@ public class HeriaPlayer implements SerializableData<UUID> {
     @NonPersistantData
     private NickPlayerData nickData;
 
+    @NonPersistantData
+    private UUID queue;
+
+    @NonPersistantData
+    private long joinQueueTime;
+
 
     private float coins;
     private int hosts;
@@ -48,7 +54,7 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public HeriaPlayer(UUID id, String name, HeriaRank rank, long firstConnection, String customPrefix, String clientBrand,
                        String connectedTo, UUID reply, boolean removedTag, boolean mod, boolean vanished, boolean hasModItems,
-                       NickPlayerData nickData, float coins, int hosts, float credits) {
+                       NickPlayerData nickData, UUID queue, long joinQueueTime, float coins, int hosts, float credits) {
 
         this.id = id;
         this.name = name;
@@ -63,6 +69,8 @@ public class HeriaPlayer implements SerializableData<UUID> {
         this.vanished = vanished;
         this.hasModItems = hasModItems;
         this.nickData = nickData;
+        this.queue = queue;
+        this.joinQueueTime = joinQueueTime;
         this.coins = coins;
         this.hosts = hosts;
         this.credits = credits;
@@ -230,6 +238,28 @@ public class HeriaPlayer implements SerializableData<UUID> {
 
     public HeriaPlayer setHasModItems(boolean hasModItems) {
         this.hasModItems = hasModItems;
+        return this;
+    }
+
+    public UUID getQueue() {
+        return queue;
+    }
+
+    public HeriaPlayer setQueue(UUID queue) {
+        this.queue = queue;
+        return this;
+    }
+
+    public boolean isInQueue(){
+        return this.queue != null;
+    }
+
+    public long getJoinQueueTime() {
+        return joinQueueTime;
+    }
+
+    public HeriaPlayer setJoinQueueTime(long joinQueueTime) {
+        this.joinQueueTime = joinQueueTime;
         return this;
     }
 

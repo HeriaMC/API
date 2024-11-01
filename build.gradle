@@ -38,6 +38,7 @@ dependencies {
     compileOnly 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
     annotationProcessor 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
 
+    implementation 'commons-io:commons-io:2.17.0'
     implementation 'net.wesjd:anvilgui:1.10.2-SNAPSHOT'
 }
 

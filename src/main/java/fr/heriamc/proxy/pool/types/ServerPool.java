@@ -1,13 +1,14 @@
 package fr.heriamc.proxy.pool.types;
 
+import fr.heriamc.api.game.size.GameSize;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.proxy.HeriaProxy;
-import fr.heriamc.proxy.packet.SendPlayerPacket;
 import fr.heriamc.proxy.pool.HeriaPool;
+import fr.heriamc.proxy.queue.HeriaQueueHandler;
+import fr.heriamc.proxy.utils.ProxyPacketUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -20,28 +21,11 @@ public class ServerPool implements HeriaPool {
     protected String lastServer;
     protected boolean isServerEnabled;
 
-    private int serversToCreate;
-
     public ServerPool(HeriaProxy proxy, HeriaServerType serverType) {
         this.proxy = proxy;
         this.serverType = serverType;
 
-        run();
-    }
-
-    @Override
-    public void run() {
-        proxy.getServer().getScheduler().buildTask(proxy, (scheduledTask -> {
-            if(!isServerEnabled){
-                return;
-            }
-
-        })).repeat(500, TimeUnit.MILLISECONDS).schedule();
-    }
-
-    @Override
-    public void createForPlayers(int players) {
-
+        createServer();
     }
 
     public void createServer(){
@@ -62,8 +46,6 @@ public class ServerPool implements HeriaPool {
         }).repeat(1, TimeUnit.SECONDS).schedule();
     }
 
-
-
     @Override
     public boolean isAvailable() {
         return lastServer != null && isServerEnabled;
@@ -71,8 +53,7 @@ public class ServerPool implements HeriaPool {
 
     @Override
     public List<HeriaPacket> createPackets(UUID player) {
-        List<HeriaPacket> packets = new ArrayList<>();
-        packets.add(new SendPlayerPacket(player, lastServer));
+        List<HeriaPacket> packets = ProxyPacketUtil.buildJoinServer(player, lastServer);
 
         if(!isOldCorrect()){
             lastServer = null;
@@ -82,6 +63,24 @@ public class ServerPool implements HeriaPool {
     }
 
     private boolean isOldCorrect(){
-        return false;
+        HeriaServer server = proxy.getApi().getServerManager().get(this.lastServer);
+
+        if(server.getConnected().size() >= HeriaQueueHandler.MAX_SERVER_SIZE){
+            return false;
+        }
+
+        createServer();
+
+        return true;
+    }
+
+    @Override
+    public HeriaServerType getServerType() {
+        return serverType;
+    }
+
+    @Override
+    public GameSize getGameSize() {
+        return null;
     }
 }

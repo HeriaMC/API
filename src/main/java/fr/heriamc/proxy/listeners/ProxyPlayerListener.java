@@ -18,6 +18,7 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.api.user.unlock.HeriaUnlockable;
 import fr.heriamc.proxy.HeriaProxy;
+import fr.heriamc.proxy.queue.HeriaQueueHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -128,6 +129,14 @@ public class ProxyPlayerListener {
 
             this.proxy.getApi().getPlayerManager().saveInPersistant(cached);
             this.proxy.getApi().getPlayerManager().remove(cached.getIdentifier());
+
+            if(cached.isInQueue()){
+                HeriaQueueHandler handler = proxy.getQueueManager().getHandler(player.getUniqueId());
+
+                if(handler != null){
+                    handler.removePlayer(player.getUniqueId());
+                }
+            }
             System.out.println("Sauvegarde réussie.");
         }
 

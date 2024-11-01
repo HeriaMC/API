@@ -20,6 +20,7 @@ import fr.heriamc.bukkit.menu.HeriaMenuManager;
 import fr.heriamc.bukkit.mod.ModManager;
 import fr.heriamc.bukkit.packet.BukkitPacketReceiver;
 import fr.heriamc.bukkit.prefix.PrefixManager;
+import fr.heriamc.bukkit.queue.BukkitQueueManager;
 import fr.heriamc.bukkit.report.HeriaReportManager;
 import fr.heriamc.bukkit.tab.TabUpdater;
 import fr.heriamc.bukkit.utils.bossbar.BossBarManager;
@@ -47,6 +48,7 @@ public class HeriaBukkit extends JavaPlugin {
     private HeriaReportManager reportManager;
     private PrefixManager prefixManager;
     private AnnounceManager announceManager;
+    private BukkitQueueManager bukkitQueueManager;
 
     @Override
     public void onEnable() {
@@ -82,6 +84,7 @@ public class HeriaBukkit extends JavaPlugin {
         this.reportManager = new HeriaReportManager(this.getApi().getRedisConnection(), this.getApi().getMongoConnection());
         this.prefixManager = new PrefixManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
         this.announceManager = new AnnounceManager(this.api.getRedisConnection(), this.api.getMongoConnection(), this);
+        this.bukkitQueueManager = new BukkitQueueManager(this);
 
 
         this.commandManager.registerCommand(new InstanceCommand(this));
@@ -137,5 +140,9 @@ public class HeriaBukkit extends JavaPlugin {
 
     public AnnounceManager getAnnounceManager() {
         return announceManager;
+    }
+
+    public BukkitQueueManager getBukkitQueueManager() {
+        return bukkitQueueManager;
     }
 }

@@ -46,7 +46,7 @@ public class HeriaGamesList implements SerializableData<String>{
 
     @Override
     public String getIdentifier() {
-        return this.serverType.getName();
+        return this.serverName;
     }
 
     @Override

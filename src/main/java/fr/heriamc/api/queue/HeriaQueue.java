@@ -1,30 +1,40 @@
 package fr.heriamc.api.queue;
 
 import fr.heriamc.api.HeriaAPI;
+import fr.heriamc.api.data.SerializableData;
+import fr.heriamc.api.game.size.GameSize;
+import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.bukkit.HeriaBukkit;
 
 import java.util.Set;
 import java.util.UUID;
 
-public class HeriaQueue {
+public class HeriaQueue implements SerializableData<UUID> {
 
     private UUID id;
-    private QueueType type;
+
+    private QueueType queueType;
+    private QueueServerType queueServerType;
+
+    private HeriaServerType serverType;
+    private GameSize gameSize;
 
     private String server;
     private String game;
 
     private Set<UUID> players;
 
-    public HeriaQueue(UUID id, QueueType type, String server, String game, Set<UUID> players) {
+    public HeriaQueue(UUID id, QueueType queueType, QueueServerType queueServerType, HeriaServerType serverType, GameSize gameSize, String server, String game, Set<UUID> players) {
         this.id = id;
-        this.type = type;
+        this.queueType = queueType;
+        this.queueServerType = queueServerType;
+        this.serverType = serverType;
+        this.gameSize = gameSize;
         this.server = server;
         this.game = game;
         this.players = players;
     }
-
 
     public UUID getId() {
         return id;
@@ -35,12 +45,39 @@ public class HeriaQueue {
         return this;
     }
 
-    public QueueType getType() {
-        return type;
+    public QueueType getQueueType() {
+        return queueType;
     }
 
-    public HeriaQueue setType(QueueType type) {
-        this.type = type;
+    public HeriaQueue setQueueType(QueueType queueType) {
+        this.queueType = queueType;
+        return this;
+    }
+
+    public QueueServerType getQueueServerType() {
+        return queueServerType;
+    }
+
+    public HeriaQueue setQueueServerType(QueueServerType queueServerType) {
+        this.queueServerType = queueServerType;
+        return this;
+    }
+
+    public HeriaServerType getServerType() {
+        return serverType;
+    }
+
+    public HeriaQueue setServerType(HeriaServerType serverType) {
+        this.serverType = serverType;
+        return this;
+    }
+
+    public GameSize getGameSize() {
+        return gameSize;
+    }
+
+    public HeriaQueue setGameSize(GameSize gameSize) {
+        this.gameSize = gameSize;
         return this;
     }
 
@@ -71,11 +108,34 @@ public class HeriaQueue {
         return this;
     }
 
-    public Set<Set<UUID>> getTotalPlayers(){
-        return null;
+    @Override
+    public UUID getIdentifier() {
+        return id;
     }
 
+    @Override
+    public void setIdentifier(UUID identifier) {
+        this.id = identifier;
+    }
+
+    public int getPlayerPosition(UUID player){
+        int i = 1;
+        for (UUID uuid : this.players) {
+            if(uuid == player){
+                return i;
+            }
+            i++;
+        }
+
+        return -1;
+    }
     public enum QueueType {
+
+        KNOWN,
+        UNKNOWN
+
+    }
+    public enum QueueServerType {
 
         GAME,
         SERVER

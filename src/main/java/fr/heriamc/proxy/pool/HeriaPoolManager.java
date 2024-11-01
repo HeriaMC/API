@@ -1,30 +1,47 @@
 package fr.heriamc.proxy.pool;
 
+import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
 import fr.heriamc.api.server.HeriaServerType;
 import fr.heriamc.api.game.size.GameSize;
 import fr.heriamc.proxy.HeriaProxy;
+import fr.heriamc.proxy.pool.types.GameServerPool;
+import fr.heriamc.proxy.pool.types.ServerPool;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HeriaPoolManager {
 
     private final HeriaProxy proxy;
-    private final List<HeriaPool> pools = new ArrayList<>();
+    private final Set<HeriaPool> pools = ConcurrentHashMap.newKeySet();
 
     public HeriaPoolManager(HeriaProxy proxy) {
         this.proxy = proxy;
     }
 
     public HeriaPool getServerPool(HeriaServerType type){
+        for (HeriaPool pool : pools) {
+            if(pool.getServerType() == type && pool.getGameSize() == null){
+                return pool;
+            }
+        }
 
-
-        return null;
+        ServerPool serverPool = new ServerPool(proxy, type);
+        pools.add(serverPool);
+        return serverPool;
     }
 
     public HeriaPool getGamePool(HeriaServerType type, GameSize gameSize){
+        for (HeriaPool pool : pools) {
+            if(pool.getServerType() == type && pool.getGameSize() == gameSize){
+                return pool;
+            }
+        }
 
-        return null;
+        GameServerPool gamePool = new GameServerPool(proxy, type, gameSize);
+        pools.add(gamePool);
+        this.proxy.getApi().getMessaging().registerReceiver(HeriaPacketChannel.GAME, gamePool);
+        return gamePool;
     }
 
 
