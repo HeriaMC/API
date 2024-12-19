@@ -24,7 +24,7 @@ import fr.heriamc.bukkit.report.HeriaReportManager;
 import fr.heriamc.bukkit.tab.TabUpdater;
 import fr.heriamc.bukkit.utils.bossbar.BossBarManager;
 import fr.heriamc.bukkit.vip.VipManager;
-import fr.heriamc.proxy.packet.ServerRegisterPacket;
+import fr.heriamc.proxy.packet.model.ServerRegisterPacket;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;

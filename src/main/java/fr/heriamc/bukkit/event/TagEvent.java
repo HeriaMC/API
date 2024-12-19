@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.vip.tag;
+package fr.heriamc.bukkit.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

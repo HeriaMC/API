@@ -5,6 +5,7 @@ import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
+import fr.heriamc.bukkit.event.TagEvent;
 import org.bukkit.entity.Player;
 
 public class TagCommand {
@@ -21,18 +22,13 @@ public class TagCommand {
 
         HeriaPlayer heriaPlayer = bukkit.getApi().getPlayerManager().get(player.getUniqueId());
 
-        if(heriaPlayer.isRemovedTag()){
-            heriaPlayer.setRemovedTag(false);
-            player.sendMessage("§aVous avez réactivé votre grade");
-            bukkit.getApi().getPlayerManager().save(heriaPlayer);
-            bukkit.getServer().getPluginManager().callEvent(new TagEvent(player, false));
-            return;
-        }
+        boolean isTagRemoved = heriaPlayer.isRemovedTag();
+        heriaPlayer.setRemovedTag(!isTagRemoved);
 
-        heriaPlayer.setRemovedTag(true);
-        player.sendMessage("§cVous avez désactivé votre grade");
+        String message = isTagRemoved ? "§aVous avez réactivé votre grade" : "§cVous avez désactivé votre grade";
+        player.sendMessage(message);
+
         bukkit.getApi().getPlayerManager().save(heriaPlayer);
-        bukkit.getServer().getPluginManager().callEvent(new TagEvent(player, true));
-
+        bukkit.getServer().getPluginManager().callEvent(new TagEvent(player, !isTagRemoved));
     }
 }

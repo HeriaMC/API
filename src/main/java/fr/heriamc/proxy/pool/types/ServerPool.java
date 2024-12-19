@@ -21,6 +21,8 @@ public class ServerPool implements HeriaPool {
     protected String lastServer;
     protected boolean isServerEnabled;
 
+    protected boolean stop = false;
+
     public ServerPool(HeriaProxy proxy, HeriaServerType serverType) {
         this.proxy = proxy;
         this.serverType = serverType;
@@ -29,6 +31,10 @@ public class ServerPool implements HeriaPool {
     }
 
     public void createServer(){
+        if(this.stop){
+            return;
+        }
+
         this.lastServer = proxy.getApi().getServerCreator().createServer(serverType, null);
         this.isServerEnabled = false;
 
@@ -65,12 +71,24 @@ public class ServerPool implements HeriaPool {
 
     private boolean isOldCorrect(){
         HeriaServer server = proxy.getApi().getServerManager().get(this.lastServer);
+        return server.getConnected().size() < HeriaQueueHandler.MAX_SERVER_SIZE;
+    }
 
-        if(server.getConnected().size() >= HeriaQueueHandler.MAX_SERVER_SIZE){
-            return false;
+    @Override
+    public void onPacket(String channel, HeriaPacket packet) {
+        //null
+    }
+
+    @Override
+    public void onInstanceStop(String instanceName) {
+        if(instanceName.equals(this.lastServer)){
+            this.createServer();
         }
+    }
 
-        return true;
+    @Override
+    public void stop() {
+        this.stop = true;
     }
 
     @Override

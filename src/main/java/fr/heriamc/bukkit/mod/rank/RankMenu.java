@@ -5,7 +5,7 @@ import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.HeriaMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
-import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
+import fr.heriamc.proxy.packet.model.ProxyPlayerMessagePacket;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

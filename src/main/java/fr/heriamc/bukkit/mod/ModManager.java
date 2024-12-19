@@ -11,6 +11,7 @@ import fr.heriamc.bukkit.mod.sanction.types.KickCommand;
 import fr.heriamc.bukkit.mod.sanction.types.MuteCommand;
 import fr.heriamc.bukkit.mod.sanction.types.WarnCommand;
 import fr.heriamc.bukkit.mod.staff.*;
+import fr.heriamc.bukkit.report.command.user.ReportPlayerCommand;
 import fr.heriamc.bukkit.report.command.chat.ReportChatListCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ public record ModManager(HeriaBukkit bukkit) {
 
         bukkit.getCommandManager().registerCommand(new RankCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new ReportChatListCommand(bukkit));
+        bukkit.getCommandManager().registerCommand(new ReportPlayerCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new SanctionCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new StaffCommand(bukkit));
         bukkit.getCommandManager().registerCommand(new TeleportHereCommand(bukkit));

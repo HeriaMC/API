@@ -17,7 +17,9 @@ import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.api.utils.HeriaFileUtils;
+import fr.heriamc.proxy.listeners.ProxyPingListener;
 import fr.heriamc.proxy.listeners.ProxyPlayerListener;
+import fr.heriamc.proxy.listeners.ProxyServerListener;
 import fr.heriamc.proxy.packet.ProxyPacketReceiver;
 import fr.heriamc.proxy.pool.HeriaPoolManager;
 import fr.heriamc.proxy.queue.ProxyQueueManager;
@@ -74,6 +76,8 @@ public class HeriaProxy {
         this.queueManager = new ProxyQueueManager(this);
 
         this.server.getEventManager().register(this, new ProxyPlayerListener(this));
+        this.server.getEventManager().register(this, new ProxyServerListener(this));
+        this.server.getEventManager().register(this, new ProxyPingListener(this));
 
         this.poolManager.getServerPool(HeriaServerType.HUB);
         //this.api.getServerCreator().createServer(HeriaServerType.HUB, null);
@@ -83,6 +87,10 @@ public class HeriaProxy {
     public void onProxyShutdown(ProxyShutdownEvent event){
         if(this.api != null){
             int serverCount = 0;
+
+            this.poolManager.stopMakingServers();
+            this.queueManager.killAll();
+
             for (HeriaServer heriaServer : this.api.getServerManager().getAllInCache()) {
                 this.api.getServerCreator().deleteServer(heriaServer.getName());
                 this.api.getServerManager().remove(heriaServer.getName());
@@ -110,6 +118,8 @@ public class HeriaProxy {
             }
 
             this.api.getRedisConnection().getResource().flushAll();
+            this.api.getRedisConnection().getResource().scriptFlush();
+            this.api.getRedisConnection().getResource().flushDB();
             this.api.onDisable();
         }
     }

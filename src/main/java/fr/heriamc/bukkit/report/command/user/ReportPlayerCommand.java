@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.report.command.action;
+package fr.heriamc.bukkit.report.command.user;
 
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
@@ -15,6 +15,11 @@ public class ReportPlayerCommand {
 
     @HeriaCommand(name = "report", power = HeriaRank.PLAYER, description = "Vous permet de report un joueur")
     public void onReportCommand(CommandArgs args){
+
+    }
+
+    @HeriaCommand(name = "browsereports", power = HeriaRank.MOD, description = "Vous permet de report un joueur")
+    public void onBrowseReportrCommand(CommandArgs args){
 
     }
 }

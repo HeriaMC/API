@@ -5,6 +5,7 @@ import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.api.utils.GsonUtils;
 import redis.clients.jedis.JedisPubSub;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class HeriaSubscriber extends JedisPubSub {
@@ -27,7 +28,7 @@ public class HeriaSubscriber extends JedisPubSub {
             Set<HeriaPacketReceiver> receivers = this.heriaMessaging.getReceivers().get(packet.getChannel());
 
             if (receivers != null) {
-                receivers.forEach(receiver -> receiver.execute(channel, packet));
+                new HashSet<>(receivers).forEach(receiver -> receiver.execute(channel, packet));
             }
 
         } catch (Exception e){

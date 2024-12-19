@@ -10,10 +10,8 @@ import fr.heriamc.api.game.packet.GameCreatedPacket;
 import fr.heriamc.api.game.packet.GameCreationRequestPacket;
 import fr.heriamc.api.game.packet.GameCreationResult;
 import fr.heriamc.api.game.size.GameSize;
-import fr.heriamc.api.utils.GsonUtils;
 import fr.heriamc.proxy.HeriaProxy;
 import fr.heriamc.proxy.utils.ProxyPacketUtil;
-import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,35 +70,6 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
     }
 
     @Override
-    public void execute(String channel, HeriaPacket packet) {
-        System.out.println("Executing packet received on channel: " + channel);
-
-        if(!(packet instanceof GameCreatedPacket gamePacket)){
-            System.out.println("Packet is not an instance of GameCreatedPacket, ignoring...");
-            return;
-        }
-
-        if(!gamePacket.getRequestID().equals(lastRequestID)){
-            System.out.println("Packet request ID does not match last request ID, ignoring...");
-            return;
-        }
-
-        GameCreationResult result = gamePacket.getResult();
-        System.out.println("Game creation result: " + result);
-
-        if(result == GameCreationResult.FAIL){
-            System.out.println("Game creation failed, creating a new server.");
-            this.createServer();
-            this.waitingServer = true;
-            return;
-        }
-
-        this.creatingGames = true;
-        this.lastCreated.add(gamePacket.getGameName());
-        System.out.println("Game created successfully with name: " + gamePacket.getGameName());
-    }
-
-    @Override
     public boolean isAvailable() {
         System.out.println("Checking availability, lastCreated is empty: " + this.lastCreated.isEmpty());
         return !this.lastCreated.isEmpty();
@@ -148,6 +117,47 @@ public class GameServerPool extends ServerPool implements HeriaPacketReceiver {
         boolean stateValid = game.getState().is(GameState.WAIT, GameState.ALWAYS_PLAYING, GameState.STARTING);
         System.out.println("Game state is valid: " + stateValid);
         return stateValid;
+    }
+
+    @Override
+    public void onPacket(String channel, HeriaPacket packet) {
+        System.out.println("Executing packet received on channel: " + channel);
+
+        if(!(packet instanceof GameCreatedPacket gamePacket)){
+            System.out.println("Packet is not an instance of GameCreatedPacket, ignoring...");
+            return;
+        }
+
+        if(!gamePacket.getRequestID().equals(lastRequestID)){
+            System.out.println("Packet request ID does not match last request ID, ignoring...");
+            return;
+        }
+
+        GameCreationResult result = gamePacket.getResult();
+        System.out.println("Game creation result: " + result);
+
+        if(result == GameCreationResult.FAIL){
+            System.out.println("Game creation failed, creating a new server.");
+            this.createServer();
+            this.waitingServer = true;
+            this.lastCreated.clear();
+            return;
+        }
+
+        this.creatingGames = true;
+        this.lastCreated.add(gamePacket.getGameName());
+        System.out.println("Game created successfully with name: " + gamePacket.getGameName());
+    }
+
+    @Override
+    public void onInstanceStop(String instanceName) {
+        System.out.println("Old instance stopped, creating a new server.");
+        if(instanceName.equals(this.lastServer)){
+            this.createServer();
+            this.waitingServer = true;
+
+            this.lastCreated.clear();
+        }
     }
 
     @Override

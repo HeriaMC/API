@@ -2,7 +2,7 @@ package fr.heriamc.proxy.utils;
 
 import fr.heriamc.api.game.packet.GameJoinPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
-import fr.heriamc.proxy.packet.SendPlayerPacket;
+import fr.heriamc.proxy.packet.model.SendPlayerPacket;
 
 import java.util.ArrayList;
 import java.util.List;

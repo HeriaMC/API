@@ -1,4 +1,4 @@
-package fr.heriamc.bukkit.chat.event;
+package fr.heriamc.bukkit.event;
 
 import fr.heriamc.api.user.HeriaPlayer;
 import net.md_5.bungee.api.chat.TextComponent;

@@ -65,6 +65,10 @@ public class ProxyQueueManager {
 
     public void onLeave(QueueLeavePacket leavePacket) {
         System.out.println("Player leaving queue with packet: " + leavePacket);
+        HeriaQueueHandler handler = getHandler(leavePacket.getPlayer());
+        if(handler != null){
+            handler.removePlayer(leavePacket.getPlayer());
+        }
         // Implémentation potentielle pour gérer le départ d'un joueur
     }
 
@@ -103,6 +107,16 @@ public class ProxyQueueManager {
 
         System.out.println("No matching handler found.");
         return null;
+    }
+
+    public void removeQueue(HeriaQueueHandler queueHandler){
+        this.queues.remove(queueHandler);
+    }
+
+    public void killAll(){
+        for (HeriaQueueHandler queue : this.queues) {
+            queue.disable();
+        }
     }
 
     public HeriaQueueHandler getHandler(UUID player){

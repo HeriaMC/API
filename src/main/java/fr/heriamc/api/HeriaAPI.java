@@ -14,6 +14,7 @@ import fr.heriamc.api.server.HeriaServerManager;
 import fr.heriamc.api.server.creator.HeriaServerCreator;
 import fr.heriamc.api.user.HeriaPlayerManager;
 import fr.heriamc.api.user.resolver.HeriaPlayerResolverManager;
+import fr.heriamc.api.user.settings.HeriaPlayerSettingsManager;
 import fr.heriamc.api.user.unlock.HeriaUnlockableManager;
 import fr.heriamc.api.web.WebCreditsPacket;
 import fr.heriamc.api.web.WebListener;
@@ -39,6 +40,7 @@ public class HeriaAPI {
     private final HeriaGameManager heriaGameManager;
     private final HeriaGroupManager groupManager;
     private final HeriaQueueManager queueManager;
+    private final HeriaPlayerSettingsManager settingsManager;
 
     public HeriaAPI(HeriaConfiguration configuration) {
         instance = this;
@@ -58,6 +60,7 @@ public class HeriaAPI {
         this.heriaGameManager = new HeriaGameManager(this.redisConnection);
         this.groupManager = new HeriaGroupManager(this.redisConnection);
         this.queueManager = new HeriaQueueManager(this.redisConnection);
+        this.settingsManager = new HeriaPlayerSettingsManager(this.redisConnection, this.mongoConnection);
 
         this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
         this.heriaMessaging.send(new WebCreditsPacket("Karaam_", 15.50F));
@@ -66,11 +69,7 @@ public class HeriaAPI {
     public void onDisable(){
         this.heriaMessaging.stop();
 
-
         JedisPool pool = this.redisConnection.getPool();
-        pool.getResource().flushAll();
-        pool.getResource().scriptFlush();
-        pool.getResource().flushDB();
         pool.close();
         pool.destroy();
     }
@@ -137,5 +136,9 @@ public class HeriaAPI {
 
     public HeriaQueueManager getQueueManager() {
         return queueManager;
+    }
+
+    public HeriaPlayerSettingsManager getSettingsManager() {
+        return settingsManager;
     }
 }

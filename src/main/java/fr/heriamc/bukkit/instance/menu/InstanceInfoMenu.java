@@ -4,7 +4,7 @@ import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.HeriaMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
-import fr.heriamc.proxy.packet.SendPlayerPacket;
+import fr.heriamc.proxy.packet.model.SendPlayerPacket;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

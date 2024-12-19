@@ -3,7 +3,7 @@ package fr.heriamc.bukkit.instance;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.utils.Title;
-import fr.heriamc.proxy.packet.SendPlayerPacket;
+import fr.heriamc.proxy.packet.model.SendPlayerPacket;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

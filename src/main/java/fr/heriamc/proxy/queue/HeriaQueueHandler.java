@@ -1,6 +1,7 @@
 package fr.heriamc.proxy.queue;
 
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.scheduler.ScheduledTask;
 import fr.heriamc.api.game.GameState;
 import fr.heriamc.api.game.HeriaGameInfo;
 import fr.heriamc.api.game.HeriaGamesList;
@@ -31,6 +32,7 @@ public class HeriaQueueHandler {
 
     private final HeriaQueue queue;
     private HeriaPool serversPool;
+    private ScheduledTask schedule;
 
     public static final int MAX_SERVER_SIZE = 50;
 
@@ -56,7 +58,7 @@ public class HeriaQueueHandler {
         System.out.println("Private constructor invoked for HeriaQueueHandler with queue: " + queue);
         this.queue = queue;
 
-        proxy.getServer().getScheduler().buildTask(proxy, (scheduledTask -> {
+        this.schedule = proxy.getServer().getScheduler().buildTask(proxy, (scheduledTask -> {
             updateQueue();
             processPlayers();
         })).repeat(250, TimeUnit.MILLISECONDS).schedule();
@@ -64,15 +66,30 @@ public class HeriaQueueHandler {
 
     public void disable() {
         System.out.println("Disabling HeriaQueueHandler for queue: " + queue);
+        this.schedule.cancel();
+
+        for (UUID player : this.queue.getPlayers()) {
+            HeriaPlayer heriaPlayer = this.proxy.getApi().getPlayerManager().get(player);
+
+            if(heriaPlayer == null){
+                continue;
+            }
+
+            heriaPlayer.setQueue(null);
+            this.proxy.getApi().getPlayerManager().save(heriaPlayer);
+        }
+
+        this.proxy.getQueueManager().removeQueue(this);
+        this.proxy.getApi().getQueueManager().remove(this.queue);
     }
 
     public void processPlayers(){
         System.out.println("Processing players in queue...");
 
-        if (this.playerQueue.size() == 0 && System.currentTimeMillis() - this.lastProcess >= TimeUnit.MINUTES.toMillis(1)) {
+        /*if (this.playerQueue.size() == 0 && System.currentTimeMillis() - this.lastProcess >= TimeUnit.MINUTES.toMillis(1)) {
             System.out.println("Queue empty for more than a minute, disabling handler.");
             this.disable();
-        }
+        }*/
 
         for (UUID player : this.playerQueue.getList()) {
             System.out.println("Processing player: " + player);

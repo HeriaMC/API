@@ -6,6 +6,7 @@ import com.velocitypowered.api.proxy.server.ServerInfo;
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketReceiver;
 import fr.heriamc.proxy.HeriaProxy;
+import fr.heriamc.proxy.packet.model.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -36,6 +37,16 @@ public class ProxyPacketReceiver implements HeriaPacketReceiver {
         if(packet instanceof ServerRegisterPacket found){
             ServerInfo serverInfo = new ServerInfo(found.getServerName(), new InetSocketAddress(found.getServerPort()));
             this.proxy.getServer().registerServer(serverInfo);
+        }
+
+        if(packet instanceof ServerUnregisterPacket found){
+            RegisteredServer registeredServer = this.proxy.getServer().getServer(found.getServerName()).orElse(null);
+
+            if(registeredServer == null){
+                return;
+            }
+
+            this.proxy.getServer().unregisterServer(registeredServer.getServerInfo());
         }
 
         if(packet instanceof ProxyPlayerMessagePacket found){

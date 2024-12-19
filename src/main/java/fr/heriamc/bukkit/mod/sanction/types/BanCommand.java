@@ -10,7 +10,7 @@ import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
 import fr.heriamc.bukkit.packet.BukkitBroadcastMessagePacket;
 import fr.heriamc.bukkit.utils.TimeUnit;
-import fr.heriamc.proxy.packet.ProxyPlayerKickPacket;
+import fr.heriamc.proxy.packet.model.ProxyPlayerKickPacket;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;

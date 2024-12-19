@@ -3,11 +3,10 @@ package fr.heriamc.bukkit.instance.menu;
 import fr.heriamc.api.server.HeriaServer;
 import fr.heriamc.api.server.HeriaServerStatus;
 import fr.heriamc.api.server.HeriaServerType;
-import fr.heriamc.api.utils.EnumUtils;
+import fr.heriamc.api.utils.EnumIncludeNullUtils;
 import fr.heriamc.api.utils.HeriaSkull;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.menu.HeriaMenu;
-import fr.heriamc.bukkit.menu.pagination.HeriaPaginationMenu;
 import fr.heriamc.bukkit.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -100,8 +99,8 @@ public class InstanceListMenu extends HeriaMenu {
                     bukkit.getMenuManager().open(new InstanceCreateMenu(getPlayer(), bukkit, this));
                 }));
 
-        HeriaServerStatus previousStatus = EnumUtils.getPrevious(statusFilter, HeriaServerStatus.values());
-        HeriaServerStatus nextStatus = EnumUtils.getNext(statusFilter, HeriaServerStatus.values());
+        HeriaServerStatus previousStatus = EnumIncludeNullUtils.getPrevious(statusFilter, HeriaServerStatus.values());
+        HeriaServerStatus nextStatus = EnumIncludeNullUtils.getNext(statusFilter, HeriaServerStatus.values());
 
         this.insertInteractItem(inv, 48, new ItemBuilder(Material.PISTON_STICKY_BASE).setName("§eFiltre de statut")
                 .addLore(" ")
@@ -119,8 +118,8 @@ public class InstanceListMenu extends HeriaMenu {
                     this.updateMenu();
                 }));
 
-        HeriaServerType previousType = EnumUtils.getPrevious(typeFilter, HeriaServerType.values());
-        HeriaServerType nextType = EnumUtils.getNext(typeFilter, HeriaServerType.values());
+        HeriaServerType previousType = EnumIncludeNullUtils.getPrevious(typeFilter, HeriaServerType.values());
+        HeriaServerType nextType = EnumIncludeNullUtils.getNext(typeFilter, HeriaServerType.values());
 
         this.insertInteractItem(inv, 49, new ItemBuilder(Material.ANVIL).setName("§6Filtre de type")
                 .addLore(" ")

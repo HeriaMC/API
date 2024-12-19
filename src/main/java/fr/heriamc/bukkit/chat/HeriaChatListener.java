@@ -5,7 +5,7 @@ import fr.heriamc.api.sanction.HeriaSanctionType;
 import fr.heriamc.api.user.HeriaPlayer;
 import fr.heriamc.api.user.rank.HeriaRank;
 import fr.heriamc.bukkit.HeriaBukkit;
-import fr.heriamc.bukkit.chat.event.HeriaChatEvent;
+import fr.heriamc.bukkit.event.HeriaChatEvent;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

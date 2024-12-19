@@ -8,7 +8,7 @@ import fr.heriamc.api.user.resolver.HeriaPlayerResolver;
 import fr.heriamc.bukkit.HeriaBukkit;
 import fr.heriamc.bukkit.command.CommandArgs;
 import fr.heriamc.bukkit.command.HeriaCommand;
-import fr.heriamc.proxy.packet.ProxyPlayerMessagePacket;
+import fr.heriamc.proxy.packet.model.ProxyPlayerMessagePacket;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;

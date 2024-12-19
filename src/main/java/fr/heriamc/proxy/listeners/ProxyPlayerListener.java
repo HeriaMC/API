@@ -34,17 +34,7 @@ public class ProxyPlayerListener {
         this.proxy = proxy;
     }
 
-    @Subscribe
-    public void onPlayerPing(ProxyPingEvent event){
-        ServerPing ping = event.getPing();
 
-        ServerPing newPing = ping.asBuilder().maximumPlayers(500)
-                .description(Component.text("  §6§l«§b-§6§l» HeriaMC §8▪ §eServeur Mini-Jeux §8(§b1.8+§8) §6§l«§b-§6§l»\n" +
-                                                   "     §8- §cServeur en maintenance temporaire §8-"))
-                .build();
-
-        event.setPing(newPing);
-    }
 
     @Subscribe
     public void onLogin(LoginEvent event){
@@ -63,7 +53,7 @@ public class ProxyPlayerListener {
             this.proxy.getApi().getResolverManager().save(resolver);
         }
 
-
+        this.proxy.getApi().getSettingsManager().createOrLoad(player.getUniqueId());
         this.proxy.getApi().getUnlockableManager().createOrLoad(player.getUniqueId());
 
         List<HeriaSanction> bans = this.proxy.getApi().getSanctionManager().getActiveSanctions(uuid, HeriaSanctionType.BAN);
@@ -150,57 +140,5 @@ public class ProxyPlayerListener {
 
     }
 
-    @Subscribe
-    public void onServerChoose(PlayerChooseInitialServerEvent e){
-        HeriaServer server = this.proxy.getApi().getServerManager().getReadyWithLessPlayers(HeriaServerType.HUB);
 
-        if(server == null){
-            e.getPlayer().disconnect(Component.text("§cAucun serveur hub n'a été trouvé"));
-            e.setInitialServer(null);
-            return;
-        }
-
-        RegisteredServer registeredServer = this.proxy.getServer().getServer(server.getName()).orElse(null);
-        e.setInitialServer(registeredServer);
-    }
-
-    @Subscribe
-    public void onServerJoin(ServerConnectedEvent e){
-        Player player = e.getPlayer();
-        String name = e.getServer().getServerInfo().getName();
-
-        HeriaPlayer heriaPlayer = proxy.getApi().getPlayerManager().get(player.getUniqueId());
-
-        if(heriaPlayer == null){
-            return;
-        }
-
-        heriaPlayer.setConnectedTo(name);
-        proxy.getApi().getPlayerManager().save(heriaPlayer);
-
-        HeriaServer heriaServer = proxy.getApi().getServerManager().get(name);
-
-        if(heriaServer == null) {
-            return;
-        }
-
-        heriaServer.getConnected().add(player.getUniqueId());
-        proxy.getApi().getServerManager().save(heriaServer);
-    }
-
-    @Subscribe
-    public void onKick(KickedFromServerEvent event){
-        if(!(event.getResult() instanceof KickedFromServerEvent.RedirectPlayer playerRedirection)){
-            return;
-        }
-
-        HeriaServer server = proxy.getApi().getServerManager().getWithLessPlayers(HeriaServerType.HUB);
-        RegisteredServer registeredServer = proxy.getServer().getServer(server.getName()).orElse(null);
-
-        if(registeredServer == null){
-            return;
-        }
-
-        event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer, Component.text("Votre serveur précédent a rencontré un problème, vous avez été redirigé vers " + server.getName(), NamedTextColor.RED)));
-    }
 }

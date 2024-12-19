@@ -1,4 +1,4 @@
-package fr.heriamc.proxy.packet;
+package fr.heriamc.proxy.packet.model;
 
 import fr.heriamc.api.messaging.packet.HeriaPacket;
 import fr.heriamc.api.messaging.packet.HeriaPacketChannel;
