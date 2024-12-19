@@ -62,8 +62,8 @@ public class HeriaAPI {
         this.queueManager = new HeriaQueueManager(this.redisConnection);
         this.settingsManager = new HeriaPlayerSettingsManager(this.redisConnection, this.mongoConnection);
 
-        this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
-        this.heriaMessaging.send(new WebCreditsPacket("Karaam_", 15.50F));
+        //this.heriaMessaging.registerReceiver(HeriaPacketChannel.WEB, new WebListener(this));
+        //this.heriaMessaging.send(new WebCreditsPacket("Karaam_", 15.50F));
     }
 
     public void onDisable(){
