@@ -21,5 +21,6 @@ Old infrastructure previously used on the now closed HeriaMC server.
 ## 🙌 Credits:
 
 - 👨‍💻 @karaaam : main dev
-- 🎮 @joupii : game API dev
+- 🎮 @joupii : game API dev and 2 games dev (shootcraft, oneshotffa)
+- 🔧 @4karaa: 2 games developper (hikabrain, rushffa)
 - 🛠️ @notthanks and @mwrush : small fixes and support
